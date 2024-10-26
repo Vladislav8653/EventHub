@@ -3,6 +3,7 @@ using System;
 using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventHub.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20241026101151_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,12 +44,12 @@ namespace EventHub.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e062d2bc-d931-48ad-8189-3249bcda33ec"),
+                            Id = new Guid("dbbca2f3-5a49-4608-8854-d63c0c208699"),
                             CategoryName = "Metal Concert"
                         },
                         new
                         {
-                            Id = new Guid("da8d8f70-9cf1-48c4-9284-3a0a3bdd6339"),
+                            Id = new Guid("87e8aa08-5b79-4ba4-ba4a-38ab999a9a9e"),
                             CategoryName = "Exhibition"
                         });
                 });
@@ -95,7 +98,7 @@ namespace EventHub.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d3af39a8-9238-4940-a84e-16f88f08a83e"),
+                            Id = new Guid("b6a125ac-47bd-46f3-ae2e-22d9793a3792"),
                             DateTime = new DateTimeOffset(new DateTime(2024, 7, 5, 20, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 2, 0, 0, 0)),
                             Description = "M72 Seasons World Tour",
                             Image = new byte[0],
@@ -105,7 +108,7 @@ namespace EventHub.Migrations
                         },
                         new
                         {
-                            Id = new Guid("9537d4ea-fd94-4dfd-988e-ff1106d31654"),
+                            Id = new Guid("889fd939-2c77-488d-b72b-a15c77ee9a02"),
                             DateTime = new DateTimeOffset(new DateTime(2024, 7, 5, 20, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)),
                             Description = "The coolest apples in the world are here",
                             Image = new byte[0],
@@ -172,7 +175,7 @@ namespace EventHub.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("8543909f-52db-4ecc-b51d-505ea27f4b43"),
+                            Id = new Guid("0358b3cd-ea86-45ae-9e0a-33505146dfca"),
                             DateOfBirth = new DateTime(2005, 5, 14, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "arefin.vlad@gmail.com",
                             Name = "Vladislav",
@@ -180,8 +183,8 @@ namespace EventHub.Migrations
                         },
                         new
                         {
-                            Id = new Guid("1f37fbac-6818-485d-85c7-67937816ebcf"),
-                            DateOfBirth = new DateTime(2006, 5, 26, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Id = new Guid("8082739a-fb03-4589-adab-e80428923ddd"),
+                            DateOfBirth = new DateTime(2006, 5, 25, 20, 0, 0, 0, DateTimeKind.Utc),
                             Email = "egor.pomidor@gmail.com",
                             Name = "Egor",
                             Surname = "Shcherbin"
