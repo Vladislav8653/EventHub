@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventHub.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20241026100620_EditedDateTime")]
-    partial class EditedDateTime
+    [Migration("20241028065401_EditedRelations")]
+    partial class EditedRelations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,18 +40,6 @@ namespace EventHub.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("e062d2bc-d931-48ad-8189-3249bcda33ec"),
-                            CategoryName = "Metal Concert"
-                        },
-                        new
-                        {
-                            Id = new Guid("da8d8f70-9cf1-48c4-9284-3a0a3bdd6339"),
-                            CategoryName = "Exhibition"
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.Event", b =>
@@ -61,7 +49,7 @@ namespace EventHub.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("EventId");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("DateTime")
@@ -94,37 +82,10 @@ namespace EventHub.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("d3af39a8-9238-4940-a84e-16f88f08a83e"),
-                            DateTime = new DateTimeOffset(new DateTime(2024, 7, 5, 20, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 2, 0, 0, 0)),
-                            Description = "M72 Seasons World Tour",
-                            Image = new byte[0],
-                            MaxQuantityParticipant = 100000L,
-                            Name = "Metallica Concert",
-                            Place = "Warsaw, PGE Narodowy"
-                        },
-                        new
-                        {
-                            Id = new Guid("9537d4ea-fd94-4dfd-988e-ff1106d31654"),
-                            DateTime = new DateTimeOffset(new DateTime(2024, 7, 5, 20, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 3, 0, 0, 0)),
-                            Description = "The coolest apples in the world are here",
-                            Image = new byte[0],
-                            MaxQuantityParticipant = 100L,
-                            Name = "Exhibition of apples",
-                            Place = "Minsk, Komarovsky rinok"
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.EventParticipant", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("EventParticipantId");
-
                     b.Property<Guid>("EventId")
                         .HasColumnType("uuid");
 
@@ -134,9 +95,7 @@ namespace EventHub.Migrations
                     b.Property<DateTimeOffset>("RegistrationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
+                    b.HasKey("EventId", "ParticipantId");
 
                     b.HasIndex("ParticipantId");
 
@@ -150,13 +109,13 @@ namespace EventHub.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("ParticipantId");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasMaxLength(254)
+                        .HasColumnType("character varying(254)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -171,31 +130,15 @@ namespace EventHub.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Participants");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("8543909f-52db-4ecc-b51d-505ea27f4b43"),
-                            DateOfBirth = new DateTime(2005, 5, 14, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "arefin.vlad@gmail.com",
-                            Name = "Vladislav",
-                            Surname = "Arefin"
-                        },
-                        new
-                        {
-                            Id = new Guid("1f37fbac-6818-485d-85c7-67937816ebcf"),
-                            DateOfBirth = new DateTime(2006, 5, 26, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Email = "egor.pomidor@gmail.com",
-                            Name = "Egor",
-                            Surname = "Shcherbin"
-                        });
                 });
 
             modelBuilder.Entity("Entities.Models.Event", b =>
                 {
                     b.HasOne("Entities.Models.Category", "Category")
                         .WithMany("Events")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
                 });
