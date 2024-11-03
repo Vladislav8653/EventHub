@@ -1,0 +1,60 @@
+﻿{
+  "categories" : [
+    {
+      "categoryName" : "Concerts"
+    },
+    {
+      "categoryName" : "Exhibitions"
+    }
+  ],
+  "events" : [
+    {
+      "id" : "",
+      "name" : "",
+      "description" : "",
+      "datetime" : "2",
+      "place" : "",
+      "categoryId" : "",
+      "maxQuantityParticipant" : "",
+      "image" : ""
+    },
+    {
+      "id" : "",
+      "name" : "",
+      "description" : "",
+      "datetime" : "",
+      "place" : "",
+      "categoryId" : "",
+      "maxQuantityParticipant" : "",
+      "image" : ""
+    }
+  ],
+  "eventParticipant" : [
+    {
+      "eventId" : "",
+      "participantId" : "",
+      "registrationTime" : ""
+    },
+    {
+      "eventId" : "",
+      "participantId" : "",
+      "registrationTime" : ""
+    }
+  ],
+  "participant" : [
+    {
+      "id" : "",
+      "name" : "",
+      "surname" : "",
+      "dateOfBirth" : "",
+      "email" : ""
+    },
+    {
+      "id" : "",
+      "name" : "",
+      "surname" : "",
+      "dateOfBirth" : "",
+      "email" : ""
+    }
+  ]
+}
