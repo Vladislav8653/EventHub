@@ -1,4 +1,4 @@
-﻿namespace Contracts;
+﻿namespace BusinessLayer.Services.Contracts;
 
 public interface ILoggerManager
 {

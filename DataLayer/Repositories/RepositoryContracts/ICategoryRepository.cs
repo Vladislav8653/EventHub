@@ -1,9 +1,14 @@
-﻿using Entities.Models;
+﻿using DataLayer.Models;
 
-namespace Contracts.RepositoryContracts;
+namespace DataLayer.Repositories.RepositoryContracts;
 
-public interface ICategoryRepository
+public interface ICategoryRepository : IRepositoryBase<Category>
 {
-    void CreateCategory(Category category);
-    void DeleteCategory(Category category);
+    Task<bool> IsUniqueNameAsync(string name);
+    Task<Category?> TryGetByNameAsync(string name);
+    Category? TryGetById(Guid id);
+    Task<IEnumerable<Category>> GetAllAsync();
+    bool Exists(Guid id);
+
+
 }

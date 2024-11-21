@@ -1,14 +1,13 @@
-﻿namespace BusinessLayer.DtoModels.EventsDto;
+﻿using BusinessLayer.DtoModels.CategoryDto;
+namespace BusinessLayer.DtoModels.EventsDto;
 
 public class CreateEventDto
 {
-    public Guid Id { get; set; }
-    
     public string Name { get; set; } = String.Empty;
     
     public string Description { get; set; } = String.Empty;
 
-    public DateTimeOffset DateTime { get; set; }
+    public string DateTime { get; set; } = String.Empty; // мб я не прав
 
     public string Place { get; set; } = String.Empty;
 

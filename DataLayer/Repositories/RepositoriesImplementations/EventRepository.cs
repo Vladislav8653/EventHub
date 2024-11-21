@@ -1,34 +1,39 @@
-﻿using Contracts.RepositoryContracts;
-using Entities;
-using Entities.Models;
+﻿using DataLayer.Repositories.RepositoryContracts;
+using DataLayer.Data;
+using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Repository.Repositories;
+namespace DataLayer.Repositories.RepositoriesImplementations;
 
-public class EventRepository : 
-    RepositoryBase<Event>, IEventRepository
+public class EventRepository : RepositoryBase<Event>, IEventRepository
 {
-    public EventRepository(RepositoryContext repositoryContext) : base(repositoryContext)
-    {
-    }
+    public EventRepository(EventHubDbContext eventHubDbContext) : base(eventHubDbContext) { }
+    
+    public async Task<bool> IsUniqueNameAsync(string name) => 
+        !await Repository.Events.AnyAsync(e => e.Name == name);
 
+    public async Task<Event?> GetByNameAsync(string name) =>
+        await Repository.Events.FirstOrDefaultAsync(e => e.Name == name);
 
-    public async Task<IEnumerable<Event>> GetAllEventsAsync(bool trackChanges) =>
-         await FindAll(trackChanges)
-        .OrderBy(e => e.DateTime)
-        .ToListAsync();
+    public async Task<Event?> GetByIdAsync(Guid id) =>
+        await Repository.Events.FirstOrDefaultAsync(e => e.Id == id);
 
+    public async Task<IEnumerable<Event>> GetAllAsync() =>
+        await FindAll(trackChanges: false).ToListAsync();
 
-    public async Task<Event?> GetEventAsync(Guid eventId, bool trackChanges) =>
-        await FindByCondition(e => e.Id == eventId, trackChanges)
-            .SingleOrDefaultAsync();
+    public async Task<IEnumerable<Event>> GetByDateAsync(DateTimeOffset date) => 
+        await FindByCondition(e => e.DateTime == date, trackChanges: false)
+            .ToListAsync();
 
-    public async Task<Event?> GetEventAsync(string name, bool trackChanges) =>
-        await FindByCondition(e => e.Name == name, trackChanges)
-            .OrderBy(e => e.DateTime)
-            .SingleOrDefaultAsync();
+    public async Task<IEnumerable<Event>> GetByDateRangeAsync(DateTimeOffset start, DateTimeOffset finish) =>
+        await FindByCondition(e => e.DateTime > start && e.DateTime < finish, trackChanges: false)
+            .ToListAsync();
 
-    public void CreateEvent(Event @event) => Create(@event);
+    public async Task<IEnumerable<Event>> GetByCategoryAsync(Category category) =>
+        await FindByCondition(e => e.Category == category, trackChanges: false)
+            .ToListAsync();
 
-    public void DeleteEvent(Event @event) => Delete(@event);
+    public async Task<IEnumerable<Event>> GetByPlaceAsync(string place) =>
+        await FindByCondition(e => e.Place == place, trackChanges: false)
+            .ToListAsync();
 }

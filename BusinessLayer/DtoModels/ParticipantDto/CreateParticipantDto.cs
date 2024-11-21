@@ -1,4 +1,4 @@
-﻿namespace BusinessLayer.DtoModels;
+﻿namespace BusinessLayer.DtoModels.ParticipantDto;
 
 public class CreateParticipantDto
 {

@@ -1,33 +1,32 @@
 ﻿using System.Linq.Expressions;
-using Contracts;
-using Entities;
+using DataLayer.Data;
+using DataLayer.Models;
+using DataLayer.Repositories.RepositoryContracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace Repository;
+namespace DataLayer.Repositories.RepositoriesImplementations;
 
 public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
-    protected RepositoryContext Repository;
+    protected EventHubDbContext Repository;
 
-    protected RepositoryBase(RepositoryContext repositoryContext)
+    protected RepositoryBase(EventHubDbContext repositoryContext)
     {
         Repository = repositoryContext;
     }
 
-    public void Create(T entity)
+    public async Task CreateAsync(T entity)
     {
-        Repository.Set<T>().Add(entity);
+        //entity.Id = Guid.NewGuid();
+        await Repository.Set<T>().AddAsync(entity);
     }
 
-    public void Delete(T entity)
-    {
-        Repository.Set<T>().Remove(entity);
-    }
 
-    public void Update(T entity)
-    {
-        Repository.Set<T>().Update(entity);
-    }
+    public void Delete(T entity) => Repository.Set<T>().Remove(entity);
+    
+
+    public void Update(T entity) => Repository.Set<T>().Update(entity);
+    
 
     public IQueryable<T> FindAll(bool trackChanges)
     {
@@ -46,4 +45,5 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
         }
         return Repository.Set<T>().Where(expression).AsNoTracking();
     }
+   
 }

@@ -1,10 +1,8 @@
-﻿using Entities.Models;
+﻿using DataLayer.Models;
 
-namespace Contracts.RepositoryContracts;
+namespace DataLayer.Repositories.RepositoryContracts;
 
-public interface IParticipantRepository
+public interface IParticipantRepository : IRepositoryBase<Participant>
 {
-    public void CreateParticipant(Participant participant);
-
-    public void DeleteParticipant(Participant participant);
+    
 }

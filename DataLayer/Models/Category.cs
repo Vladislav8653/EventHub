@@ -1,17 +1,32 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Entities.Models;
 
-public class Category
+namespace DataLayer.Models;
+
+public class Category 
 {
     [Column("CategoryId")]
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
     [Required(ErrorMessage = "Category name is required")]
     [MaxLength(30, ErrorMessage = "Category Name can't be longer than 30")]
-    public string CategoryName { get; set; } = String.Empty;
+    public string Name { get; set; } = String.Empty;
 
     public ICollection<Event> Events { get; set; } = [];
 
+    public override bool Equals(object? obj)
+    {
+        if (obj is Category category)
+        {
+            return Name == category.Name; // сравниваю по значению строки 
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return Id.GetHashCode(); 
+    }
+    
 }

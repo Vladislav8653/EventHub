@@ -5,7 +5,7 @@ using DataLayer.Repositories.RepositoryContracts;
 
 namespace DataLayer.Repositories.UnitOfWork;
 
-public class RepositoriesesManager : IRepositoriesManager
+public class RepositoriesManager : IRepositoriesManager
 {
     private readonly EventHubDbContext _eventHubDbContext;
     private IEventRepository? _eventRepository;
@@ -15,12 +15,12 @@ public class RepositoriesesManager : IRepositoriesManager
     private IUserRepository? _userRepository;
 
 
-    public RepositoriesesManager(EventHubDbContext eventHubDbContext)
+    public RepositoriesManager(EventHubDbContext eventHubDbContext)
     {
         _eventHubDbContext = eventHubDbContext;
     }
 
-    public IEventRepository EventRepository
+    public IEventRepository Events
     {
         get
         {
@@ -30,7 +30,7 @@ public class RepositoriesesManager : IRepositoriesManager
         }
     }
 
-    public IParticipantRepository ParticipantRepository
+    public IParticipantRepository Participants
     {
         get
         {
@@ -40,7 +40,7 @@ public class RepositoriesesManager : IRepositoriesManager
         }
     }
 
-    public IEventParticipantRepository EventParticipantRepository
+    public IEventParticipantRepository EventsParticipants
     {
         get
         {
@@ -50,7 +50,7 @@ public class RepositoriesesManager : IRepositoriesManager
         }
     }
 
-    public ICategoryRepository CategoryRepository
+    public ICategoryRepository Categories
     {
         get
         {
@@ -60,7 +60,7 @@ public class RepositoriesesManager : IRepositoriesManager
         }
     }
 
-    public IUserRepository UserRepository
+    public IUserRepository Users
     {
         get
         {

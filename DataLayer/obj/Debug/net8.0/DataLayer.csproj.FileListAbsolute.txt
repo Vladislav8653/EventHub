@@ -11,3 +11,5 @@ D:\my_code\test_task\EventHub\DataLayer\obj\Debug\net8.0\DataLayer.dll
 D:\my_code\test_task\EventHub\DataLayer\obj\Debug\net8.0\refint\DataLayer.dll
 D:\my_code\test_task\EventHub\DataLayer\obj\Debug\net8.0\DataLayer.pdb
 D:\my_code\test_task\EventHub\DataLayer\obj\Debug\net8.0\ref\DataLayer.dll
+D:\my_code\test_task\EventHub\DataLayer\bin\Debug\net8.0\DataLayer.runtimeconfig.json
+D:\my_code\test_task\EventHub\DataLayer\obj\Debug\net8.0\DataLayer.genruntimeconfig.cache

@@ -1,8 +1,8 @@
-﻿using Entities.Models;
+﻿using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Entities.Configurations;
+namespace DataLayer.Data.Configurations;
 
 public class EventsConfig : IEntityTypeConfiguration<Event>
 {

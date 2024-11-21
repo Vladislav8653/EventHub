@@ -1,6 +1,26 @@
+using BusinessLayer.Infrastructure.Mapper;
+using EventHub.Extensions;
+using EventHub.MiddlewareHandlers;
+using NLog;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.ConfigureCors();
+builder.Services.ConfigureLoggerService();
+builder.Services.AddControllers();
+builder.Services.ConfigureSqlContext(builder.Configuration);
+builder.Services.ConfigureRepositoryManager();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.ConfigureValidation();
+builder.Services.ConfigureEventService();
+builder.Services.ConfigureCategoryService();
+builder.Services.ConfigureLogger();
 var app = builder.Build();
-
-app.MapGet("/", () => "Hello World!");
-
+app.AppendMiddlewareErrorHandler();
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseCors("CorsPolicy");
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
 app.Run();

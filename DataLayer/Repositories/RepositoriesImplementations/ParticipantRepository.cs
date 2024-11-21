@@ -1,16 +1,14 @@
-﻿using Contracts.RepositoryContracts;
-using Entities;
-using Entities.Models;
+﻿using DataLayer.Repositories.RepositoryContracts;
+using DataLayer.Data;
+using DataLayer.Models;
 
-namespace Repository.Repositories;
+namespace DataLayer.Repositories.RepositoriesImplementations;
 
 public class ParticipantRepository : RepositoryBase<Participant>, IParticipantRepository
 {
-    public ParticipantRepository(RepositoryContext repositoryContext) : base(repositoryContext)
-    {
-    }
+    public ParticipantRepository(EventHubDbContext eventHubDbContext) : base(eventHubDbContext) { }
     
-    public void CreateParticipant(Participant participant) => Create(participant);
+    /*public void CreateParticipant(Participant participant) => Create(participant);
 
-    public void DeleteParticipant(Participant participant) => Delete(participant);
+    public void DeleteParticipant(Participant participant) => Delete(participant);*/
 }

@@ -1,12 +1,12 @@
-﻿using Entities.Configurations;
-using Entities.Models;
+﻿using DataLayer.Data.Configurations;
+using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Entities;
+namespace DataLayer.Data;
 
-public class RepositoryContext : DbContext
+public class EventHubDbContext : DbContext
 {
-    public RepositoryContext(DbContextOptions options) : base(options) {}
+    public EventHubDbContext(DbContextOptions options) : base(options) {}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,4 +20,5 @@ public class RepositoryContext : DbContext
     public DbSet<Participant> Participants { get; set; }
     public DbSet<EventParticipant> EventsParticipants { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<User> Users { get; set; }
 }

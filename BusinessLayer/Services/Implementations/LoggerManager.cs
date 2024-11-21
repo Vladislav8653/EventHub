@@ -1,7 +1,7 @@
-﻿using Contracts;
+﻿using BusinessLayer.Services.Contracts;
 using NLog;
 
-namespace LoggerService;
+namespace BusinessLayer.Services.Implementations;
 
 public class LoggerManager : ILoggerManager
 {

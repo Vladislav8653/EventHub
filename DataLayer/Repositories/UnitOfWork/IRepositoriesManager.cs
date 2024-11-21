@@ -2,12 +2,12 @@
 
 namespace DataLayer.Repositories.UnitOfWork;
 
-public interface IRepositoryManager
+public interface IRepositoriesManager
 {
-    IEventRepository EventRepository { get; }
-    IParticipantRepository ParticipantRepository { get; }
-    IEventParticipantRepository EventParticipantRepository { get; }
-    ICategoryRepository CategoryRepository { get; }
-    IUserRepository UserRepository { get; }
+    IEventRepository Events { get; }
+    IParticipantRepository Participants { get; }
+    IEventParticipantRepository EventsParticipants { get; }
+    ICategoryRepository Categories { get; }
+    IUserRepository Users { get; }
     Task SaveAsync();
 }

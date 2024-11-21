@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 
-namespace Contracts;
+namespace DataLayer.Repositories.RepositoryContracts;
 
 public interface IRepositoryBase<T>
 {
-    void Create(T entity);
+    Task CreateAsync(T entity);
     void Delete(T entity);
     void Update(T entity);
     IQueryable<T> FindAll(bool trackChanges);

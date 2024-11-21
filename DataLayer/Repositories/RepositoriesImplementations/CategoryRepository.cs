@@ -1,18 +1,29 @@
-﻿using Contracts.RepositoryContracts;
-using Entities;
-using Entities.Models;
+﻿using DataLayer.Repositories.RepositoryContracts;
+using DataLayer.Data;
+using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace Repository.Repositories;
+namespace DataLayer.Repositories.RepositoriesImplementations;
 
-public class CategoryRepository : RepositoryBase<Category>,
-    ICategoryRepository
+
+public class CategoryRepository : RepositoryBase<Category>, ICategoryRepository
 {
+    public CategoryRepository(EventHubDbContext eventHubDbContext) : base(eventHubDbContext) { }
+
+    public async Task<bool> IsUniqueNameAsync(string name) =>
+        !await Repository.Categories.AnyAsync(c => c.Name == name);
     
-    public CategoryRepository(RepositoryContext repositoryContext) : base(repositoryContext)
-    {
-    }
+    
+    public async Task<Category?> TryGetByNameAsync(string name) => 
+        await FindByCondition(c => c.Name == name, trackChanges: false).FirstOrDefaultAsync();
+    
 
-    public void CreateCategory(Category category) => Create(category);
+    public Category? TryGetById(Guid id) =>
+        FindByCondition(c => c.Id== id, trackChanges: false).FirstOrDefault();
 
-    public void DeleteCategory(Category category) => Delete(category);
+    public async Task<IEnumerable<Category>> GetAllAsync() =>
+        await FindAll(trackChanges: false).ToListAsync();
+
+    public bool Exists(Guid id) => 
+        FindByCondition(c => c.Id == id, trackChanges: false).FirstOrDefault() != null;
 }
