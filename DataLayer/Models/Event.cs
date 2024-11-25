@@ -24,7 +24,7 @@ public class Event
     public string Place { get; set; } = String.Empty;
     
     public Guid CategoryId { get; set; }
-    public required Category Category { get; set; } 
+    public Category Category { get; set; } 
 
     public uint MaxQuantityParticipant { get; set; }
 

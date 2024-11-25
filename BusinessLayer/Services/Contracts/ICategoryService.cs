@@ -10,7 +10,7 @@ public interface ICategoryService
     Category? TryGetById(Guid id);
     bool Exists(Guid id);
     Task<IEnumerable<Category>> GetAllAsync();
-    Task<Category> CreateAsync(CreateCategoryDto item);
+    Task<Category> CreateAsync(CategoryDto item);
     
-    void Delete(EntityByIdDto id);
+    void Delete(Guid id);
 }

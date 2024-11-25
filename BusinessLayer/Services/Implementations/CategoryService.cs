@@ -29,7 +29,7 @@ public class CategoryService : ICategoryService
     public async Task<IEnumerable<Category>> GetAllAsync() =>
         await _repositoriesManager.Categories.GetAllAsync();
 
-    public async Task<Category> CreateAsync(CreateCategoryDto item)
+    public async Task<Category> CreateAsync(CategoryDto item)
     {
         var isUniqueName = await _repositoriesManager.Categories.IsUniqueNameAsync(item.Name);
         if (!isUniqueName)
@@ -40,9 +40,8 @@ public class CategoryService : ICategoryService
         return categoryForDb;
     }
 
-    public void Delete(EntityByIdDto idDto)
+    public void Delete(Guid id)
     {
-        var id = Guid.Parse(idDto.Id);
         var entity = TryGetById(id);
         if (entity == null)
             throw new EntityNotFoundException($"Category with id {id} not found");

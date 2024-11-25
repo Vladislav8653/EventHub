@@ -19,7 +19,7 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
         await Repository.Events.FirstOrDefaultAsync(e => e.Id == id);
 
     public async Task<IEnumerable<Event>> GetAllAsync() =>
-        await FindAll(trackChanges: false).ToListAsync();
+        await FindAll(trackChanges: false).Include(e => e.Category).ToListAsync();
 
     public async Task<IEnumerable<Event>> GetByDateAsync(DateTimeOffset date) => 
         await FindByCondition(e => e.DateTime == date, trackChanges: false)

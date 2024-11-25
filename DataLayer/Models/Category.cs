@@ -13,7 +13,7 @@ public class Category
     [MaxLength(30, ErrorMessage = "Category Name can't be longer than 30")]
     public string Name { get; set; } = String.Empty;
 
-    public ICollection<Event> Events { get; set; } = [];
+    public ICollection<Event> Events { get; set; } = new List<Event>();
 
     public override bool Equals(object? obj)
     {

@@ -1,9 +1,9 @@
 ﻿using BusinessLayer.DtoModels.CategoryDto;
 using FluentValidation;
 
-namespace BusinessLayer.Infrastructure.Validators.Category;
+namespace EventHub.Validators.Category;
 
-public class CreateCategoryDtoValidator : AbstractValidator<CreateCategoryDto>
+public class CreateCategoryDtoValidator : AbstractValidator<CategoryDto>
 {
     private const int MaxNameLength = 30;
     public CreateCategoryDtoValidator()

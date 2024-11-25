@@ -1,7 +1,5 @@
 using BusinessLayer.Infrastructure.Mapper;
 using EventHub.Extensions;
-using EventHub.MiddlewareHandlers;
-using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureCors();
@@ -14,6 +12,7 @@ builder.Services.ConfigureValidation();
 builder.Services.ConfigureEventService();
 builder.Services.ConfigureCategoryService();
 builder.Services.ConfigureLogger();
+builder.Services.ConfigureSwagger();
 var app = builder.Build();
 app.AppendMiddlewareErrorHandler();
 app.UseHttpsRedirection();
@@ -23,4 +22,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseSwagger();
+app.UseSwaggerUi();
 app.Run();

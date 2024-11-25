@@ -1,31 +1,29 @@
-﻿using System.Runtime.InteropServices.JavaScript;
-using AutoMapper;
+﻿using AutoMapper;
 using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.Exceptions;
-using BusinessLayer.Infrastructure.Validators;
-using BusinessLayer.Infrastructure.Validators.Event;
 using BusinessLayer.Services.Contracts;
 using DataLayer.Models;
 using DataLayer.Repositories.UnitOfWork;
-using FluentValidation;
 
 namespace BusinessLayer.Services.Implementations;
 
 public class EventService : IEventService
 {
-    private IRepositoriesManager _repositoriesManager;
-    private IMapper _mapper;
-    private IValidator<CreateEventDto> _eventValidator;
-    public EventService(IRepositoriesManager repositoriesManager, IMapper mapper, IValidator<CreateEventDto> eventValidator)
+    private readonly IRepositoriesManager _repositoriesManager;
+    private readonly IMapper _mapper;
+    public EventService(IRepositoriesManager repositoriesManager, IMapper mapper)
     {
         _repositoriesManager = repositoriesManager;
         _mapper = mapper;
-        _eventValidator = eventValidator;
     }
 
 
-    public async Task<IEnumerable<Event>> GetAllAsync() =>
-        await _repositoriesManager.Events.GetAllAsync();
+    public async Task<IEnumerable<GetEventDto>> GetAllAsync()
+    {
+        var events = await _repositoriesManager.Events.GetAllAsync();
+        var eventsDto = _mapper.Map<IEnumerable<GetEventDto>>(events);
+        return eventsDto;
+    }
 
     public async Task<IEnumerable<Event>> GetByDateAsync(string date)
     {
@@ -83,23 +81,25 @@ public class EventService : IEventService
         return await _repositoriesManager.Events.GetByCategoryAsync(category);
     }*/
 
-    public async Task<Event> GetByIdAsync(Guid id)
+    public async Task<CreateEventDto> GetByIdAsync(Guid id)
     {
         var eventById = await _repositoriesManager.Events.GetByIdAsync(id);
         if (eventById == null)
             throw new EntityNotFoundException($"Event with id {id} doesn't exist");
-        return eventById;
+        var eventDto = _mapper.Map<CreateEventDto>(eventById);
+        return eventDto;
     }
 
-    public async Task<Event> GetByNameAsync(string name)
+    public async Task<CreateEventDto> GetByNameAsync(string name)
     {
         var eventByName = await _repositoriesManager.Events.GetByNameAsync(name);
         if (eventByName == null)
             throw new EntityNotFoundException($"Event with name {name} doesn't exist");
-        return eventByName;
+        var eventDto = _mapper.Map<CreateEventDto>(eventByName);
+        return eventDto;
     }
 
-    public async Task<Event> CreateAsync(CreateEventDto item)
+    public async Task<CreateEventDto> CreateAsync(CreateEventDto item)
     {
         var isUniqueName = await _repositoriesManager.Events.IsUniqueNameAsync(item.Name);
         if (!isUniqueName)
@@ -109,12 +109,14 @@ public class EventService : IEventService
             throw new EntityNotFoundException($"Category {item.Category} doesn't exits.");
         var eventForDb = _mapper.Map<Event>(item);
         eventForDb.CategoryId = category.Id;
+        //eventForDb.Category = category;
         await _repositoriesManager.Events.CreateAsync(eventForDb);
         await _repositoriesManager.SaveAsync();
-        return eventForDb;
+        var eventDto = _mapper.Map<CreateEventDto>(eventForDb);
+        return eventDto;
     }
 
-    public async Task<Event> UpdateAsync(Guid id, UpdateEventDto item)
+    public async Task<CreateEventDto> UpdateAsync(Guid id, CreateEventDto item)
     {
         var eventToUpdate = await _repositoriesManager.Events.GetByIdAsync(id);
         if (eventToUpdate == null)
@@ -122,18 +124,18 @@ public class EventService : IEventService
         _mapper.Map(item, eventToUpdate);
         _repositoriesManager.Events.Update(eventToUpdate);
         await _repositoriesManager.SaveAsync();
-        return eventToUpdate;
+        var eventDto = _mapper.Map<CreateEventDto>(eventToUpdate);
+        return eventDto;
     }
 
-    public async Task<Event> DeleteAsync(Guid id)
+    public async Task<CreateEventDto> DeleteAsync(Guid id)
     {
         var eventToDelete = await _repositoriesManager.Events.GetByIdAsync(id);
         if (eventToDelete == null)
             throw new EntityNotFoundException($"Event with id {id} doesn't exist");
         _repositoriesManager.Events.Delete(eventToDelete);
         await _repositoriesManager.SaveAsync();
-        return eventToDelete;
+        var eventDto = _mapper.Map<CreateEventDto>(eventToDelete);
+        return eventDto;
     }
-    
-    
 }

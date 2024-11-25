@@ -12,19 +12,6 @@ public class CategoriesConfig : IEntityTypeConfiguration<Category>
         builder.HasMany(c => c.Events)
             .WithOne(e => e.Category)
             .HasForeignKey(e => e.CategoryId);
-        /*builder.HasData(
-            new Category()
-            {
-                CategoryName = "Metal Concert",
-                Events = [],
-                Id = Guid.NewGuid()
-            },
-            new Category()
-            {
-                CategoryName = "Exhibition",
-                Events = [],
-                Id = Guid.NewGuid()
-            }
-        );*/
+        
     }
 }

@@ -15,7 +15,16 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.DateTime, 
                 opts => opts.MapFrom(src => 
                     DateTime.Parse(src.DateTime).ToUniversalTime())); // datetime проверено валидатором как валидное
-        CreateMap<CreateCategoryDto, Category>();
-        //CreateMap<Event, UpdateEventDto>();
+
+        CreateMap<Event, GetEventDto>()
+            .ForMember(dest => dest.Category,
+                opts => opts.MapFrom(src =>
+                    src.Category.Name))
+            .ForMember(dest => dest.DateTime,
+                opts => opts.MapFrom(src =>
+                    src.DateTime.ToString("g"))); // можно по-разному вернуть время и дату
+        
+        
+        CreateMap<CategoryDto, Category>();
     }
 }

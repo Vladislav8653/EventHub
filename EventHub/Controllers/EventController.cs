@@ -1,6 +1,6 @@
-﻿using AutoMapper;
-using BusinessLayer.DtoModels.EventsDto;
+﻿using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.Services.Contracts;
+using EventHub.Validators.Filters;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
 
@@ -10,17 +10,10 @@ namespace EventHub.Controllers;
 [Route("events")]
 public class EventController : ControllerBase
 {
-    private IEventService _eventService;
-    private ICategoryService _categoryService;
-    private IMapper _mapper;
-    private IValidator<CreateEventDto> _validator;
-    public EventController(IEventService eventService, IMapper mapper, 
-        ICategoryService categoryService, IValidator<CreateEventDto> validator)
+    private readonly IEventService _eventService;
+    public EventController(IEventService eventService)
     {
         _eventService = eventService;
-        _mapper = mapper;
-        _categoryService = categoryService;
-        _validator = validator;
     }
     
     
@@ -75,41 +68,26 @@ public class EventController : ControllerBase
     }*/
 
     [HttpPost]
-    public async Task<IActionResult> CreateEvent([FromBody]CreateEventDto? item)
+    [ServiceFilter(typeof(ValidateEventDtoAttribute))]
+    public async Task<IActionResult> CreateEvent([FromBody]CreateEventDto item)
     {
-        if (item == null)
-            return BadRequest("Body is null");
-        var result = await _validator.ValidateAsync(item);
-        if (!result.IsValid)
-        {
-            var errors = result.Errors
-                .GroupBy(vf => vf.PropertyName)
-                .ToDictionary(g => g.Key, g => g.First().ErrorMessage);
-            return BadRequest(errors);
-        }
         var newEvent = await _eventService.CreateAsync(item);
         return Ok(newEvent);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] UpdateEventDto? item)
+    [ServiceFilter(typeof(ValidateEventDtoAttribute))]
+    public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] CreateEventDto item)
     {
-        if (item == null)
-        {
-            return BadRequest();
-        }
-        var result = await _eventService.UpdateAsync(id, item);
-        return Ok(result);
+        var updatedEvent = await _eventService.UpdateAsync(id, item);
+        return Ok(updatedEvent);
     }
 
+    
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteEvent(Guid id)
     {
         var result = await _eventService.DeleteAsync(id);
         return Ok(result);
     }
-    
-    
-    
-    
 }

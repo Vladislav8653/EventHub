@@ -1,17 +1,16 @@
 ﻿using BusinessLayer.DtoModels.EventsDto;
 using FluentValidation;
 
-namespace BusinessLayer.Infrastructure.Validators.Event;
+namespace EventHub.Validators.Event;
 
-
-public class UpdateEventDtoValidator : AbstractValidator<UpdateEventDto>
+public class EventDtoValidator : AbstractValidator<CreateEventDto>
 {
     private const int MaxNameLength = 100;
     private const int MaxDescriptionLength = 1000;
     private const int MaxPlaceLength = 100;
     private const int MaxImageLength = 100;
     
-    public UpdateEventDtoValidator()
+    public EventDtoValidator()
     {
         RuleFor(c => c.Name)
             .NotEmpty()
@@ -59,3 +58,4 @@ public class UpdateEventDtoValidator : AbstractValidator<UpdateEventDto>
         return $"{paramName} can't be longer than {length} symbols.";
     }
 }
+

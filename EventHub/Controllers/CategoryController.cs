@@ -1,8 +1,6 @@
 ﻿using BusinessLayer.DtoModels;
 using BusinessLayer.DtoModels.CategoryDto;
 using BusinessLayer.Services.Contracts;
-using DataLayer.Models;
-using DataLayer.Repositories.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -14,13 +12,11 @@ namespace EventHub.Controllers;
 public class CategoryController : ControllerBase
 {
     private ICategoryService _categoryService;
-    private IValidator<CreateCategoryDto> _createCategotyValidator;
-    private IValidator<EntityByIdDto> _deleteEntityValidator;
-    public CategoryController(ICategoryService categoryService, IValidator<CreateCategoryDto> createCategotyValidator, IValidator<EntityByIdDto> deleteEntityValidator)
+    private IValidator<CategoryDto> _createCategotyValidator;
+    public CategoryController(ICategoryService categoryService, IValidator<CategoryDto> createCategotyValidator)
     {
         _categoryService = categoryService;
         _createCategotyValidator = createCategotyValidator;
-        _deleteEntityValidator = deleteEntityValidator;
     }
     
     [HttpGet]
@@ -31,7 +27,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCategory([FromBody] CreateCategoryDto? item)
+    public async Task<IActionResult> CreateCategory([FromBody] CategoryDto? item)
     {
         if (item == null)
             return BadRequest("Body is null");
@@ -48,17 +44,17 @@ public class CategoryController : ControllerBase
         return Ok(newEvent);
     }
 
-    [HttpDelete]
-    public IActionResult DeleteCategory([FromBody] EntityByIdDto id)
+    [HttpDelete("{id}")]
+    public IActionResult DeleteCategory(Guid id)
     {
-        var result = _deleteEntityValidator.Validate(id);
+        /*var result = _deleteEntityValidator.Validate(id);
         if (!result.IsValid)
         {
             var errors = result.Errors
                 .GroupBy(vf => vf.PropertyName)
                 .ToDictionary(g => g.Key, g => g.First().ErrorMessage);
             return BadRequest(errors);
-        }
+        }*/
         _categoryService.Delete(id);
         return Ok();
     }

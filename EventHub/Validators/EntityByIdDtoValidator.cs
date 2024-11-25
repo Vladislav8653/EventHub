@@ -1,7 +1,7 @@
 ﻿using BusinessLayer.DtoModels;
 using FluentValidation;
 
-namespace BusinessLayer.Infrastructure.Validators;
+namespace EventHub.Validators;
 
 public class EntityByIdDtoValidator : AbstractValidator<EntityByIdDto>
 {

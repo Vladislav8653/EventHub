@@ -1,17 +1,17 @@
-﻿using BusinessLayer.DtoModels;
-using BusinessLayer.DtoModels.CategoryDto;
+﻿using BusinessLayer.DtoModels.CategoryDto;
 using BusinessLayer.DtoModels.EventsDto;
-using BusinessLayer.Infrastructure.Validators;
-using BusinessLayer.Infrastructure.Validators.Category;
-using BusinessLayer.Infrastructure.Validators.Event;
 using BusinessLayer.Services.Contracts;
 using BusinessLayer.Services.Implementations;
 using DataLayer.Data;
 using DataLayer.Repositories.UnitOfWork;
 using EventHub.MiddlewareHandlers;
+using EventHub.Validators;
+using EventHub.Validators.Category;
+using EventHub.Validators.Event;
+using EventHub.Validators.Filters;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
-using FluentValidation.AspNetCore;
+using Microsoft.OpenApi.Models;
 using NLog;
 
 
@@ -53,12 +53,12 @@ public static class ServiceExtensions
 
     public static void ConfigureValidation(this IServiceCollection services)
     {
-        services.AddTransient<IValidator<CreateEventDto>, CreateEventDtoValidator>();
-        services.AddTransient<IValidator<UpdateEventDto>, UpdateEventDtoValidator>();
+        services.AddTransient<IValidator<CreateEventDto>, EventDtoValidator>();
         
-        services.AddTransient<IValidator<CreateCategoryDto>, CreateCategoryDtoValidator>();
-
-        services.AddTransient<IValidator<EntityByIdDto>, EntityByIdDtoValidator>();
+        services.AddTransient<IValidator<CategoryDto>, CreateCategoryDtoValidator>();
+        
+        services.AddScoped<ValidateEventDtoAttribute>();
+        //services.AddTransient<IValidator<EntityByIdDto>, EntityByIdDtoValidator>();
     }
 
     public static void ConfigureLogger(this IServiceCollection services)
@@ -73,6 +73,24 @@ public static class ServiceExtensions
     public static void AppendMiddlewareErrorHandler(this IApplicationBuilder builder)
     {
         builder.UseMiddleware<GlobalErrorHandler>();
+    }
+
+    public static void UseSwaggerUi(this IApplicationBuilder builder)
+    {
+        builder.UseSwaggerUI(s =>
+        {
+            s.SwaggerEndpoint("/swagger/v1/swagger.json", "Event Hub");
+        });
+    }
+
+    public static void ConfigureSwagger(this IServiceCollection services)
+    {
+        services.AddSwaggerGen(s =>
+            s.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Event Hub",
+                Version = "v1"
+            }));
     } 
         
 }

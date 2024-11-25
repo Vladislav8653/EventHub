@@ -17,7 +17,6 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 
     public async Task CreateAsync(T entity)
     {
-        //entity.Id = Guid.NewGuid();
         await Repository.Set<T>().AddAsync(entity);
     }
 

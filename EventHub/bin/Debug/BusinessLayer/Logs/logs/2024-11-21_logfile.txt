@@ -1,0 +1,1 @@
+2024-11-21 20:42:32.5079 ERROR BusinessLayer.Exceptions.EntityNotFoundException: Category with id e2b51922-7d6b-4d3c-bea3-167ef4ad8aed not found

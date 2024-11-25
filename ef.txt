@@ -4,3 +4,4 @@ dotnet ef database update --startup-project ../EventHub
 
 
 dotnet ef migrations add DateTimeOffsetTrouble --project DataLayer --startup-project EventHub
+dotnet ef database update --startup-project EventHub  

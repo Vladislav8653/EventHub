@@ -108,7 +108,6 @@ D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\zh-Hant\Microsoft.CodeAn
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\AutoMapper.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\FluentValidation.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Newtonsoft.Json.dll
-D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\initial_data.json
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\BusinessLayer.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\DataLayer.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\BusinessLayer.pdb
@@ -116,3 +115,7 @@ D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\DataLayer.pdb
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
 D:\my_code\test_task\EventHub\EventHub\obj\Debug\net8.0\EventHub.MvcApplicationPartsAssemblyInfo.cs
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Microsoft.OpenApi.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll

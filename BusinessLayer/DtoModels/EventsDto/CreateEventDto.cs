@@ -1,5 +1,4 @@
-﻿using BusinessLayer.DtoModels.CategoryDto;
-namespace BusinessLayer.DtoModels.EventsDto;
+﻿namespace BusinessLayer.DtoModels.EventsDto;
 
 public class CreateEventDto
 {
