@@ -24,63 +24,7 @@ public class EventService : IEventService
         var eventsDto = _mapper.Map<IEnumerable<GetEventDto>>(events);
         return eventsDto;
     }
-
-    public async Task<IEnumerable<Event>> GetByDateAsync(string date)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<IEnumerable<Event>> GetByDateRangeAsync(string start, string finish)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<IEnumerable<Event>> GetByPlaceAsync(string place)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<IEnumerable<Event>> GetByCategoryAsync(string categoryText)
-    {
-        throw new NotImplementedException();
-    }
-
-    /*public async Task<IEnumerable<Event>> GetByDateAsync(string date)
-    {
-        var validDate = DateTimeOffsetValidator.ValidateDate(date);
-        if (validDate == null)
-            throw new InvalidDateTimeException("Can't parse string to type DateTimeOffset.");
-        return await _repositoriesManager.Events.GetByDateAsync(validDate.Value);
-    }
-
-
-    public async Task<IEnumerable<Event>> GetByDateRangeAsync(string start, string finish)
-    {
-        var validStart = DateTimeOffsetValidator.ValidateDate(start);
-        if (validStart == null)
-            throw new InvalidDateTimeException("Can't parse string to type DateTimeOffset.");
-        
-        var validFinish = DateTimeOffsetValidator.ValidateDate(finish);
-        if (validFinish == null)
-            throw new InvalidDateTimeException("Can't parse string to type DateTimeOffset.");
-        
-        if (validStart > validFinish)
-            throw new InvalidDateTimeException
-                ($"Start of period ({start}) can't be later than end of period ({finish}).");
-        return await _repositoriesManager.Events.GetByDateRangeAsync(validStart.Value, validFinish.Value);
-    }
-
-    public async Task<IEnumerable<Event>> GetByPlaceAsync(string place) =>
-        await _repositoriesManager.Events.GetByPlaceAsync(place);
-
-    public async Task<IEnumerable<Event>> GetByCategoryAsync(string categoryText)
-    {
-        var category = await _repositoriesManager.Categories.TryGetByNameAsync(categoryText);
-        if (category == null)
-            throw new EntityNotFoundException($"Category {categoryText} doesn't exist.");
-        return await _repositoriesManager.Events.GetByCategoryAsync(category);
-    }*/
-
+    
     public async Task<CreateEventDto> GetByIdAsync(Guid id)
     {
         var eventById = await _repositoriesManager.Events.GetByIdAsync(id);
@@ -116,7 +60,7 @@ public class EventService : IEventService
         return eventDto;
     }
 
-    public async Task<CreateEventDto> UpdateAsync(Guid id, CreateEventDto item)
+    public async Task<CreateEventDto> UpdateAsync(Guid id, CreateEventDto item) // TODO!!!!!!
     {
         var eventToUpdate = await _repositoriesManager.Events.GetByIdAsync(id);
         if (eventToUpdate == null)

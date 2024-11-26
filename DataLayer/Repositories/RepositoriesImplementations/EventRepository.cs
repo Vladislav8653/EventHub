@@ -20,20 +20,31 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
 
     public async Task<IEnumerable<Event>> GetAllAsync() =>
         await FindAll(trackChanges: false).Include(e => e.Category).ToListAsync();
+    
 
-    public async Task<IEnumerable<Event>> GetByDateAsync(DateTimeOffset date) => 
-        await FindByCondition(e => e.DateTime == date, trackChanges: false)
-            .ToListAsync();
+    public async Task<IEnumerable<Event>> GetByFiltersAsync(EventFilterDto filters)
+    {
+        var query = Repository.Events.AsQueryable();
+        if (filters.Date.HasValue) // если событие в эту дату
+        {
+            query = query.Where(e => e.DateTime == filters.Date);
+        }
 
-    public async Task<IEnumerable<Event>> GetByDateRangeAsync(DateTimeOffset start, DateTimeOffset finish) =>
-        await FindByCondition(e => e.DateTime > start && e.DateTime < finish, trackChanges: false)
-            .ToListAsync();
+        if (filters is { StartDate: not null, FinishDate: not null }) // если событие [c...по]
+        {
+            query = query.Where(e => e.DateTime > filters.StartDate && e.DateTime < filters.FinishDate);
+        }
 
-    public async Task<IEnumerable<Event>> GetByCategoryAsync(Category category) =>
-        await FindByCondition(e => e.Category == category, trackChanges: false)
-            .ToListAsync();
+        if (filters.Category != null)
+        {
+            query = query.Where(e => e.Category == filters.Category);
+        }
 
-    public async Task<IEnumerable<Event>> GetByPlaceAsync(string place) =>
-        await FindByCondition(e => e.Place == place, trackChanges: false)
-            .ToListAsync();
+        if (filters.Place != null)
+        {
+            query = query.Where(e => e.Place == filters.Place);
+        }
+
+        return await query.ToListAsync();
+    }
 }
