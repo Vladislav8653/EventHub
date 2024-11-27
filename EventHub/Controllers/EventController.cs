@@ -2,7 +2,7 @@
 using BusinessLayer.Services.Contracts;
 using EventHub.Validators.Filters;
 using Microsoft.AspNetCore.Mvc;
-using FluentValidation;
+
 
 namespace EventHub.Controllers;
 
@@ -37,36 +37,15 @@ public class EventController : ControllerBase
         var events = await _eventService.GetByNameAsync(name);
         return Ok(events);
     }
-    
-    /*[HttpGet(Name = "GetEventByDate")]
-    public async Task<IActionResult> GetEventByDate(string date)
-    {
-        var events = await _eventService.GetByDateAsync(date);
-        return Ok(events);
-    }
-    
-    [HttpGet(Name = "GetEventByDateRange")]
-    public async Task<IActionResult> GetEventByDateRange(string startDate, string finishDate)
-    {
-        var events = await _eventService.GetByDateRangeAsync(startDate, finishDate);
-        return Ok(events);
-    }
 
-    
-    [HttpGet(Name = "GetEventByPlace")]
-    public async Task<IActionResult> GetEventByPlace(string place)
+    [HttpGet("filter", Name = "GetByFilters")]
+    [ServiceFilter(typeof(ValidateEventFiltersDtoAttribute))]
+    public async Task<IActionResult> GetFilteredEvents([FromQuery] EventFiltersDto filters) 
     {
-        var events = await _eventService.GetByPlaceAsync(place);
+        var events = await _eventService.GetByFiltersAsync(filters);
         return Ok(events);
     }
     
-    [HttpGet(Name = "GetEventByCategory")]
-    public async Task<IActionResult> GetEventByCategory(string categoryText)
-    {
-        var events = await _eventService.GetByCategoryAsync(categoryText);
-        return Ok(events);
-    }*/
-
     [HttpPost]
     [ServiceFilter(typeof(ValidateEventDtoAttribute))]
     public async Task<IActionResult> CreateEvent([FromBody]CreateEventDto item)

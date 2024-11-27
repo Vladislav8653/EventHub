@@ -3,10 +3,10 @@ using FluentValidation;
 
 namespace EventHub.Validators.Category;
 
-public class CreateCategoryDtoValidator : AbstractValidator<CategoryDto>
+public class CategoryDtoValidator : AbstractValidator<CategoryDto>
 {
     private const int MaxNameLength = 30;
-    public CreateCategoryDtoValidator()
+    public CategoryDtoValidator()
     {
         RuleFor(c => c.Name)
             .NotEmpty()

@@ -1,6 +1,7 @@
 ﻿using DataLayer.Repositories.RepositoryContracts;
 using DataLayer.Data;
 using DataLayer.Models;
+using DataLayer.Models.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Repositories.RepositoriesImplementations;
@@ -22,27 +23,27 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
         await FindAll(trackChanges: false).Include(e => e.Category).ToListAsync();
     
 
-    public async Task<IEnumerable<Event>> GetByFiltersAsync(EventFilterDto filters)
+    public async Task<IEnumerable<Event>> GetByFiltersAsync(EventFilters filterses)
     {
-        var query = Repository.Events.AsQueryable();
-        if (filters.Date.HasValue) // если событие в эту дату
+        var query = Repository.Events.Include(e => e.Category).AsQueryable();
+        if (filterses.Date.HasValue) // если событие в эту дату
         {
-            query = query.Where(e => e.DateTime == filters.Date);
+            query = query.Where(e => e.DateTime == filterses.Date);
         }
 
-        if (filters is { StartDate: not null, FinishDate: not null }) // если событие [c...по]
+        if (filterses is { StartDate: not null, FinishDate: not null }) // если событие [c...по]
         {
-            query = query.Where(e => e.DateTime > filters.StartDate && e.DateTime < filters.FinishDate);
+            query = query.Where(e => e.DateTime > filterses.StartDate && e.DateTime < filterses.FinishDate);
         }
 
-        if (filters.Category != null)
+        if (filterses.Category != null)
         {
-            query = query.Where(e => e.Category == filters.Category);
+            query = query.Where(e => e.Category == filterses.Category);
         }
 
-        if (filters.Place != null)
+        if (filterses.Place != null)
         {
-            query = query.Where(e => e.Place == filters.Place);
+            query = query.Where(e => e.Place == filterses.Place);
         }
 
         return await query.ToListAsync();

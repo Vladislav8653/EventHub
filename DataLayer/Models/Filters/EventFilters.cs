@@ -1,6 +1,6 @@
-﻿namespace DataLayer.Models;
+﻿namespace DataLayer.Models.Filters;
 
-public class EventFilterDto
+public class EventFilters
 {
     public DateTime? Date { get; set; }
 

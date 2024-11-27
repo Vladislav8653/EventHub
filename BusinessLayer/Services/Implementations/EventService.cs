@@ -3,7 +3,9 @@ using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.Exceptions;
 using BusinessLayer.Services.Contracts;
 using DataLayer.Models;
+using DataLayer.Models.Filters;
 using DataLayer.Repositories.UnitOfWork;
+using Microsoft.VisualBasic;
 
 namespace BusinessLayer.Services.Implementations;
 
@@ -41,6 +43,22 @@ public class EventService : IEventService
             throw new EntityNotFoundException($"Event with name {name} doesn't exist");
         var eventDto = _mapper.Map<CreateEventDto>(eventByName);
         return eventDto;
+    }
+
+    public async Task<IEnumerable<GetEventDto>> GetByFiltersAsync(EventFiltersDto filtersDto)
+    {
+        var filters = _mapper.Map<EventFilters>(filtersDto);
+        if (filtersDto.Category != null)
+        {
+            var category = await _repositoriesManager.Categories.TryGetByNameAsync(filtersDto.Category);
+            if (category != null)
+            {
+                filters.Category = category;
+            }
+        }
+        var eventsByFilters = await _repositoriesManager.Events.GetByFiltersAsync(filters);
+        var eventsByFiltersDto = _mapper.Map<IEnumerable<GetEventDto>>(eventsByFilters);
+        return eventsByFiltersDto;
     }
 
     public async Task<CreateEventDto> CreateAsync(CreateEventDto item)

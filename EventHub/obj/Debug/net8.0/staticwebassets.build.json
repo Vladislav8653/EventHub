@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "M9p8p4sye9MW5b6ZlhQSyqhWHdNIjepBDWJ8Uudw7Q4=",
+  "Hash": "9E10FIJASqSOKZKb/1NcntoGe3Yk4vaSdX1sHGJBHeM=",
   "Source": "EventHub",
   "BasePath": "_content/EventHub",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "EventHub\\wwwroot",
+      "Source": "EventHub",
+      "ContentRoot": "D:\\my_code\\test_task\\EventHub\\EventHub\\wwwroot\\",
+      "BasePath": "_content/EventHub",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

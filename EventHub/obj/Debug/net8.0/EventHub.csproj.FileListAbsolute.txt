@@ -119,3 +119,4 @@ D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Microsoft.OpenApi.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\EventHub.staticwebassets.runtime.json

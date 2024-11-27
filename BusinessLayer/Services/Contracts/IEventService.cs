@@ -11,5 +11,6 @@ public interface IEventService
      Task<CreateEventDto> CreateAsync(CreateEventDto item);
      Task<CreateEventDto> UpdateAsync(Guid id, CreateEventDto item);
      Task<CreateEventDto> DeleteAsync(Guid id);
-    
+     Task<IEnumerable<GetEventDto>> GetByFiltersAsync(EventFiltersDto filtersDto);
+
 }

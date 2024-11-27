@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace EventHub.Validators.Filters;
 
-public class ValidateEventDtoAttribute : IAsyncActionFilter
+public class ValidateEventFiltersDtoAttribute : IAsyncActionFilter
 {
-    private readonly IValidator<CreateEventDto> _validator;
+    private readonly IValidator<EventFiltersDto> _validator;
 
-    public ValidateEventDtoAttribute(IValidator<CreateEventDto> validator)
+    public ValidateEventFiltersDtoAttribute(IValidator<EventFiltersDto> validator)
     {
         _validator = validator;
     }
@@ -17,7 +17,7 @@ public class ValidateEventDtoAttribute : IAsyncActionFilter
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         
-        if (context.ActionArguments.FirstOrDefault().Value is not CreateEventDto model)
+        if (context.ActionArguments.FirstOrDefault().Value is not EventFiltersDto model)
         {
             context.Result = new BadRequestResult(); 
             return;

@@ -54,10 +54,10 @@ public static class ServiceExtensions
     public static void ConfigureValidation(this IServiceCollection services)
     {
         services.AddTransient<IValidator<CreateEventDto>, EventDtoValidator>();
-        
-        services.AddTransient<IValidator<CategoryDto>, CreateCategoryDtoValidator>();
-        
+        services.AddTransient<IValidator<CategoryDto>, CategoryDtoValidator>();
+        services.AddTransient<IValidator<EventFiltersDto>, EventFiltersDtoValidator>();
         services.AddScoped<ValidateEventDtoAttribute>();
+        services.AddScoped<ValidateEventFiltersDtoAttribute>();
         //services.AddTransient<IValidator<EntityByIdDto>, EntityByIdDtoValidator>();
     }
 
