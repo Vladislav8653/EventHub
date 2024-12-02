@@ -7,8 +7,25 @@ namespace DataLayer.Repositories.RepositoriesImplementations;
 public class ParticipantRepository : RepositoryBase<Participant>, IParticipantRepository
 {
     public ParticipantRepository(EventHubDbContext eventHubDbContext) : base(eventHubDbContext) { }
-    
-    /*public void CreateParticipant(Participant participant) => Create(participant);
 
-    public void DeleteParticipant(Participant participant) => Delete(participant);*/
+
+    public async Task<IEnumerable<Participant>> GetParticipantsAsync(Guid eventId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Participant> RegisterParticipantAsync(Guid eventId, Participant participant)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Participant> GetParticipantAsync(Guid eventId, Guid participantId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Participant> RemoveParticipantAsync(Guid eventId, Guid participantId)
+    {
+        throw new NotImplementedException();
+    }
 }

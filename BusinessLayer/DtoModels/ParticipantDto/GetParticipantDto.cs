@@ -1,6 +1,6 @@
 ﻿namespace BusinessLayer.DtoModels.ParticipantDto;
 
-public class ParticipantDto
+public class GetParticipantDto
 {
     
 }

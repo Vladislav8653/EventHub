@@ -23,29 +23,30 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
         await FindAll(trackChanges: false).Include(e => e.Category).ToListAsync();
     
 
-    public async Task<IEnumerable<Event>> GetByFiltersAsync(EventFilters filterses)
+    public async Task<IEnumerable<Event>> GetByFiltersAsync(EventFilters filters)
     {
         var query = Repository.Events.Include(e => e.Category).AsQueryable();
-        if (filterses.Date.HasValue) // если событие в эту дату
+        if (filters.Date.HasValue) // если событие в эту дату
         {
-            query = query.Where(e => e.DateTime == filterses.Date);
+            query = query.Where(e => e.DateTime == filters.Date);
         }
 
-        if (filterses is { StartDate: not null, FinishDate: not null }) // если событие [c...по]
+        if (filters is { StartDate: not null, FinishDate: not null }) // если событие [c...по]
         {
-            query = query.Where(e => e.DateTime > filterses.StartDate && e.DateTime < filterses.FinishDate);
+            query = query.Where(e => e.DateTime > filters.StartDate && e.DateTime < filters.FinishDate);
         }
 
-        if (filterses.Category != null)
+        if (filters.Category != null)
         {
-            query = query.Where(e => e.Category == filterses.Category);
+            query = query.Where(e => e.Category == filters.Category);
         }
 
-        if (filterses.Place != null)
+        if (filters.Place != null)
         {
-            query = query.Where(e => e.Place == filterses.Place);
+            query = query.Where(e => e.Place == filters.Place);
         }
 
         return await query.ToListAsync();
     }
+    
 }

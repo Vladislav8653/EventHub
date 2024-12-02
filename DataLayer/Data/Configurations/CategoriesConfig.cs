@@ -12,6 +12,5 @@ public class CategoriesConfig : IEntityTypeConfiguration<Category>
         builder.HasMany(c => c.Events)
             .WithOne(e => e.Category)
             .HasForeignKey(e => e.CategoryId);
-        
     }
 }

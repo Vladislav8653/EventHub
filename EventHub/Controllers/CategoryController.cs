@@ -27,9 +27,9 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCategory([FromBody] CategoryDto? item)
+    public async Task<IActionResult> CreateCategory([FromBody] CategoryDto item)
     {
-        if (item == null)
+        if (item == null!)
             return BadRequest("Body is null");
         var result = await _createCategotyValidator.ValidateAsync(item);
         if (!result.IsValid)

@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace EventHub.Validators.Filters;
+namespace EventHub.Validators.Event;
 
 public class ValidateEventDtoAttribute : IAsyncActionFilter
 {

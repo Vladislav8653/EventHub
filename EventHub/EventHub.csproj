@@ -20,6 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Validators\Filters\" />
       <Folder Include="wwwroot\" />
     </ItemGroup>
 

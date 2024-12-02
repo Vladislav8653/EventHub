@@ -7,7 +7,7 @@ namespace DataLayer.Models;
 public class Category 
 {
     [Column("CategoryId")]
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
 
     [Required(ErrorMessage = "Category name is required")]
     [MaxLength(30, ErrorMessage = "Category Name can't be longer than 30")]

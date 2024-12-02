@@ -1,6 +1,8 @@
 ﻿using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.Services.Contracts;
+using EventHub.Validators.Event;
 using EventHub.Validators.Filters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
