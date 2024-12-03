@@ -58,7 +58,6 @@ namespace DataLayer.Migrations
                         .HasColumnType("character varying(1000)");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
@@ -90,7 +89,7 @@ namespace DataLayer.Migrations
                     b.Property<Guid>("ParticipantId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("RegistrationTime")
+                    b.Property<DateTime>("RegistrationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("EventId", "ParticipantId");

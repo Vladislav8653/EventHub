@@ -29,17 +29,7 @@ public class RepositoriesManager : IRepositoriesManager
             return _eventRepository;
         }
     }
-
-    public IParticipantRepository Participants
-    {
-        get
-        {
-            if (_participantRepository == null)
-                _participantRepository = new ParticipantRepository(_eventHubDbContext);
-            return _participantRepository;
-        }
-    }
-
+    
     public IEventParticipantRepository EventsParticipants
     {
         get
@@ -47,6 +37,16 @@ public class RepositoriesManager : IRepositoriesManager
             if (_eventParticipantRepository == null)
                 _eventParticipantRepository = new EventParticipantRepository(_eventHubDbContext);
             return _eventParticipantRepository;
+        }
+    }
+    
+    public IParticipantRepository Participants
+    {
+        get
+        {
+            if (_participantRepository == null)
+                _participantRepository = new ParticipantRepository(_eventHubDbContext, EventsParticipants);
+            return _participantRepository;
         }
     }
 

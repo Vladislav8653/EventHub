@@ -17,7 +17,7 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
         await Repository.Events.FirstOrDefaultAsync(e => e.Name == name);
 
     public async Task<Event?> GetByIdAsync(Guid id) =>
-        await Repository.Events.FirstOrDefaultAsync(e => e.Id == id);
+        await Repository.Events.Include(e => e.Category).FirstOrDefaultAsync(e => e.Id == id);
 
     public async Task<IEnumerable<Event>> GetAllAsync() =>
         await FindAll(trackChanges: false).Include(e => e.Category).ToListAsync();

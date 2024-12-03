@@ -1,34 +1,47 @@
 ﻿using BusinessLayer.DtoModels.ParticipantDto;
+using BusinessLayer.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventHub.Controllers;
 
-//[Route("events/{id:guid}/participants")]
-//[ApiController]
+[Route("events/{eventId:guid}/participants")]
+[ApiController]
 public class ParticipantController : ControllerBase
 {
-    [HttpGet]
-    public async Task<IActionResult> GetParticipants(Guid id)
+    private readonly IEventService _eventService;
+    private readonly IParticipantService _participantService;
+    public ParticipantController(IParticipantService participantService, IEventService eventService)
     {
-        throw new NotImplementedException();
+        _participantService = participantService;
+        _eventService = eventService;
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetAllParticipants(Guid eventId)
+    {
+        var participants = await _participantService.GetParticipantsAsync(eventId);
+        return Ok(participants);
     }
     
     [HttpPost]
-    public async Task<IActionResult> RegisterParticipant(Guid eventId, CreateParticipantDto item)
+    public async Task<IActionResult> RegisterParticipant([FromBody]CreateParticipantDto item, Guid eventId)
     {
-        throw new NotImplementedException();
+        var participant = await _participantService.RegisterParticipantAsync(eventId, item);
+        return Ok(participant);
     }
     
-    [HttpGet]
-    public async Task<IActionResult> GetParticipant(Guid eventId, Guid participantId)
+    [HttpGet("{participantId:guid}")]
+    public async Task<IActionResult> GetParticipantById(Guid eventId, Guid participantId)
     {
-        throw new NotImplementedException();
+        var participant = await _participantService.GetParticipantAsync(eventId, participantId);
+        return Ok(participant);
     }
     
-    [HttpDelete]
+    [HttpDelete("{participantId:guid}")]
     public async Task<IActionResult> RemoveParticipant(Guid eventId, Guid participantId)
     {
-        throw new NotImplementedException();
+        var participant = await _participantService.RemoveParticipantAsync(eventId, participantId);
+        return Ok(participant);
     }
     
     

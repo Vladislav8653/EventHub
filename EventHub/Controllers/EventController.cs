@@ -1,7 +1,7 @@
 ﻿using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.Services.Contracts;
 using EventHub.Validators.Event;
-using EventHub.Validators.Filters;
+using EventHub.Validators.Event.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,21 +22,21 @@ public class EventController : ControllerBase
     [HttpGet(Name = "GetEvents")]
     public async Task<IActionResult> GetAllEvents()
     {
-        var events = await _eventService.GetAllAsync();
+        var events = await _eventService.GetAllAsync(Request);
         return Ok(events);
     }
     
     [HttpGet("{id:guid}", Name = "GetEventById")]
     public async Task<IActionResult> GetEventById(Guid id)
     {
-        var events = await _eventService.GetByIdAsync(id);
+        var events = await _eventService.GetByIdAsync(id, Request);
         return Ok(events);
     }
     
     [HttpGet("{name}", Name = "GetEventByName")]
     public async Task<IActionResult> GetEventByName(string name)
     {
-        var events = await _eventService.GetByNameAsync(name);
+        var events = await _eventService.GetByNameAsync(name, Request);
         return Ok(events);
     }
 
@@ -44,23 +44,23 @@ public class EventController : ControllerBase
     [ServiceFilter(typeof(ValidateEventFiltersDtoAttribute))]
     public async Task<IActionResult> GetFilteredEvents([FromQuery] EventFiltersDto filters) 
     {
-        var events = await _eventService.GetByFiltersAsync(filters);
+        var events = await _eventService.GetByFiltersAsync(filters, Request);
         return Ok(events);
     }
     
     [HttpPost]
     [ServiceFilter(typeof(ValidateEventDtoAttribute))]
-    public async Task<IActionResult> CreateEvent([FromBody]CreateEventDto item)
+    public async Task<IActionResult> CreateEvent([FromForm]CreateEventDto item)
     {
         var newEvent = await _eventService.CreateAsync(item);
         return Ok(newEvent);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:guid}")]
     [ServiceFilter(typeof(ValidateEventDtoAttribute))]
-    public async Task<IActionResult> UpdateEvent(Guid id, [FromBody] CreateEventDto item)
+    public async Task<IActionResult> UpdateEvent([FromForm]CreateEventDto item, Guid id)
     {
-        var updatedEvent = await _eventService.UpdateAsync(id, item);
+        var updatedEvent =  await _eventService.UpdateAsync(id, item);
         return Ok(updatedEvent);
     }
 
@@ -70,5 +70,13 @@ public class EventController : ControllerBase
     {
         var result = await _eventService.DeleteAsync(id);
         return Ok(result);
+    }
+    
+    
+    [HttpGet("images/{fileName}")]
+    public async Task<IActionResult> GetImage(string fileName)
+    {
+        var (fileBytes, contentType) = await _eventService.GetImageAsync(fileName);
+        return File(fileBytes, contentType, fileName);
     }
 }

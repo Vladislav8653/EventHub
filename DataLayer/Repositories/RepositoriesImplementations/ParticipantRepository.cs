@@ -1,31 +1,43 @@
 ﻿using DataLayer.Repositories.RepositoryContracts;
 using DataLayer.Data;
 using DataLayer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Repositories.RepositoriesImplementations;
 
 public class ParticipantRepository : RepositoryBase<Participant>, IParticipantRepository
 {
-    public ParticipantRepository(EventHubDbContext eventHubDbContext) : base(eventHubDbContext) { }
 
-
-    public async Task<IEnumerable<Participant>> GetParticipantsAsync(Guid eventId)
+    private readonly IEventParticipantRepository _eventParticipantRepository;
+    public ParticipantRepository(EventHubDbContext eventHubDbContext, 
+        IEventParticipantRepository eventParticipantRepository) : base(eventHubDbContext)
     {
-        throw new NotImplementedException();
+        _eventParticipantRepository = eventParticipantRepository;
     }
 
-    public async Task<Participant> RegisterParticipantAsync(Guid eventId, Participant participant)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<IEnumerable<Participant>> GetParticipantsAsync(Guid eventId) =>
+        await Repository.EventsParticipants
+            .Where(ep => ep.EventId == eventId)
+            .Include(ep => ep.Participant)
+            .Select(ep => ep.Participant)
+            .ToListAsync();
+    
+    public async Task<Participant?> GetParticipantAsync(Guid participantId) =>
+        await Repository.Participants
+            .Include(p => p.Events) // подгружаем еше связи
+            .FirstOrDefaultAsync(p => p.Id == participantId);
+    
 
-    public async Task<Participant> GetParticipantAsync(Guid eventId, Guid participantId)
+    public async Task RegisterParticipantAsync(Event eventDb, Participant participant, DateTime regTime)
     {
-        throw new NotImplementedException();
+        await CreateAsync(participant); // сначала мы создаем
+        await _eventParticipantRepository.AttachParticipantToEvent(participant, eventDb, regTime); // привязываем к событию
     }
+    
 
-    public async Task<Participant> RemoveParticipantAsync(Guid eventId, Guid participantId)
+    public async Task RemoveParticipantAsync(Guid eventId, Participant participant)
     {
-        throw new NotImplementedException();
+        await _eventParticipantRepository.DetachParticipantFromEvent(eventId, participant.Id); // удалаем связь
+        Delete(participant);
     }
 }

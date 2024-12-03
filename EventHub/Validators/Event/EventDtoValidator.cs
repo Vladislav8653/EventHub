@@ -37,10 +37,21 @@ public class EventDtoValidator : AbstractValidator<CreateEventDto>
         RuleFor(c => c.Category)
             .NotEmpty()
             .WithMessage(c => EmptyParamMessage(nameof(c.Category)));
-        
+
         RuleFor(c => c.Image)
-            .MaximumLength(MaxImageLength)
-            .WithMessage(c => TooLongParamMessage(nameof(c.Image), MaxImageLength));
+            .Must(HaveValidImageExtension!)
+            .When(c => c.Image != null)
+            .WithMessage("Invalid image format.");
+    }
+
+
+    private bool HaveValidImageExtension(IFormFile file)
+    {
+        if (file.Length == 0)
+            return false; 
+        var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
+        var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+        return allowedExtensions.Contains(extension);
     }
 
     private bool CheckDateTime(string date)

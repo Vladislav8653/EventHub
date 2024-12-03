@@ -7,7 +7,7 @@ builder.Services.ConfigureLoggerService();
 builder.Services.AddControllers();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
-builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.ConfigureAutoMapper();
 builder.Services.ConfigureValidation();
 builder.Services.ConfigureEventService();
 builder.Services.ConfigureCategoryService();

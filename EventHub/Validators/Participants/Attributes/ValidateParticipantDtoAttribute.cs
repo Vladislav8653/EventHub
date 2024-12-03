@@ -1,15 +1,16 @@
 ﻿using BusinessLayer.DtoModels.EventsDto;
+using BusinessLayer.DtoModels.ParticipantDto;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace EventHub.Validators.Filters;
+namespace EventHub.Validators.Participants.Attributes;
 
-public class ValidateEventFiltersDtoAttribute : IAsyncActionFilter
+public class ValidateParticipantDtoAttribute : IAsyncActionFilter
 {
-    private readonly IValidator<EventFiltersDto> _validator;
+    private readonly IValidator<CreateParticipantDto> _validator;
 
-    public ValidateEventFiltersDtoAttribute(IValidator<EventFiltersDto> validator)
+    public ValidateParticipantDtoAttribute(IValidator<CreateParticipantDto> validator)
     {
         _validator = validator;
     }
@@ -17,7 +18,7 @@ public class ValidateEventFiltersDtoAttribute : IAsyncActionFilter
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         
-        if (context.ActionArguments.FirstOrDefault().Value is not EventFiltersDto model)
+        if (context.ActionArguments.FirstOrDefault().Value is not CreateParticipantDto model)
         {
             context.Result = new BadRequestResult(); 
             return;

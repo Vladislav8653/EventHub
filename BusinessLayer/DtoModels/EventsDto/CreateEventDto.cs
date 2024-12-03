@@ -1,4 +1,6 @@
-﻿namespace BusinessLayer.DtoModels.EventsDto;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace BusinessLayer.DtoModels.EventsDto;
 
 public class CreateEventDto
 {
@@ -14,5 +16,5 @@ public class CreateEventDto
 
     public uint MaxQuantityParticipant { get; set; }
 
-    public string Image { get; set; } = String.Empty;
+    public IFormFile? Image { get; set; }
 }

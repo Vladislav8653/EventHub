@@ -1,16 +1,18 @@
 ﻿using BusinessLayer.DtoModels.EventsDto;
 using DataLayer.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace BusinessLayer.Services.Contracts;
 
 public interface IEventService
 {
-     Task<IEnumerable<GetEventDto>> GetAllAsync();
-     Task<CreateEventDto> GetByIdAsync(Guid id);
-     Task<CreateEventDto> GetByNameAsync(string name);
-     Task<CreateEventDto> CreateAsync(CreateEventDto item);
-     Task<CreateEventDto> UpdateAsync(Guid id, CreateEventDto item);
-     Task<CreateEventDto> DeleteAsync(Guid id);
-     Task<IEnumerable<GetEventDto>> GetByFiltersAsync(EventFiltersDto filtersDto);
+     Task<IEnumerable<GetEventDto>> GetAllAsync(HttpRequest request);
+     Task<GetEventDto> GetByIdAsync(Guid id, HttpRequest request);
+     Task<GetEventDto> GetByNameAsync(string name, HttpRequest request);
+     Task<GetEventDto> CreateAsync(CreateEventDto item);
+     Task<GetEventDto> UpdateAsync(Guid id, CreateEventDto item);
+     Task<GetEventDto> DeleteAsync(Guid id);
+     Task<IEnumerable<GetEventDto>> GetByFiltersAsync(EventFiltersDto filtersDto, HttpRequest request);
+     Task<(byte[] fileBytes, string contentType)> GetImageAsync(string fileName);
 
 }

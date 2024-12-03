@@ -8,15 +8,15 @@ public class EventFiltersDtoValidator : AbstractValidator<EventFiltersDto>
     public EventFiltersDtoValidator()
     {
         RuleFor(e => e.Date)
-            .Must(CheckDateTime)
+            .Must(CheckDateTime!)
             .When(e => e.Date != null)
             .WithMessage("Invalid date format.");
         RuleFor(e => e.StartDate)
-            .Must(CheckDateTime)
+            .Must(CheckDateTime!)
             .When(e => e.StartDate != null)
             .WithMessage("Invalid date format.");
         RuleFor(e => e.FinishDate)
-            .Must(CheckDateTime)
+            .Must(CheckDateTime!)
             .When(e => e.FinishDate != null)
             .WithMessage("Invalid date format.");
         

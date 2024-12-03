@@ -10,4 +10,5 @@ public interface IEventRepository : IRepositoryBase<Event>
     Task<Event?> GetByIdAsync(Guid id);
     Task<IEnumerable<Event>> GetAllAsync();
     Task<IEnumerable<Event>> GetByFiltersAsync(EventFilters filters);
+   
 }

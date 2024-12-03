@@ -8,13 +8,13 @@ public class EventParticipant
     [Required]
     public Guid ParticipantId { get; set; }
     [Required]
-    public Participant? Participant { get; set; }
+    public Participant Participant { get; set; }
     
     [Required]
     public Guid EventId { get; set; }
     [Required]
-    public Event? Event { get; set; } 
+    public Event Event { get; set; } 
     
     [Required]
-    public DateTimeOffset RegistrationTime { get; set; }
+    public DateTime RegistrationTime { get; set; }
 }

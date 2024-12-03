@@ -6,7 +6,7 @@ namespace DataLayer.Models;
 public class Participant
 {
     [Column("ParticipantId")]
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; } 
     
     [Required(ErrorMessage = "Name is required")]
     [MaxLength(30, ErrorMessage = "Name can't be longer than 30")]

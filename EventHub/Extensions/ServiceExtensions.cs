@@ -1,14 +1,19 @@
 ﻿using BusinessLayer.DtoModels.CategoryDto;
 using BusinessLayer.DtoModels.EventsDto;
+using BusinessLayer.DtoModels.ParticipantDto;
+using BusinessLayer.Infrastructure.Mapper;
 using BusinessLayer.Services.Contracts;
 using BusinessLayer.Services.Implementations;
 using DataLayer.Data;
+using DataLayer.Models;
 using DataLayer.Repositories.UnitOfWork;
 using EventHub.MiddlewareHandlers;
 using EventHub.Validators;
 using EventHub.Validators.Category;
 using EventHub.Validators.Event;
-using EventHub.Validators.Filters;
+using EventHub.Validators.Event.Attributes;
+using EventHub.Validators.Participants;
+using EventHub.Validators.Participants.Attributes;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
@@ -56,18 +61,19 @@ public static class ServiceExtensions
         services.AddTransient<IValidator<CreateEventDto>, EventDtoValidator>();
         services.AddTransient<IValidator<CategoryDto>, CategoryDtoValidator>();
         services.AddTransient<IValidator<EventFiltersDto>, EventFiltersDtoValidator>();
+        services.AddTransient<IValidator<CreateParticipantDto>, ParticipantDtoValidator>();
         services.AddScoped<ValidateEventDtoAttribute>();
         services.AddScoped<ValidateEventFiltersDtoAttribute>();
-        //services.AddTransient<IValidator<EntityByIdDto>, EntityByIdDtoValidator>();
+        services.AddScoped<ValidateParticipantDtoAttribute>();
     }
 
     public static void ConfigureLogger(this IServiceCollection services)
     {
-        var currentDirection = Directory.GetCurrentDirectory();
+        /*var currentDirection = Directory.GetCurrentDirectory();
         var parent = Directory.GetParent(currentDirection);
         var relativePath = Path.Combine(nameof(BusinessLayer), "nlog.config");
         var nlogConfigPath = Path.Combine(parent.FullName, relativePath); 
-        LogManager.Setup().LoadConfigurationFromFile(nlogConfigPath);
+        LogManager.Setup().LoadConfigurationFromFile(nlogConfigPath);*/
     }
     
     public static void AppendMiddlewareErrorHandler(this IApplicationBuilder builder)
@@ -91,6 +97,16 @@ public static class ServiceExtensions
                 Title = "Event Hub",
                 Version = "v1"
             }));
-    } 
+    }
+
+    public static void ConfigureAutoMapper(this IServiceCollection services)
+    {
+        services.AddAutoMapper(cfg =>
+        {
+            cfg.AddProfile<EventMappingProfile>();
+            cfg.AddProfile<CategoryMappingProfile>();
+            cfg.AddProfile<ParticipantMappingProfile>();
+        }, AppDomain.CurrentDomain.GetAssemblies());
+    }
         
 }

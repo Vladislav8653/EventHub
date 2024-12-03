@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "asaaYm0l+jY07oezGp4wUn+hqyR2WVNbzw7WfslxQDD0ZyBqKm2KHUfZnncFPpMHOg6ZelZdOjPA+/l7sT2P+Q==",
+  "dgSpecHash": "Vf4gNQFePtFZyxH1rvi9ncypkwPVC6UwfwopzNc8kP51B/V/IJNt08E+MsarVQcl6FY2iln4ZVT9b3vWVbkgTg==",
   "success": true,
   "projectFilePath": "D:\\my_code\\test_task\\EventHub\\BusinessLayer\\BusinessLayer.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Владислав\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
+    "C:\\Users\\Владислав\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\Владислав\\.nuget\\packages\\fluentvalidation\\11.5.1\\fluentvalidation.11.5.1.nupkg.sha512",
     "C:\\Users\\Владислав\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
     "C:\\Users\\Владислав\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.5.1\\fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
@@ -21,9 +22,18 @@
     "C:\\Users\\Владислав\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.2\\microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
     "C:\\Users\\Владислав\\.nuget\\packages\\microsoft.extensions.options\\8.0.2\\microsoft.extensions.options.8.0.2.nupkg.sha512",
     "C:\\Users\\Владислав\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
+    "C:\\Users\\Владислав\\.nuget\\packages\\moq\\4.20.72\\moq.4.20.72.nupkg.sha512",
     "C:\\Users\\Владислав\\.nuget\\packages\\nlog\\5.3.4\\nlog.5.3.4.nupkg.sha512",
     "C:\\Users\\Владислав\\.nuget\\packages\\npgsql\\8.0.5\\npgsql.8.0.5.nupkg.sha512",
-    "C:\\Users\\Владислав\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.10\\npgsql.entityframeworkcore.postgresql.8.0.10.nupkg.sha512"
+    "C:\\Users\\Владислав\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.10\\npgsql.entityframeworkcore.postgresql.8.0.10.nupkg.sha512",
+    "C:\\Users\\Владислав\\.nuget\\packages\\system.diagnostics.eventlog\\6.0.0\\system.diagnostics.eventlog.6.0.0.nupkg.sha512",
+    "C:\\Users\\Владислав\\.nuget\\packages\\xunit\\2.9.2\\xunit.2.9.2.nupkg.sha512",
+    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.abstractions\\2.0.3\\xunit.abstractions.2.0.3.nupkg.sha512",
+    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.analyzers\\1.16.0\\xunit.analyzers.1.16.0.nupkg.sha512",
+    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.assert\\2.9.2\\xunit.assert.2.9.2.nupkg.sha512",
+    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.core\\2.9.2\\xunit.core.2.9.2.nupkg.sha512",
+    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.extensibility.core\\2.9.2\\xunit.extensibility.core.2.9.2.nupkg.sha512",
+    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.extensibility.execution\\2.9.2\\xunit.extensibility.execution.2.9.2.nupkg.sha512"
   ],
   "logs": []
 }

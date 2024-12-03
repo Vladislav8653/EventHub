@@ -31,5 +31,5 @@ public class Event
     public ICollection<EventParticipant> Participants { get; set; } = new List<EventParticipant>();
 
     [MaxLength(100, ErrorMessage = "Image link can't be longer than 100 symbols")]
-    public string Image { get; set; } = String.Empty;
+    public string? Image { get; set; } = String.Empty;
 }

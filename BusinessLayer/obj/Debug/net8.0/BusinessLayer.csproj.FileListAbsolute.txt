@@ -14,3 +14,5 @@ D:\my_code\test_task\EventHub\BusinessLayer\obj\Debug\net8.0\BusinessLayer.dll
 D:\my_code\test_task\EventHub\BusinessLayer\obj\Debug\net8.0\refint\BusinessLayer.dll
 D:\my_code\test_task\EventHub\BusinessLayer\obj\Debug\net8.0\BusinessLayer.pdb
 D:\my_code\test_task\EventHub\BusinessLayer\obj\Debug\net8.0\ref\BusinessLayer.dll
+D:\my_code\test_task\EventHub\BusinessLayer\bin\Debug\net8.0\BusinessLayer.runtimeconfig.json
+D:\my_code\test_task\EventHub\BusinessLayer\obj\Debug\net8.0\BusinessLayer.genruntimeconfig.cache
