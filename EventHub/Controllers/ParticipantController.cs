@@ -8,12 +8,10 @@ namespace EventHub.Controllers;
 [ApiController]
 public class ParticipantController : ControllerBase
 {
-    private readonly IEventService _eventService;
     private readonly IParticipantService _participantService;
-    public ParticipantController(IParticipantService participantService, IEventService eventService)
+    public ParticipantController(IParticipantService participantService)
     {
         _participantService = participantService;
-        _eventService = eventService;
     }
     
     [HttpGet]

@@ -1,16 +1,14 @@
-using BusinessLayer.Infrastructure.Mapper;
 using EventHub.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureCors();
 builder.Services.ConfigureLoggerService();
 builder.Services.AddControllers();
+builder.Services.ConfigureValidation();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureAutoMapper();
-builder.Services.ConfigureValidation();
-builder.Services.ConfigureEventService();
-builder.Services.ConfigureCategoryService();
+builder.Services.ConfigureServices();
 builder.Services.ConfigureLogger();
 builder.Services.ConfigureSwagger();
 var app = builder.Build();

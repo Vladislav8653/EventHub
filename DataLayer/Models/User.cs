@@ -7,7 +7,7 @@ namespace DataLayer.Models;
 public class User
 {
     [Column("UserId")]
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; } 
 
     [Required(ErrorMessage = "Login is required.")]
     [MaxLength(50, ErrorMessage = "Login can't be longer than 50 symbols")]

@@ -5,11 +5,9 @@ using BusinessLayer.Infrastructure.Mapper;
 using BusinessLayer.Services.Contracts;
 using BusinessLayer.Services.Implementations;
 using DataLayer.Data;
-using DataLayer.Models;
 using DataLayer.Repositories.UnitOfWork;
 using EventHub.MiddlewareHandlers;
-using EventHub.Validators;
-using EventHub.Validators.Category;
+using EventHub.Validators.Category.Attributes;
 using EventHub.Validators.Event;
 using EventHub.Validators.Event.Attributes;
 using EventHub.Validators.Participants;
@@ -18,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
 using NLog;
+using CategoryDtoValidator = EventHub.Validators.Category.CategoryDtoValidator;
 
 
 namespace EventHub.Extensions;
@@ -49,13 +48,14 @@ public static class ServiceExtensions
 
     public static void ConfigureRepositoryManager(this IServiceCollection services) =>
         services.AddScoped<IRepositoriesManager, RepositoriesManager>();
-    
-    public static void ConfigureEventService(this IServiceCollection services) =>
-        services.AddScoped<IEventService, EventService>();
-    
-    public static void ConfigureCategoryService(this IServiceCollection services) =>
-        services.AddScoped<ICategoryService, CategoryService>();
 
+    public static void ConfigureServices(this IServiceCollection services)
+    {
+        services.AddScoped<IEventService, EventService>();
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IParticipantService, ParticipantService>();
+    }
+    
     public static void ConfigureValidation(this IServiceCollection services)
     {
         services.AddTransient<IValidator<CreateEventDto>, EventDtoValidator>();
@@ -65,15 +65,16 @@ public static class ServiceExtensions
         services.AddScoped<ValidateEventDtoAttribute>();
         services.AddScoped<ValidateEventFiltersDtoAttribute>();
         services.AddScoped<ValidateParticipantDtoAttribute>();
+        services.AddScoped<ValidateCategoryDtoAttribute>();
     }
 
     public static void ConfigureLogger(this IServiceCollection services)
     {
-        /*var currentDirection = Directory.GetCurrentDirectory();
+        var currentDirection = Directory.GetCurrentDirectory();
         var parent = Directory.GetParent(currentDirection);
         var relativePath = Path.Combine(nameof(BusinessLayer), "nlog.config");
         var nlogConfigPath = Path.Combine(parent.FullName, relativePath); 
-        LogManager.Setup().LoadConfigurationFromFile(nlogConfigPath);*/
+        LogManager.Setup().LoadConfigurationFromFile(nlogConfigPath);
     }
     
     public static void AppendMiddlewareErrorHandler(this IApplicationBuilder builder)

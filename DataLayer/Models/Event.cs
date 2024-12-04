@@ -6,7 +6,7 @@ namespace DataLayer.Models;
 public class Event
 {
     [Column("EventId")]
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; } 
     
     [Required(ErrorMessage = "Event name is required.")]
     [MaxLength(100, ErrorMessage = "Event name can't be longer than 100 symbols")]
