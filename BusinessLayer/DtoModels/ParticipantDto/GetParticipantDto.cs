@@ -11,4 +11,5 @@ public class GetParticipantDto
     public string DateOfBirth { get; set; } = String.Empty;
   
     public string Email { get; set; } = String.Empty;
+    public string RegistrationTime { get; set; } = String.Empty;
 }

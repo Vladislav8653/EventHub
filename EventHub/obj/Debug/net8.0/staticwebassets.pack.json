@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\images\\k6g18q0y908tn288w305o33vm2z5d88g.jpg"
     },
     {
+      "Id": "D:\\my_code\\test_task\\EventHub\\EventHub\\wwwroot\\images\\Без названия.jpg",
+      "PackagePath": "staticwebassets\\images\\Без названия.jpg"
+    },
+    {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.EventHub.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

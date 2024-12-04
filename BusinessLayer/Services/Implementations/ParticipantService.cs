@@ -34,7 +34,7 @@ public class ParticipantService : IParticipantService
         if (eventDb == null)
             throw new EntityNotFoundException($"Event with id {eventId} doesn't exist");
         var participant = _mapper.Map<Participant>(item);
-        var currentDate = DateTime.Now;
+        var currentDate = DateTime.UtcNow;
         await _repositoriesManager.Participants.RegisterParticipantAsync(eventDb, participant, currentDate);
         await _repositoriesManager.SaveAsync();
         var participantDto = _mapper.Map<GetParticipantDto>(participant);
@@ -46,7 +46,7 @@ public class ParticipantService : IParticipantService
         var eventDb = await _repositoriesManager.Events.GetByIdAsync(eventId);
         if (eventDb == null)
             throw new EntityNotFoundException($"Event with id {eventId} doesn't exist");
-        var participant = await _repositoriesManager.Participants.GetParticipantAsync(participantId);
+        var participant = await _repositoriesManager.Participants.GetParticipantAsync(eventId, participantId);
         if(participant == null)
             throw new EntityNotFoundException($"Participant with id {participantId} doesn't exist");
         var participantDto = _mapper.Map<GetParticipantDto>(participant);
@@ -58,10 +58,10 @@ public class ParticipantService : IParticipantService
         var eventDb = await _repositoriesManager.Events.GetByIdAsync(eventId);
         if (eventDb == null)
             throw new EntityNotFoundException($"Event with id {eventId} doesn't exist");
-        var participant = await _repositoriesManager.Participants.GetParticipantAsync(participantId);
+        var participant = await _repositoriesManager.Participants.GetParticipantAsync(eventId, participantId);
         if(participant == null)
             throw new EntityNotFoundException($"Participant with id {participantId} doesn't exist");
-        await _repositoriesManager.Participants.RemoveParticipantAsync(eventId, participant);
+        await _repositoriesManager.Participants.RemoveParticipantAsync(eventId, participant.Participant);
         await _repositoriesManager.SaveAsync();
         var participantDto = _mapper.Map<GetParticipantDto>(participant);
         return participantDto;

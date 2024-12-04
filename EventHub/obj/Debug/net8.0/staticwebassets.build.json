@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "EV5JquFr9t6YXh6nyrmjKZ7Y2Eel0zlMWI6IXQSGG30=",
+  "Hash": "obrHE5qS2sbD/Kx/KcYls3cPew9Yy4bKuKZbF0aI5Mg=",
   "Source": "EventHub",
   "BasePath": "_content/EventHub",
   "Mode": "Default",
@@ -34,6 +34,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\6431ed60924af3711c4136cbb69bc003d7d0e9fa.jpg"
+    },
+    {
+      "Identity": "D:\\my_code\\test_task\\EventHub\\EventHub\\wwwroot\\images\\Без названия.jpg",
+      "SourceId": "EventHub",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\my_code\\test_task\\EventHub\\EventHub\\wwwroot\\",
+      "BasePath": "_content/EventHub",
+      "RelativePath": "images/Без названия.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Без названия.jpg"
     },
     {
       "Identity": "D:\\my_code\\test_task\\EventHub\\EventHub\\wwwroot\\images\\anz5xn5onhhyz70yo7dax3mdy9f4sa68.jpg",

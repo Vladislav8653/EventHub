@@ -41,7 +41,7 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
             query = query.Where(e => e.Category == filters.Category);
         }
 
-        if (filters.Place != null)
+        if (!string.IsNullOrEmpty(filters.Place))
         {
             query = query.Where(e => e.Place == filters.Place);
         }

@@ -1,6 +1,7 @@
 ﻿using DataLayer.Repositories.RepositoryContracts;
 using DataLayer.Data;
 using DataLayer.Models;
+using DataLayer.Models.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Repositories.RepositoriesImplementations;
@@ -15,18 +16,30 @@ public class ParticipantRepository : RepositoryBase<Participant>, IParticipantRe
         _eventParticipantRepository = eventParticipantRepository;
     }
 
-    public async Task<IEnumerable<Participant>> GetParticipantsAsync(Guid eventId) =>
+    public async Task<IEnumerable<ParticipantWithAddInfoDto>> GetParticipantsAsync(Guid eventId) =>
         await Repository.EventsParticipants
             .Where(ep => ep.EventId == eventId)
             .Include(ep => ep.Participant)
-            .Select(ep => ep.Participant)
+            .Select(ep => new ParticipantWithAddInfoDto()
+            {
+                Participant = ep.Participant,
+                RegistrationTime = ep.RegistrationTime
+            })   
             .ToListAsync();
-    
-    public async Task<Participant?> GetParticipantAsync(Guid participantId) =>
-        await Repository.Participants
-            .Include(p => p.Events) // подгружаем еше связи
-            .FirstOrDefaultAsync(p => p.Id == participantId);
-    
+
+    public async Task<ParticipantWithAddInfoDto?> GetParticipantAsync(Guid eventId, Guid participantId) =>
+        await Repository.EventsParticipants
+            .Where(ep => ep.EventId == eventId && ep.ParticipantId == participantId)
+            .Include(ep => ep.Participant)
+            .Select(ep => new ParticipantWithAddInfoDto()
+            {
+                Participant = ep.Participant,
+                RegistrationTime = ep.RegistrationTime
+            })
+            .FirstOrDefaultAsync();
+        
+            
+        
 
     public async Task RegisterParticipantAsync(Event eventDb, Participant participant, DateTime regTime)
     {

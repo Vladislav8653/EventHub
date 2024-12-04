@@ -19,7 +19,7 @@ public class EventParticipantRepository :
             Participant = participant,
             EventId = eventDb.Id,
             ParticipantId = participant.Id,
-            RegistrationTime = regTime
+            RegistrationTime = regTime 
         };
         await CreateAsync(eventParticipant);
     }
