@@ -13,26 +13,28 @@ public class ParticipantsConfig : IEntityTypeConfiguration<Participant>
         builder.HasMany(p => p.Events)
             .WithOne(ep => ep.Participant)
             .HasForeignKey(ep => ep.ParticipantId);
-        /*builder.HasData
-        (
-            new Participant()
-            {
-                DateOfBirth = new DateOnly(2005, 5, 14),
-                Email = "arefin.vlad@gmail.com",
-                Events = [],
-                Id = Guid.NewGuid(),
-                Name = "Vladislav",
-                Surname = "Arefin"
-            },
-            new Participant()
-            {
-                DateOfBirth = new DateOnly(2006, 5, 26),
-                Email = "egor.pomidor@gmail.com",
-                Events = [],
-                Id = Guid.NewGuid(),
-                Name = "Egor",
-                Surname = "Shcherbin"
-            }
-        );*/
+        
+        builder.Property(e => e.Id)
+            .HasColumnName("ParticipantId") 
+            .ValueGeneratedOnAdd(); 
+
+        builder.Property(e => e.Name)
+            .IsRequired() 
+            .HasMaxLength(30) 
+            .HasColumnName("Name"); 
+
+        builder.Property(e => e.Surname)
+            .IsRequired() 
+            .HasMaxLength(30) 
+            .HasColumnName("Surname"); 
+
+        builder.Property(e => e.DateOfBirth)
+            .IsRequired() 
+            .HasColumnName("DateOfBirth"); 
+
+        builder.Property(e => e.Email)
+            .IsRequired()
+            .HasMaxLength(254) 
+            .HasColumnName("Email"); 
     }
 }

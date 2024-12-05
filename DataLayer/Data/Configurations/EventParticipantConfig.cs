@@ -16,5 +16,14 @@ public class EventParticipantConfig : IEntityTypeConfiguration<EventParticipant>
         builder.HasOne(ep => ep.Event)
             .WithMany(e => e.Participants)
             .HasForeignKey(ep => ep.EventId);
+        
+        builder.Property(e => e.ParticipantId)
+            .IsRequired();
+
+        builder.Property(e => e.EventId)
+            .IsRequired();
+
+        builder.Property(e => e.RegistrationTime)
+            .IsRequired();
     }
 }

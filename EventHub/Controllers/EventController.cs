@@ -1,6 +1,6 @@
 ﻿using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.Services.Contracts;
-using EventHub.Validators.Event.Attributes;
+using EventHub.Validation.Event.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -16,35 +16,29 @@ public class EventController : ControllerBase
         _eventService = eventService;
     }
     
-    
-    [HttpGet(Name = "GetEvents")]
-    public async Task<IActionResult> GetAllEvents()
+    [HttpGet]
+    [ServiceFilter(typeof(ValidateEventQueryParamsAttribute))]
+    public async Task<IActionResult> GetAllEvents([FromQuery]EventQueryParamsDto eventParamsDto)
     {
-        var events = await _eventService.GetAllAsync(Request);
+        var events = await _eventService.GetAllEvents(eventParamsDto, Request);
         return Ok(events);
     }
     
-    [HttpGet("{id:guid}", Name = "GetEventById")]
+    
+    [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetEventById(Guid id)
     {
         var events = await _eventService.GetByIdAsync(id, Request);
         return Ok(events);
     }
     
-    [HttpGet("{name}", Name = "GetEventByName")]
+    [HttpGet("{name}")]
     public async Task<IActionResult> GetEventByName(string name)
     {
         var events = await _eventService.GetByNameAsync(name, Request);
         return Ok(events);
     }
-
-    [HttpGet("filter", Name = "GetByFilters")]
-    [ServiceFilter(typeof(ValidateEventFiltersDtoAttribute))]
-    public async Task<IActionResult> GetFilteredEvents([FromQuery] EventFiltersDto filters) 
-    {
-        var events = await _eventService.GetByFiltersAsync(filters, Request);
-        return Ok(events);
-    }
+    
     
     [HttpPost]
     [ServiceFilter(typeof(ValidateEventDtoAttribute))]

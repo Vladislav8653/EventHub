@@ -21,13 +21,17 @@ public class EventParticipantRepository :
             ParticipantId = participant.Id,
             RegistrationTime = regTime 
         };
+        eventDb.Participants.Add(eventParticipant);
         await CreateAsync(eventParticipant);
     }
 
     public async Task DetachParticipantFromEvent(Guid eventId, Guid participantId)
     {
-        var eventParticipant = await Repository.EventsParticipants.FirstAsync(ep => 
-            ep.ParticipantId == participantId && ep.EventId == eventId);
+        var eventParticipant = await Repository.EventsParticipants
+            .Include(ep => ep.Event)
+            .FirstAsync(ep => ep.ParticipantId == participantId && ep.EventId == eventId);
+        var eventDb = eventParticipant.Event;
+        eventDb.Participants.Remove(eventParticipant);
         Delete(eventParticipant);
     }
 }

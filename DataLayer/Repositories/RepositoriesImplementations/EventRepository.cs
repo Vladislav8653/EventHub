@@ -1,7 +1,9 @@
 ﻿using DataLayer.Repositories.RepositoryContracts;
 using DataLayer.Data;
 using DataLayer.Models;
-using DataLayer.Models.Filters;
+using DataLayer.Specifications.Dto;
+using DataLayer.Specifications.Filtering;
+using DataLayer.Specifications.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer.Repositories.RepositoriesImplementations;
@@ -17,15 +19,33 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
         await Repository.Events.FirstOrDefaultAsync(e => e.Name == name);
 
     public async Task<Event?> GetByIdAsync(Guid id) =>
-        await Repository.Events.Include(e => e.Category).FirstOrDefaultAsync(e => e.Id == id);
-
+        await Repository.Events
+            .Include(e => e.Category)
+            .Include(e => e.Participants)
+            .FirstOrDefaultAsync(e => e.Id == id);
+    
     public async Task<IEnumerable<Event>> GetAllAsync() =>
-        await FindAll(trackChanges: false).Include(e => e.Category).ToListAsync();
+        await FindAll(trackChanges: false)
+            .Include(e => e.Category)
+            .ToListAsync();
     
 
-    public async Task<IEnumerable<Event>> GetByFiltersAsync(EventFilters filters)
+    public async Task<(IEnumerable<Event>, int)> GetAllByParamsAsync(EventQueryParams eventParams)
     {
+        var filters = eventParams.Filters ?? null;
+        var pageParams = eventParams.PageParams ?? null;
+        // query - итоговый результат после всех "ограничений"
         var query = Repository.Events.Include(e => e.Category).AsQueryable();
+        if (pageParams != null)
+            query = GetByPage(query, pageParams);
+        if (filters != null)
+            query = GetByFilters(query, filters);
+        var totalFields = Repository.Events.Count();
+        return (await query.ToListAsync(), totalFields);
+    }
+    
+    private IQueryable<Event> GetByFilters(IQueryable<Event> query, EventFilters filters)
+    {
         if (filters.Date.HasValue) // если событие в эту дату
         {
             query = query.Where(e => e.DateTime == filters.Date);
@@ -46,7 +66,7 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
             query = query.Where(e => e.Place == filters.Place);
         }
 
-        return await query.ToListAsync();
+        return query;
     }
     
 }

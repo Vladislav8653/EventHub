@@ -1,5 +1,7 @@
-﻿using BusinessLayer.DtoModels.ParticipantDto;
+﻿using BusinessLayer.DtoModels.CommonDto;
+using BusinessLayer.DtoModels.ParticipantDto;
 using BusinessLayer.Services.Contracts;
+using EventHub.Validation.CommonValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventHub.Controllers;
@@ -15,17 +17,18 @@ public class ParticipantController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetAllParticipants(Guid eventId)
+    [ServiceFilter(typeof(ValidatePageParamsAttribute))]
+    public async Task<IActionResult> GetAllParticipants([FromQuery]PageParamsDto pageParams, Guid eventId)
     {
-        var participants = await _participantService.GetParticipantsAsync(eventId);
+        var participants = await _participantService.GetParticipantsAsync(pageParams, eventId);
         return Ok(participants);
     }
     
     [HttpPost]
     public async Task<IActionResult> RegisterParticipant([FromBody]CreateParticipantDto item, Guid eventId)
     {
-        var participant = await _participantService.RegisterParticipantAsync(eventId, item);
-        return Ok(participant);
+        var registration = await _participantService.RegisterParticipantAsync(eventId, item);
+        return Ok(registration);
     }
     
     [HttpGet("{participantId:guid}")]

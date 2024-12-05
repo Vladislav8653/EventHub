@@ -1,22 +1,27 @@
 ﻿using BusinessLayer.DtoModels.CategoryDto;
+using BusinessLayer.DtoModels.CommonDto;
 using BusinessLayer.DtoModels.EventsDto;
+using BusinessLayer.DtoModels.EventsDto.QueryParams;
 using BusinessLayer.DtoModels.ParticipantDto;
-using BusinessLayer.Infrastructure.Mapper;
+using BusinessLayer.Logger;
+using BusinessLayer.Mapper;
 using BusinessLayer.Services.Contracts;
 using BusinessLayer.Services.Implementations;
 using DataLayer.Data;
 using DataLayer.Repositories.UnitOfWork;
 using EventHub.MiddlewareHandlers;
+using EventHub.Validation.CommonValidation;
+using EventHub.Validation.Event.Attributes;
+using EventHub.Validation.Event.Validators;
+using EventHub.Validation.Participants.Validators;
 using EventHub.Validators.Category.Attributes;
-using EventHub.Validators.Event;
-using EventHub.Validators.Event.Attributes;
-using EventHub.Validators.Participants;
 using EventHub.Validators.Participants.Attributes;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
 using NLog;
-using CategoryDtoValidator = EventHub.Validators.Category.CategoryDtoValidator;
+
+using CategoryDtoValidator = EventHub.Validation.Category.Validators.CategoryDtoValidator;
 
 
 namespace EventHub.Extensions;
@@ -61,20 +66,21 @@ public static class ServiceExtensions
         services.AddTransient<IValidator<CreateEventDto>, EventDtoValidator>();
         services.AddTransient<IValidator<CategoryDto>, CategoryDtoValidator>();
         services.AddTransient<IValidator<EventFiltersDto>, EventFiltersDtoValidator>();
+        services.AddTransient<IValidator<PageParamsDto>, PageParamsDtoValidator>();
         services.AddTransient<IValidator<CreateParticipantDto>, ParticipantDtoValidator>();
         services.AddScoped<ValidateEventDtoAttribute>();
-        services.AddScoped<ValidateEventFiltersDtoAttribute>();
+        services.AddScoped<ValidateEventQueryParamsAttribute>();
         services.AddScoped<ValidateParticipantDtoAttribute>();
         services.AddScoped<ValidateCategoryDtoAttribute>();
+        services.AddScoped<ValidatePageParamsAttribute>();
     }
 
     public static void ConfigureLogger(this IServiceCollection services)
     {
-        var currentDirection = Directory.GetCurrentDirectory();
+        /*var currentDirection = Directory.GetCurrentDirectory();
         var parent = Directory.GetParent(currentDirection);
-        var relativePath = Path.Combine(nameof(BusinessLayer), "nlog.config");
-        var nlogConfigPath = Path.Combine(parent.FullName, relativePath); 
-        LogManager.Setup().LoadConfigurationFromFile(nlogConfigPath);
+        var nlogConfigPath = Path.Combine(parent.FullName, nameof(BusinessLayer), "Logger", "nlog.config"); 
+        LogManager.Setup().LoadConfigurationFromFile(nlogConfigPath);*/
     }
     
     public static void AppendMiddlewareErrorHandler(this IApplicationBuilder builder)

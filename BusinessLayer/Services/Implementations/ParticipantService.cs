@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using BusinessLayer.DtoModels.CommonDto;
 using BusinessLayer.DtoModels.ParticipantDto;
 using BusinessLayer.Exceptions;
 using BusinessLayer.Services.Contracts;
 using DataLayer.Models;
 using DataLayer.Repositories.UnitOfWork;
+using DataLayer.Specifications.Pagination;
 
 namespace BusinessLayer.Services.Implementations;
 
@@ -11,34 +13,59 @@ public class ParticipantService : IParticipantService
 {
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
+    private const int DefaultPage = 1;
+    private const int DefaultPageSize = 5;
     public ParticipantService(IRepositoriesManager repositoriesManager, IMapper mapper)
     {
         _repositoriesManager = repositoriesManager;
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<GetParticipantDto>> GetParticipantsAsync(Guid eventId)
+    public async Task<IEnumerable<GetParticipantDto>> GetParticipantsAsync(PageParamsDto? pageParamsDto, Guid eventId)
     {
         var eventDb = await _repositoriesManager.Events.GetByIdAsync(eventId);
         if (eventDb == null)
             throw new EntityNotFoundException($"Event with id {eventId} doesn't exist");
-        var participants = await _repositoriesManager.Participants.GetParticipantsAsync(eventId);
+        PageParams? pageParams = null;
+        if (pageParamsDto != null)
+        { 
+            pageParams = new PageParams(
+                pageParamsDto.Page,
+                pageParamsDto.PageSize,
+                DefaultPage,
+                DefaultPageSize);
+        }
+        var participants = await _repositoriesManager.Participants.GetParticipantsAsync(pageParams, eventId);
         var participantsDto = _mapper.Map<IEnumerable<GetParticipantDto>>(participants);
         return participantsDto;
     }
 
 
-    public async Task<GetParticipantDto> RegisterParticipantAsync(Guid eventId, CreateParticipantDto item)
+    public async Task<RegistrationResult> RegisterParticipantAsync(Guid eventId, CreateParticipantDto item)
     {
         var eventDb = await _repositoriesManager.Events.GetByIdAsync(eventId);
         if (eventDb == null)
             throw new EntityNotFoundException($"Event with id {eventId} doesn't exist");
+        if (eventDb.Participants.Count >= eventDb.MaxQuantityParticipant)
+        {
+            return new RegistrationResult
+            {
+                Message = $"Maximum number of participants reached for event with id {eventId}.",
+                Success = false,
+                Participant = null
+            };
+        }
         var participant = _mapper.Map<Participant>(item);
         var currentDate = DateTime.UtcNow;
         await _repositoriesManager.Participants.RegisterParticipantAsync(eventDb, participant, currentDate);
         await _repositoriesManager.SaveAsync();
         var participantDto = _mapper.Map<GetParticipantDto>(participant);
-        return participantDto;
+        return new RegistrationResult
+        {
+            Message = $"You are registered for event with id {eventId}.",
+            Success = true,
+            Participant = participantDto
+        };
     }
 
     public async Task<GetParticipantDto> GetParticipantAsync(Guid eventId, Guid participantId)

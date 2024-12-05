@@ -107,22 +107,26 @@ namespace DataLayer.Migrations
                         .HasColumnName("ParticipantId");
 
                     b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("DateOfBirth");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(254)
-                        .HasColumnType("character varying(254)");
+                        .HasColumnType("character varying(254)")
+                        .HasColumnName("Email");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("Name");
 
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("Surname");
 
                     b.HasKey("Id");
 

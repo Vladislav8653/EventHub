@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using BusinessLayer.DtoModels.CommonDto;
 using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.Exceptions;
 using BusinessLayer.Services.Contracts;
 using DataLayer.Models;
-using DataLayer.Models.Filters;
 using DataLayer.Repositories.UnitOfWork;
+using DataLayer.Specifications.Dto;
+using DataLayer.Specifications.Filtering;
+using DataLayer.Specifications.Pagination;
 using Microsoft.AspNetCore.Http;
 
 
@@ -14,28 +17,16 @@ public class EventService : IEventService
 {
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
+    private const int DefaultPage = 1;
+    private const int DefaultPageSize = 5;
     public EventService(IRepositoriesManager repositoriesManager, IMapper mapper)
     {
         _repositoriesManager = repositoriesManager;
         _mapper = mapper;
     }
-
-
-    public async Task<IEnumerable<GetEventDto>> GetAllAsync(HttpRequest request)
-    {
-        var events = await _repositoriesManager.Events.GetAllAsync();
-        foreach (var eventDb in events)
-        {
-            if (!string.IsNullOrEmpty(eventDb.Image))
-                eventDb.Image = new Uri(new Uri($"{request.Scheme}://{request.Host}"), $"events/images/{eventDb.Image}").ToString();
-        }
-        var eventsDto = _mapper.Map<IEnumerable<GetEventDto>>(events);
-        return eventsDto;
-    }
     
     public async Task<GetEventDto> GetByIdAsync(Guid id, HttpRequest request)
     {
-        
         var eventById = await _repositoriesManager.Events.GetByIdAsync(id);
         if (eventById == null)
             throw new EntityNotFoundException($"Event with id {id} doesn't exist");
@@ -56,27 +47,50 @@ public class EventService : IEventService
         var eventDto = _mapper.Map<GetEventDto>(eventByName);
         return eventDto;
     }
-
-    public async Task<IEnumerable<GetEventDto>> GetByFiltersAsync(EventFiltersDto filtersDto, HttpRequest request)
+    
+    public async Task<EntitiesWithTotalCountDto<GetEventDto>> GetAllEvents(EventQueryParamsDto eventParamsDto, HttpRequest request)
     {
-        var filters = _mapper.Map<EventFilters>(filtersDto);
-        if (filtersDto.Category != null)
+        EventFilters? filters = null;
+        if (eventParamsDto.Filters != null)
         {
-            var category = await _repositoriesManager.Categories.TryGetByNameAsync(filtersDto.Category);
-            if (category != null)
+            filters = _mapper.Map<EventFilters>(eventParamsDto.Filters);
+            if (eventParamsDto.Filters.Category != null)
             {
-                filters.Category = category;
+                var category = await _repositoriesManager.Categories.TryGetByNameAsync(eventParamsDto.Filters.Category);
+                if (category != null)
+                {
+                    filters.Category = category;
+                }
             }
         }
-        var eventsByFilters = await _repositoriesManager.Events.GetByFiltersAsync(filters);
-        foreach (var eventDb in eventsByFilters)
+
+        PageParams? pageParams = null;
+        if (eventParamsDto.PageParams != null)
+        { 
+            pageParams = new PageParams(
+                eventParamsDto.PageParams.Page,
+                eventParamsDto.PageParams.PageSize,
+                DefaultPage,
+                DefaultPageSize);
+        }
+        
+        var eventParams = new EventQueryParams
+        {
+            Filters = filters,
+            PageParams = pageParams
+        };
+        
+        var (events, totalFields) = await _repositoriesManager.Events.GetAllByParamsAsync(eventParams);
+        foreach (var eventDb in events)
         {
             if (!string.IsNullOrEmpty(eventDb.Image))
                 eventDb.Image = new Uri(new Uri($"{request.Scheme}://{request.Host}"), $"events/images/{eventDb.Image}").ToString();
         }
-        var eventsByFiltersDto = _mapper.Map<IEnumerable<GetEventDto>>(eventsByFilters);
-        return eventsByFiltersDto;
+        var eventsWithImages = _mapper.Map<IEnumerable<GetEventDto>>(events);
+        return new EntitiesWithTotalCountDto<GetEventDto>(eventsWithImages, totalFields);
     }
+    
+    
 
     public async Task<GetEventDto> CreateAsync(CreateEventDto item)
     {

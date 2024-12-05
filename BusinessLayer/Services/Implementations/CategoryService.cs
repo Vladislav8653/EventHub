@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BusinessLayer.DtoModels;
 using BusinessLayer.DtoModels.CategoryDto;
 using BusinessLayer.Exceptions;
 using BusinessLayer.Services.Contracts;
