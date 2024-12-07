@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(EventHubDbContext))]
-    [Migration("20241203212504_initial")]
-    partial class initial
+    [Migration("20241207170720_edit1")]
+    partial class edit1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,24 +110,33 @@ namespace DataLayer.Migrations
                         .HasColumnName("ParticipantId");
 
                     b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date");
+                        .HasColumnType("date")
+                        .HasColumnName("DateOfBirth");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(254)
-                        .HasColumnType("character varying(254)");
+                        .HasColumnType("character varying(254)")
+                        .HasColumnName("Email");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("Name");
 
                     b.Property<string>("Surname")
                         .IsRequired()
                         .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("Surname");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Participants");
                 });
@@ -149,6 +158,11 @@ namespace DataLayer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -157,7 +171,7 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.Event", b =>
                 {
                     b.HasOne("DataLayer.Models.Category", "Category")
-                        .WithMany("Events")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -184,9 +198,15 @@ namespace DataLayer.Migrations
                     b.Navigation("Participant");
                 });
 
-            modelBuilder.Entity("DataLayer.Models.Category", b =>
+            modelBuilder.Entity("DataLayer.Models.Participant", b =>
                 {
-                    b.Navigation("Events");
+                    b.HasOne("DataLayer.Models.User", "User")
+                        .WithMany("Participants")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DataLayer.Models.Event", b =>
@@ -197,6 +217,11 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.Participant", b =>
                 {
                     b.Navigation("Events");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.User", b =>
+                {
+                    b.Navigation("Participants");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,20 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-
-namespace DataLayer.Models;
+﻿namespace DataLayer.Models;
 
 public class User
 {
-    [Column("UserId")]
-    public Guid Id { get; set; } 
-
-    [Required(ErrorMessage = "Login is required.")]
-    [MaxLength(50, ErrorMessage = "Login can't be longer than 50 symbols")]
+    public Guid Id { get; set; }
+    public string UserName { get; set; } = String.Empty;
     public string Login { get; set; } = String.Empty;
-
-    [Required(ErrorMessage = "Password is required.")]
-    [MaxLength(50, ErrorMessage = "Password can't be longer than 50 symbols")]
     public string Password { get; set; } = String.Empty;
-    
+    public ICollection<Participant> Participants = new List<Participant>(); // каждый юзер - это разный участник в разных событиях
 }

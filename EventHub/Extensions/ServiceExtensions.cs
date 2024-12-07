@@ -1,15 +1,19 @@
-﻿using BusinessLayer.DtoModels.CategoryDto;
+﻿using System.Text;
+using BusinessLayer.DtoModels.CategoryDto;
 using BusinessLayer.DtoModels.CommonDto;
 using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.DtoModels.EventsDto.QueryParams;
 using BusinessLayer.DtoModels.ParticipantDto;
+using BusinessLayer.Infrastructure.Authentication;
 using BusinessLayer.Logger;
 using BusinessLayer.Mapper;
 using BusinessLayer.Services.Contracts;
+using BusinessLayer.Services.Contracts.Auth;
 using BusinessLayer.Services.Implementations;
 using DataLayer.Data;
 using DataLayer.Repositories.UnitOfWork;
 using EventHub.MiddlewareHandlers;
+using EventHub.Validation.Category.Validators;
 using EventHub.Validation.CommonValidation;
 using EventHub.Validation.Event.Attributes;
 using EventHub.Validation.Event.Validators;
@@ -18,10 +22,11 @@ using EventHub.Validators.Category.Attributes;
 using EventHub.Validators.Participants.Attributes;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using NLog;
-
-using CategoryDtoValidator = EventHub.Validation.Category.Validators.CategoryDtoValidator;
+//using NLog;
 
 
 namespace EventHub.Extensions;
@@ -59,6 +64,28 @@ public static class ServiceExtensions
         services.AddScoped<IEventService, EventService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IParticipantService, ParticipantService>();
+        services.AddScoped<IUserService, UserService>();
+    }
+    
+    public static void ConfigureApiAuthentication(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IJwtProvider, JwtProvider>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
+        var jwtOptions = services.BuildServiceProvider().GetRequiredService<IOptions<JwtOptions>>();
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.TokenValidationParameters = new()
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.SecretKey))
+                };
+            });
+        services.AddAuthorization();
     }
     
     public static void ConfigureValidation(this IServiceCollection services)

@@ -13,6 +13,10 @@ public class ParticipantsConfig : IEntityTypeConfiguration<Participant>
         builder.HasMany(p => p.Events)
             .WithOne(ep => ep.Participant)
             .HasForeignKey(ep => ep.ParticipantId);
+
+        builder.HasOne(p => p.User)
+            .WithMany(u => u.Participants)
+            .HasForeignKey(p => p.UserId);
         
         builder.Property(e => e.Id)
             .HasColumnName("ParticipantId") 
@@ -36,5 +40,7 @@ public class ParticipantsConfig : IEntityTypeConfiguration<Participant>
             .IsRequired()
             .HasMaxLength(254) 
             .HasColumnName("Email"); 
+        
+      
     }
 }

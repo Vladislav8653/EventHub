@@ -128,7 +128,12 @@ namespace DataLayer.Migrations
                         .HasColumnType("character varying(30)")
                         .HasColumnName("Surname");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Participants");
                 });
@@ -147,6 +152,11 @@ namespace DataLayer.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
@@ -158,7 +168,7 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.Event", b =>
                 {
                     b.HasOne("DataLayer.Models.Category", "Category")
-                        .WithMany("Events")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -185,9 +195,15 @@ namespace DataLayer.Migrations
                     b.Navigation("Participant");
                 });
 
-            modelBuilder.Entity("DataLayer.Models.Category", b =>
+            modelBuilder.Entity("DataLayer.Models.Participant", b =>
                 {
-                    b.Navigation("Events");
+                    b.HasOne("DataLayer.Models.User", "User")
+                        .WithMany("Participants")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DataLayer.Models.Event", b =>
@@ -198,6 +214,11 @@ namespace DataLayer.Migrations
             modelBuilder.Entity("DataLayer.Models.Participant", b =>
                 {
                     b.Navigation("Events");
+                });
+
+            modelBuilder.Entity("DataLayer.Models.User", b =>
+                {
+                    b.Navigation("Participants");
                 });
 #pragma warning restore 612, 618
         }

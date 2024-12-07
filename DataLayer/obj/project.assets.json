@@ -2110,7 +2110,8 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Владислав\\.nuget\\packages\\": {}
+    "C:\\Users\\Владислав\\.nuget\\packages\\": {},
+    "D:\\software\\developing\\virtual studio\\everything\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
@@ -2121,9 +2122,12 @@
       "packagesPath": "C:\\Users\\Владислав\\.nuget\\packages\\",
       "outputPath": "D:\\my_code\\test_task\\EventHub\\DataLayer\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "D:\\software\\developing\\virtual studio\\everything\\NuGetPackages"
+      ],
       "configFilePaths": [
         "C:\\Users\\Владислав\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -2179,7 +2183,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.404/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

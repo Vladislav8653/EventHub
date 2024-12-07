@@ -1,4 +1,6 @@
+using BusinessLayer.Infrastructure.Authentication;
 using EventHub.Extensions;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureCors();
@@ -10,10 +12,13 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureAutoMapper();
 builder.Services.ConfigureServices();
 builder.Services.ConfigureLogger();
+builder.Services.ConfigureApiAuthentication(builder.Configuration);
 builder.Services.ConfigureSwagger();
 var app = builder.Build();
 app.AppendMiddlewareErrorHandler();
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseStaticFiles();
 app.UseCors("CorsPolicy");
 app.UseRouting();

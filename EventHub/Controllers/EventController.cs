@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.Services.Contracts;
 using EventHub.Validation.Event.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -18,6 +19,7 @@ public class EventController : ControllerBase
     
     [HttpGet]
     [ServiceFilter(typeof(ValidateEventQueryParamsAttribute))]
+    [Authorize]
     public async Task<IActionResult> GetAllEvents([FromQuery]EventQueryParamsDto eventParamsDto)
     {
         var events = await _eventService.GetAllEvents(eventParamsDto, Request);

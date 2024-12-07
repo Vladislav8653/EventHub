@@ -3,5 +3,5 @@ dotnet ef migrations add RenameCategoryName --startup-project ../EventHub
 dotnet ef database update --startup-project ../EventHub
 
 
-dotnet ef migrations add DateTimeOffsetTrouble --project DataLayer --startup-project EventHub
+dotnet ef migrations add edit --project DataLayer --startup-project EventHub
 dotnet ef database update --startup-project EventHub  

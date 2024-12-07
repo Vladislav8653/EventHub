@@ -11,6 +11,7 @@ public class EventHubDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new CategoriesConfig());
+        modelBuilder.ApplyConfiguration(new UsersConfig());
         modelBuilder.ApplyConfiguration(new ParticipantsConfig());
         modelBuilder.ApplyConfiguration(new EventsConfig());
         modelBuilder.ApplyConfiguration(new EventParticipantConfig());

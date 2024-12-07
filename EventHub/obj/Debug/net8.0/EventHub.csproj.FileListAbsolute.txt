@@ -126,3 +126,12 @@ D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\xunit.abstractions.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\xunit.assert.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\xunit.core.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\xunit.execution.dotnet.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\BCrypt.Net-Next.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll

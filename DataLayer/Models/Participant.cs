@@ -8,4 +8,6 @@ public class Participant
     public DateOnly DateOfBirth { get; set; }
     public string Email { get; set; } = String.Empty;
     public ICollection<EventParticipant> Events { get; set; } = new List<EventParticipant>();
+    public User User { get; set; }
+    public Guid UserId { get; set; }
 }
