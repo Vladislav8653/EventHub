@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.DtoModels.UserDto;
 using BusinessLayer.Services.Contracts;
+using EventHub.Validation.User.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventHub.Controllers;
@@ -16,16 +17,19 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
+    [ServiceFilter(typeof(ValidateRegisterUserRequestAttribute))]
+    public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)
     {
-        await _userService.Register(request);
-        return Ok();
+        var response = await _userService.Register(request);
+        return Ok(response);
     }
     
     [HttpPost("login")]
+    [ServiceFilter(typeof(ValidateLoginUserRequestAttribute))]
     public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
     {
-        var token = await _userService.Login(request);
-        return Ok(token);
+        var response = await _userService.Login(request);
+        HttpContext.Response.Cookies.Append("token", response.Message);
+        return Ok(response);
     }
 }

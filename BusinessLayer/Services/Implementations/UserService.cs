@@ -1,4 +1,5 @@
-﻿using BusinessLayer.DtoModels.UserDto;
+﻿using AutoMapper;
+using BusinessLayer.DtoModels.UserDto;
 using BusinessLayer.Services.Contracts;
 using BusinessLayer.Services.Contracts.Auth;
 using DataLayer.Models;
@@ -11,46 +12,46 @@ public class UserService : IUserService
     private readonly IPasswordHasher _passwordHasher;
     private readonly IJwtProvider _jwtProvider;
     private readonly IRepositoriesManager _repositoriesManager;
+    private readonly IMapper _mapper;
     
-    public UserService(IPasswordHasher passwordHasher, IRepositoriesManager repositoriesManager, IJwtProvider jwtProvider)
+    public UserService(IPasswordHasher passwordHasher, IRepositoriesManager repositoriesManager, IJwtProvider jwtProvider, IMapper mapper)
     {
         _passwordHasher = passwordHasher;
         _repositoriesManager = repositoriesManager;
         _jwtProvider = jwtProvider;
+        _mapper = mapper;
     }
 
-    public async Task Register(RegisterUserRequest request)
+    public async Task<UserResponse> Register(RegisterUserRequest request)
     {
+        var checkUser = await _repositoriesManager.Users.GetUserByLoginAsync(request.Login);
+        if (checkUser != null)
+            return new UserResponse($"User with login {request.Login} already exists.");
         var hashedPassword = _passwordHasher.Generate(request.Password);
-        var user = new User // потом через маппер 
-        {
-            Login = request.Login,
-            Password = hashedPassword,
-            UserName = request.UserName
-        };
+        var user = _mapper.Map<User>(request);
+        user.Password = hashedPassword;
         await _repositoriesManager.Users.CreateAsync(user);
         await _repositoriesManager.SaveAsync();
+        return new UserResponse($"User with login {request.Login} created!");
     }
 
 
-    public async Task<string> Login(LoginUserRequest request)
+    public async Task<UserResponse> Login(LoginUserRequest request)
     {
         var user = await _repositoriesManager.Users.GetUserByLoginAsync(request.Login);
         if (user == null)
         {
-            throw new Exception("zalupa1");
-            // пототм сделаю норм
+            return new UserResponse($"User with login {request.Login} doesn't exists.");
         }
 
         var result = _passwordHasher.Verify(request.Password, user.Password);
 
         if (result == false)
         {
-            throw new Exception("zalupa2");
-            // пототм сделаю норм
+            return new UserResponse($"Invalid password.");
         }
 
         var token = _jwtProvider.GenerateToken(user);
-        return token;
+        return new UserResponse(token);
     }
 }

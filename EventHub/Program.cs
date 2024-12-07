@@ -19,6 +19,7 @@ app.AppendMiddlewareErrorHandler();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+app.ConfigureCookiesPolicy();
 app.UseStaticFiles();
 app.UseCors("CorsPolicy");
 app.UseRouting();

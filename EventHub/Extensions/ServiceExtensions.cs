@@ -4,6 +4,7 @@ using BusinessLayer.DtoModels.CommonDto;
 using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.DtoModels.EventsDto.QueryParams;
 using BusinessLayer.DtoModels.ParticipantDto;
+using BusinessLayer.DtoModels.UserDto;
 using BusinessLayer.Infrastructure.Authentication;
 using BusinessLayer.Logger;
 using BusinessLayer.Mapper;
@@ -18,11 +19,14 @@ using EventHub.Validation.CommonValidation;
 using EventHub.Validation.Event.Attributes;
 using EventHub.Validation.Event.Validators;
 using EventHub.Validation.Participants.Validators;
+using EventHub.Validation.User.Attributes;
+using EventHub.Validation.User.Validators;
 using EventHub.Validators.Category.Attributes;
 using EventHub.Validators.Participants.Attributes;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -84,8 +88,26 @@ public static class ServiceExtensions
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Value.SecretKey))
                 };
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        context.Token = context.Request.Cookies["token"];
+                        return Task.CompletedTask;
+                    }
+                };
             });
         services.AddAuthorization();
+    }
+
+    public static void ConfigureCookiesPolicy(this IApplicationBuilder builder)
+    {
+        builder.UseCookiePolicy(new CookiePolicyOptions
+        {
+            MinimumSameSitePolicy = SameSiteMode.Strict,
+            HttpOnly = HttpOnlyPolicy.Always,
+            Secure = CookieSecurePolicy.Always
+        });
     }
     
     public static void ConfigureValidation(this IServiceCollection services)
@@ -95,11 +117,15 @@ public static class ServiceExtensions
         services.AddTransient<IValidator<EventFiltersDto>, EventFiltersDtoValidator>();
         services.AddTransient<IValidator<PageParamsDto>, PageParamsDtoValidator>();
         services.AddTransient<IValidator<CreateParticipantDto>, ParticipantDtoValidator>();
+        services.AddTransient<IValidator<RegisterUserRequest>, RegisterUserRequestValidator>();
+        services.AddTransient<IValidator<LoginUserRequest>, LoginUserRequestValidator>();
         services.AddScoped<ValidateEventDtoAttribute>();
         services.AddScoped<ValidateEventQueryParamsAttribute>();
         services.AddScoped<ValidateParticipantDtoAttribute>();
         services.AddScoped<ValidateCategoryDtoAttribute>();
         services.AddScoped<ValidatePageParamsAttribute>();
+        services.AddScoped<ValidateRegisterUserRequestAttribute>();
+        services.AddScoped<ValidateLoginUserRequestAttribute>();
     }
 
     public static void ConfigureLogger(this IServiceCollection services)
@@ -140,6 +166,7 @@ public static class ServiceExtensions
             cfg.AddProfile<EventMappingProfile>();
             cfg.AddProfile<CategoryMappingProfile>();
             cfg.AddProfile<ParticipantMappingProfile>();
+            cfg.AddProfile<UserMappingProfile>();
         }, AppDomain.CurrentDomain.GetAssemblies());
     }
         

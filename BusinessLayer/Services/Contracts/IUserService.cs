@@ -4,6 +4,6 @@ namespace BusinessLayer.Services.Contracts;
 
 public interface IUserService
 {
-    Task Register(RegisterUserRequest request);
-    Task<string> Login(LoginUserRequest request);
+    Task<UserResponse> Register(RegisterUserRequest request);
+    Task<UserResponse> Login(LoginUserRequest request);
 }
