@@ -39,8 +39,34 @@ public class CategoryRepositoryTests
         Assert.Equal(name, result.Name);
     }
     
+    
     [Fact]
-    public async Task GetNonExistentModelByNameReturnsNull()
+    public async Task DeleteModelRemovesCategory()
+    {
+        // Arrange
+        var context = CreateContext();
+        var repository = new CategoryRepository(context);
+        var name = "test_name";
+        var model = new Category
+        {
+            Name = name
+        };
+        
+        await repository.CreateAsync(model);
+        await context.SaveChangesAsync();
+
+        // Act
+        repository.Delete(model); 
+        await context.SaveChangesAsync();
+
+        // Assert
+        var result = await repository.TryGetByNameAsync(name);
+        Assert.Null(result); 
+    }
+    
+    
+    [Fact]
+    public async Task GetNonExistentModelByName()
     {
         // Arrange
         var context = CreateContext();
@@ -50,7 +76,6 @@ public class CategoryRepositoryTests
         var result = await repository.TryGetByNameAsync("non_exist_name");
 
         // Assert
-        Assert.Null(result); // Проверяем, что результат равен null
+        Assert.Null(result); 
     }
-    
 }
