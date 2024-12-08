@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XpOC+fS2JNsh0kDy28n5HjoNhTFnHFPt/QlLtY40JbP0Fb9yAcyDK9ofhOTzFUgcHwhLcLUBjb+Kbe0mAM5N0w==",
+  "dgSpecHash": "sCM2kTg8itDGRuqRUemsNQ02SJm8T+PMEdXt3t15xFg4WF9BrIZNHoTqvNTLOcn6yRgFfv5oJF+88OAPHEp6eA==",
   "success": true,
   "projectFilePath": "D:\\my_code\\test_task\\EventHub\\BusinessLayer\\BusinessLayer.csproj",
   "expectedPackageFiles": [
@@ -35,14 +35,7 @@
     "C:\\Users\\Владислав\\.nuget\\packages\\npgsql\\8.0.5\\npgsql.8.0.5.nupkg.sha512",
     "C:\\Users\\Владислав\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\8.0.10\\npgsql.entityframeworkcore.postgresql.8.0.10.nupkg.sha512",
     "C:\\Users\\Владислав\\.nuget\\packages\\system.diagnostics.eventlog\\6.0.0\\system.diagnostics.eventlog.6.0.0.nupkg.sha512",
-    "C:\\Users\\Владислав\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.1.2\\system.identitymodel.tokens.jwt.7.1.2.nupkg.sha512",
-    "C:\\Users\\Владислав\\.nuget\\packages\\xunit\\2.9.2\\xunit.2.9.2.nupkg.sha512",
-    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.abstractions\\2.0.3\\xunit.abstractions.2.0.3.nupkg.sha512",
-    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.analyzers\\1.16.0\\xunit.analyzers.1.16.0.nupkg.sha512",
-    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.assert\\2.9.2\\xunit.assert.2.9.2.nupkg.sha512",
-    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.core\\2.9.2\\xunit.core.2.9.2.nupkg.sha512",
-    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.extensibility.core\\2.9.2\\xunit.extensibility.core.2.9.2.nupkg.sha512",
-    "C:\\Users\\Владислав\\.nuget\\packages\\xunit.extensibility.execution\\2.9.2\\xunit.extensibility.execution.2.9.2.nupkg.sha512"
+    "C:\\Users\\Владислав\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.1.2\\system.identitymodel.tokens.jwt.7.1.2.nupkg.sha512"
   ],
   "logs": []
 }
