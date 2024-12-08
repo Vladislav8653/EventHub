@@ -59,5 +59,4 @@ out/
 *.temp
 
 # Rider IDE specific
-.idea/
 *.iml
