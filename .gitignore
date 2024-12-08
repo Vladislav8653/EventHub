@@ -1,4 +1,5 @@
 ﻿/EventHub/wwwroot/images/
+/global.json
 # IDE-specific
 .idea/
 .vscode/
