@@ -1,8 +1,8 @@
 ﻿namespace BusinessLayer.DtoModels.UserDto;
 
-public class UserResponse
+public class RegisterUserResponse
 {
-    public UserResponse(string message)
+    public RegisterUserResponse(string message)
     {
         Message = message;
     }

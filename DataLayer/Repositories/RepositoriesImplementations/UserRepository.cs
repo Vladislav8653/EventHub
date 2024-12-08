@@ -15,4 +15,5 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
 
     public async Task<User?> GetUserByLoginAsync(string login) => 
         await Repository.Users.FirstOrDefaultAsync(u => u.Login == login);
+    
 }

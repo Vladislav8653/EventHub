@@ -27,7 +27,7 @@ public class ParticipantDtoValidator : AbstractValidator<CreateParticipantDto>
             .NotEmpty()
             .WithMessage(c => EmptyParamMessage(nameof(c.DateOfBirth)))
             .Must(CheckDateOfBirth)
-            .WithMessage("Invalid date of birth format.");
+            .WithMessage("Invalid date of birth format. Scheme: dd-mm-yyyy");
         
         RuleFor(c => c.Email)
             .NotEmpty()

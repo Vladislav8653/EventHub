@@ -24,10 +24,7 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
             .Include(e => e.Participants)
             .FirstOrDefaultAsync(e => e.Id == id);
     
-    public async Task<IEnumerable<Event>> GetAllAsync() =>
-        await FindAll(trackChanges: false)
-            .Include(e => e.Category)
-            .ToListAsync();
+ 
     
 
     public async Task<(IEnumerable<Event>, int)> GetAllByParamsAsync(EventQueryParams eventParams)
@@ -43,7 +40,19 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
         var totalFields = Repository.Events.Count();
         return (await query.ToListAsync(), totalFields);
     }
-    
+
+    public async Task<IEnumerable<Event>> GetAllUserEventsAsync(Guid userId)
+    {
+        var participantIds = Repository.Participants
+            .Where(p => p.UserId == userId)
+            .Select(p => p.Id);
+        var events = Repository.EventsParticipants
+            .Where(ep => participantIds.Contains(ep.ParticipantId))
+            .Include(ep => ep.Event)
+            .Select(ep => ep.Event);
+        return await events.ToListAsync();
+    }
+
     private IQueryable<Event> GetByFilters(IQueryable<Event> query, EventFilters filters)
     {
         if (filters.Date.HasValue) // если событие в эту дату

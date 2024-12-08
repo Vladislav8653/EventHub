@@ -41,8 +41,9 @@ public class ParticipantService : IParticipantService
     }
 
 
-    public async Task<RegistrationResult> RegisterParticipantAsync(Guid eventId, CreateParticipantDto item)
+    public async Task<RegistrationResult> RegisterParticipantAsync(Guid eventId, CreateParticipantDto item, string userIdStr)
     {
+        var userId = Guid.Parse(userIdStr);
         var eventDb = await _repositoriesManager.Events.GetByIdAsync(eventId);
         if (eventDb == null)
             throw new EntityNotFoundException($"Event with id {eventId} doesn't exist");
@@ -56,6 +57,7 @@ public class ParticipantService : IParticipantService
             };
         }
         var participant = _mapper.Map<Participant>(item);
+        participant.UserId = userId;
         var currentDate = DateTime.UtcNow;
         await _repositoriesManager.Participants.RegisterParticipantAsync(eventDb, participant, currentDate);
         await _repositoriesManager.SaveAsync();
@@ -80,7 +82,7 @@ public class ParticipantService : IParticipantService
         return participantDto;
     }
 
-    public async Task<GetParticipantDto> RemoveParticipantAsync(Guid eventId, Guid participantId)
+    public async Task<GetParticipantDto> RemoveParticipantAsync(Guid eventId, Guid participantId, string userIdStr)
     {
         var eventDb = await _repositoriesManager.Events.GetByIdAsync(eventId);
         if (eventDb == null)
@@ -88,6 +90,9 @@ public class ParticipantService : IParticipantService
         var participant = await _repositoriesManager.Participants.GetParticipantAsync(eventId, participantId);
         if(participant == null)
             throw new EntityNotFoundException($"Participant with id {participantId} doesn't exist");
+        var userId = Guid.Parse(userIdStr);
+        if (participant.Participant.UserId == userId)
+            throw new UnauthorizedAccessException("User does not have permission to remove other participants.");
         await _repositoriesManager.Participants.RemoveParticipantAsync(eventId, participant.Participant);
         await _repositoriesManager.SaveAsync();
         var participantDto = _mapper.Map<GetParticipantDto>(participant);

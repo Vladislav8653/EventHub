@@ -1,4 +1,5 @@
-﻿using BusinessLayer.DtoModels.EventsDto;
+﻿using System.Security.Claims;
+using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.Services.Contracts;
 using EventHub.Validation.Event.Attributes;
 using Microsoft.AspNetCore.Authorization;
@@ -19,13 +20,11 @@ public class EventController : ControllerBase
     
     [HttpGet]
     [ServiceFilter(typeof(ValidateEventQueryParamsAttribute))]
-    [Authorize]
     public async Task<IActionResult> GetAllEvents([FromQuery]EventQueryParamsDto eventParamsDto)
     {
-        var events = await _eventService.GetAllEvents(eventParamsDto, Request);
+        var events = await _eventService.GetAllEventsAsync(eventParamsDto, Request);
         return Ok(events);
     }
-    
     
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetEventById(Guid id)
@@ -42,6 +41,7 @@ public class EventController : ControllerBase
     }
     
     
+    [Authorize]
     [HttpPost]
     [ServiceFilter(typeof(ValidateEventDtoAttribute))]
     public async Task<IActionResult> CreateEvent([FromForm]CreateEventDto item)
@@ -50,6 +50,8 @@ public class EventController : ControllerBase
         return Ok(newEvent);
     }
 
+    
+    [Authorize]
     [HttpPut("{id:guid}")]
     [ServiceFilter(typeof(ValidateEventDtoAttribute))]
     public async Task<IActionResult> UpdateEvent([FromForm]CreateEventDto item, Guid id)
@@ -59,6 +61,7 @@ public class EventController : ControllerBase
     }
 
     
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteEvent(Guid id)
     {

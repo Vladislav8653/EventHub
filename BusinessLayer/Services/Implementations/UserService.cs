@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using BusinessLayer.DtoModels.EventsDto;
 using BusinessLayer.DtoModels.UserDto;
 using BusinessLayer.Services.Contracts;
 using BusinessLayer.Services.Contracts.Auth;
 using DataLayer.Models;
 using DataLayer.Repositories.UnitOfWork;
+using Microsoft.AspNetCore.Http;
 
 namespace BusinessLayer.Services.Implementations;
 
@@ -13,6 +15,7 @@ public class UserService : IUserService
     private readonly IJwtProvider _jwtProvider;
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
+    private enum Roles { User, Admin }
     
     public UserService(IPasswordHasher passwordHasher, IRepositoriesManager repositoriesManager, IJwtProvider jwtProvider, IMapper mapper)
     {
@@ -22,36 +25,53 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
-    public async Task<UserResponse> Register(RegisterUserRequest request)
+    public async Task<RegisterUserResponse> Register(RegisterUserRequest request)
     {
         var checkUser = await _repositoriesManager.Users.GetUserByLoginAsync(request.Login);
         if (checkUser != null)
-            return new UserResponse($"User with login {request.Login} already exists.");
+            return new RegisterUserResponse($"User with login {request.Login} already exists.");
+        if (!Enum.GetNames(typeof(Roles)).Contains(request.Role))
+        {
+            return new RegisterUserResponse($"Role {request.Role} doesn't exists. There are {Roles.User} and {Roles.Admin} only.");
+        }
         var hashedPassword = _passwordHasher.Generate(request.Password);
         var user = _mapper.Map<User>(request);
         user.Password = hashedPassword;
         await _repositoriesManager.Users.CreateAsync(user);
         await _repositoriesManager.SaveAsync();
-        return new UserResponse($"User with login {request.Login} created!");
+        return new RegisterUserResponse($"User with login {request.Login} created!");
     }
 
 
-    public async Task<UserResponse> Login(LoginUserRequest request)
+    public async Task<LoginUserResponse> Login(LoginUserRequest request)
     {
         var user = await _repositoriesManager.Users.GetUserByLoginAsync(request.Login);
         if (user == null)
         {
-            return new UserResponse($"User with login {request.Login} doesn't exists.");
+            return new LoginUserResponse($"User with login {request.Login} doesn't exists.");
         }
 
         var result = _passwordHasher.Verify(request.Password, user.Password);
 
         if (result == false)
         {
-            return new UserResponse($"Invalid password.");
+            return new LoginUserResponse($"Invalid password.");
         }
 
         var token = _jwtProvider.GenerateToken(user);
-        return new UserResponse(token);
+        return new LoginUserResponse($"Success!", token);
+    }
+    
+    public async Task<IEnumerable<GetEventDto>> GetAllUserEventsAsync(HttpRequest request, string userIdStr)
+    {
+        var userId = Guid.Parse(userIdStr);
+        var events = await _repositoriesManager.Events.GetAllUserEventsAsync(userId);
+        foreach (var eventDb in events)
+        {
+            if (!string.IsNullOrEmpty(eventDb.Image))
+                eventDb.Image = new Uri(new Uri($"{request.Scheme}://{request.Host}"), $"events/images/{eventDb.Image}").ToString();
+        }
+        var eventsWithImages = _mapper.Map<IEnumerable<GetEventDto>>(events);
+        return eventsWithImages;
     }
 }

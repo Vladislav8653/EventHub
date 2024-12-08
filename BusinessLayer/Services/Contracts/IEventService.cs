@@ -6,7 +6,7 @@ namespace BusinessLayer.Services.Contracts;
 
 public interface IEventService
 {
-     Task<EntitiesWithTotalCountDto<GetEventDto>> GetAllEvents(EventQueryParamsDto eventParamsDto, HttpRequest request);
+     Task<EntitiesWithTotalCountDto<GetEventDto>> GetAllEventsAsync(EventQueryParamsDto eventParamsDto, HttpRequest request);
      Task<GetEventDto> GetByIdAsync(Guid id, HttpRequest request);
      Task<GetEventDto> GetByNameAsync(string name, HttpRequest request);
      Task<GetEventDto> CreateAsync(CreateEventDto item);

@@ -14,15 +14,15 @@ using BusinessLayer.Services.Implementations;
 using DataLayer.Data;
 using DataLayer.Repositories.UnitOfWork;
 using EventHub.MiddlewareHandlers;
+using EventHub.Validation.Category.Attributes;
 using EventHub.Validation.Category.Validators;
 using EventHub.Validation.CommonValidation;
 using EventHub.Validation.Event.Attributes;
 using EventHub.Validation.Event.Validators;
+using EventHub.Validation.Participants.Attributes;
 using EventHub.Validation.Participants.Validators;
 using EventHub.Validation.User.Attributes;
 using EventHub.Validation.User.Validators;
-using EventHub.Validators.Category.Attributes;
-using EventHub.Validators.Participants.Attributes;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -97,7 +97,11 @@ public static class ServiceExtensions
                     }
                 };
             });
-        services.AddAuthorization();
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+            options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+        });
     }
 
     public static void ConfigureCookiesPolicy(this IApplicationBuilder builder)

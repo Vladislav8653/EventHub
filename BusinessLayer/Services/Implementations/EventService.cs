@@ -25,6 +25,7 @@ public class EventService : IEventService
         _mapper = mapper;
     }
     
+
     public async Task<GetEventDto> GetByIdAsync(Guid id, HttpRequest request)
     {
         var eventById = await _repositoriesManager.Events.GetByIdAsync(id);
@@ -48,7 +49,7 @@ public class EventService : IEventService
         return eventDto;
     }
     
-    public async Task<EntitiesWithTotalCountDto<GetEventDto>> GetAllEvents(EventQueryParamsDto eventParamsDto, HttpRequest request)
+    public async Task<EntitiesWithTotalCountDto<GetEventDto>> GetAllEventsAsync(EventQueryParamsDto eventParamsDto, HttpRequest request)
     {
         EventFilters? filters = null;
         if (eventParamsDto.Filters != null)
@@ -115,10 +116,11 @@ public class EventService : IEventService
         await _repositoriesManager.Events.CreateAsync(eventForDb);
         await _repositoriesManager.SaveAsync();
         var eventDto = _mapper.Map<GetEventDto>(eventForDb);
+        eventDto.Category = item.Category;
         return eventDto;
     }
 
-    public async Task<GetEventDto> UpdateAsync(Guid id, CreateEventDto item) // TODO!!!!!!
+    public async Task<GetEventDto> UpdateAsync(Guid id, CreateEventDto item) 
     {
         var eventToUpdate = await _repositoriesManager.Events.GetByIdAsync(id);
         if (eventToUpdate == null)
@@ -141,6 +143,7 @@ public class EventService : IEventService
         _repositoriesManager.Events.Update(eventToUpdate);
         await _repositoriesManager.SaveAsync();
         var eventDto = _mapper.Map<GetEventDto>(eventToUpdate);
+        eventDto.Category = item.Category;
         return eventDto;
     }
 

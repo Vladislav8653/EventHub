@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace EventHub.Validators.Category.Attributes;
+namespace EventHub.Validation.Category.Attributes;
 
 public class ValidateCategoryDtoAttribute : IAsyncActionFilter
 {

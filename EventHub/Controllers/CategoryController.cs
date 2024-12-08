@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.DtoModels.CategoryDto;
 using BusinessLayer.Services.Contracts;
-using EventHub.Validators.Category.Attributes;
+using EventHub.Validation.Category.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EventHub.Controllers;
@@ -22,6 +23,7 @@ public class CategoryController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Policy = "AdminOnly")]
     [HttpPost]
     [ServiceFilter(typeof(ValidateCategoryDtoAttribute))]
     public async Task<IActionResult> CreateCategory([FromBody] CategoryDto item)
@@ -30,6 +32,7 @@ public class CategoryController : ControllerBase
         return Ok(newEvent);
     }
 
+    [Authorize(Policy = "AdminOnly")]
     [HttpDelete("{id}")]
     public IActionResult DeleteCategory(Guid id)
     {

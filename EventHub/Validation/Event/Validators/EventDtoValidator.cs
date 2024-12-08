@@ -26,7 +26,7 @@ public class EventDtoValidator : AbstractValidator<CreateEventDto>
             .NotEmpty()
             .WithMessage(c => EmptyParamMessage(nameof(c.DateTime)))
             .Must(CheckDateTime)
-            .WithMessage("Invalid date format.");
+            .WithMessage("Invalid date format. Scheme: yyyy-mm-ddThh:mm:ssZ");
         
         RuleFor(c => c.Place)
             .NotEmpty()

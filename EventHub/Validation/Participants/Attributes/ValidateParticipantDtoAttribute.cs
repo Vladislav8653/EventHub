@@ -1,10 +1,9 @@
-﻿using BusinessLayer.DtoModels.EventsDto;
-using BusinessLayer.DtoModels.ParticipantDto;
+﻿using BusinessLayer.DtoModels.ParticipantDto;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace EventHub.Validators.Participants.Attributes;
+namespace EventHub.Validation.Participants.Attributes;
 
 public class ValidateParticipantDtoAttribute : IAsyncActionFilter
 {
