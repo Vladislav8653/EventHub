@@ -1,5 +1,6 @@
 ﻿/EventHub/wwwroot/images/
 /global.json
+/DataLayer/Migrations/
 # IDE-specific
 .idea/
 .vscode/
