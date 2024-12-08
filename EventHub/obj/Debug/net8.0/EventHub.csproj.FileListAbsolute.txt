@@ -122,10 +122,6 @@ D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Swashbuckle.AspNetCore.S
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\EventHub.staticwebassets.runtime.json
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Castle.Core.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Moq.dll
-D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\xunit.abstractions.dll
-D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\xunit.assert.dll
-D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\xunit.core.dll
-D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\xunit.execution.dotnet.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\BCrypt.Net-Next.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\my_code\test_task\EventHub\EventHub\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
