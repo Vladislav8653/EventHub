@@ -39,4 +39,18 @@ public class CategoryRepositoryTests
         Assert.Equal(name, result.Name);
     }
     
+    [Fact]
+    public async Task GetNonExistentModelByNameReturnsNull()
+    {
+        // Arrange
+        var context = CreateContext();
+        var repository = new CategoryRepository(context);
+    
+        // ACt
+        var result = await repository.TryGetByNameAsync("non_exist_name");
+
+        // Assert
+        Assert.Null(result); // Проверяем, что результат равен null
+    }
+    
 }
