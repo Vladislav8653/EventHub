@@ -48,11 +48,7 @@ public static class ServiceExtensions
         });
     }
 
-    public static void ConfigureLoggerService(this IServiceCollection services)
-    {
-        services.AddScoped<ILoggerManager, LoggerManager>();
-    }
-
+  
     public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<EventHubDbContext>(opts =>
@@ -134,7 +130,9 @@ public static class ServiceExtensions
 
     public static void ConfigureLogger(this IServiceCollection services)
     {
-        /*var currentDirection = Directory.GetCurrentDirectory();
+        /*
+        services.AddScoped<ILoggerManager, LoggerManager>();
+        var currentDirection = Directory.GetCurrentDirectory();
         var parent = Directory.GetParent(currentDirection);
         var nlogConfigPath = Path.Combine(parent.FullName, nameof(BusinessLayer), "Logger", "nlog.config"); 
         LogManager.Setup().LoadConfigurationFromFile(nlogConfigPath);*/

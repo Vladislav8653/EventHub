@@ -31,8 +31,7 @@ public class EventService : IEventService
         var eventById = await _repositoriesManager.Events.GetByIdAsync(id);
         if (eventById == null)
             throw new EntityNotFoundException($"Event with id {id} doesn't exist");
-        if (!string.IsNullOrEmpty(eventById.Image))
-            eventById.Image = new Uri(new Uri($"{request.Scheme}://{request.Host}"), $"events/images/{eventById.Image}").ToString();
+        eventById = AttachLinkToImage(eventById, request);
         var eventDto = _mapper.Map<GetEventDto>(eventById);
         return eventDto;
     }
@@ -42,9 +41,7 @@ public class EventService : IEventService
         var eventByName = await _repositoriesManager.Events.GetByNameAsync(name);
         if (eventByName == null)
             throw new EntityNotFoundException($"Event with name {name} doesn't exist");
-        if (!string.IsNullOrEmpty(eventByName.Image))
-            eventByName.Image = new Uri(new Uri($"{request.Scheme}://{request.Host}"), $"events/images/{eventByName.Image}").ToString();
-
+        eventByName = AttachLinkToImage(eventByName, request);
         var eventDto = _mapper.Map<GetEventDto>(eventByName);
         return eventDto;
     }
@@ -82,11 +79,7 @@ public class EventService : IEventService
         };
         
         var (events, totalFields) = await _repositoriesManager.Events.GetAllByParamsAsync(eventParams);
-        foreach (var eventDb in events)
-        {
-            if (!string.IsNullOrEmpty(eventDb.Image))
-                eventDb.Image = new Uri(new Uri($"{request.Scheme}://{request.Host}"), $"events/images/{eventDb.Image}").ToString();
-        }
+        events = AttachLinkToImage(events, request);
         var eventsWithImages = _mapper.Map<IEnumerable<GetEventDto>>(events);
         return new EntitiesWithTotalCountDto<GetEventDto>(eventsWithImages, totalFields);
     }
@@ -176,6 +169,23 @@ public class EventService : IEventService
         {
             await image.CopyToAsync(stream); 
         }
+    }
+
+    private Event AttachLinkToImage(Event item, HttpRequest request)
+    {
+        if (!string.IsNullOrEmpty(item.Image)) 
+            item.Image = new Uri($"{request.Scheme}://{request.Host}/events/images/{item.Image}").ToString();
+        return item;
+    }
+    private IEnumerable<Event> AttachLinkToImage(IEnumerable<Event> items, HttpRequest request)
+    {
+        var itemsList = items.ToList();
+        foreach(var item in itemsList)
+        {
+            if (!string.IsNullOrEmpty(item.Image)) 
+                item.Image = new Uri($"{request.Scheme}://{request.Host}/events/images/{item.Image}").ToString();
+        }
+        return itemsList;
     }
     
    

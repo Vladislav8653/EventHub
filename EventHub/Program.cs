@@ -1,10 +1,7 @@
-using BusinessLayer.Infrastructure.Authentication;
 using EventHub.Extensions;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.ConfigureCors();
-builder.Services.ConfigureLoggerService();
 builder.Services.AddControllers();
 builder.Services.ConfigureValidation();
 builder.Services.ConfigureSqlContext(builder.Configuration);
