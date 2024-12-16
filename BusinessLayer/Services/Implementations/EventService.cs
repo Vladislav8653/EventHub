@@ -19,6 +19,9 @@ public class EventService : IEventService
     private readonly IMapper _mapper;
     private const int DefaultPage = 1;
     private const int DefaultPageSize = 5;
+    private const string ControllerRoute = "events";
+    private const string EndpointRoute = "images";
+
     public EventService(IRepositoriesManager repositoriesManager, IMapper mapper)
     {
         _repositoriesManager = repositoriesManager;
@@ -31,7 +34,7 @@ public class EventService : IEventService
         var eventById = await _repositoriesManager.Events.GetByIdAsync(id);
         if (eventById == null)
             throw new EntityNotFoundException($"Event with id {id} doesn't exist");
-        eventById = AttachLinkToImage(eventById, request);
+        eventById = AttachLinkToImage(eventById, request, ControllerRoute, EndpointRoute);
         var eventDto = _mapper.Map<GetEventDto>(eventById);
         return eventDto;
     }
@@ -41,7 +44,7 @@ public class EventService : IEventService
         var eventByName = await _repositoriesManager.Events.GetByNameAsync(name);
         if (eventByName == null)
             throw new EntityNotFoundException($"Event with name {name} doesn't exist");
-        eventByName = AttachLinkToImage(eventByName, request);
+        eventByName = AttachLinkToImage(eventByName, request, ControllerRoute, EndpointRoute);
         var eventDto = _mapper.Map<GetEventDto>(eventByName);
         return eventDto;
     }
@@ -79,7 +82,7 @@ public class EventService : IEventService
         };
         
         var (events, totalFields) = await _repositoriesManager.Events.GetAllByParamsAsync(eventParams);
-        events = AttachLinkToImage(events, request);
+        events = AttachLinkToImage(events, request, ControllerRoute, EndpointRoute);
         var eventsWithImages = _mapper.Map<IEnumerable<GetEventDto>>(events);
         return new EntitiesWithTotalCountDto<GetEventDto>(eventsWithImages, totalFields);
     }
@@ -171,22 +174,19 @@ public class EventService : IEventService
         }
     }
 
-    private Event AttachLinkToImage(Event item, HttpRequest request)
+    private static Event AttachLinkToImage(Event item, HttpRequest request, string controllerRoute, string endpointRoute)
     {
         if (!string.IsNullOrEmpty(item.Image)) 
-            item.Image = new Uri($"{request.Scheme}://{request.Host}/events/images/{item.Image}").ToString();
+            item.Image = new Uri($"{request.Scheme}://{request.Host}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
         return item;
     }
-    private IEnumerable<Event> AttachLinkToImage(IEnumerable<Event> items, HttpRequest request)
+    private static List<Event> AttachLinkToImage(IEnumerable<Event> items, HttpRequest request,  string controllerRoute, string endpointRoute)
     {
         var itemsList = items.ToList();
-        foreach(var item in itemsList)
+        foreach (var item in itemsList.Where(item => !string.IsNullOrEmpty(item.Image)))
         {
-            if (!string.IsNullOrEmpty(item.Image)) 
-                item.Image = new Uri($"{request.Scheme}://{request.Host}/events/images/{item.Image}").ToString();
+            item.Image = new Uri($"{request.Scheme}://{request.Host}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
         }
         return itemsList;
     }
-    
-   
 }
