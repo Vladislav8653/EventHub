@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessLayer.DtoModels.CommonDto;
 using BusinessLayer.DtoModels.EventsDto;
+using BusinessLayer.DtoModels.EventsDto.QueryParams;
 using BusinessLayer.Exceptions;
 using BusinessLayer.Services.Contracts;
 using DataLayer.Models;
@@ -27,7 +28,6 @@ public class EventService : IEventService
         _repositoriesManager = repositoriesManager;
         _mapper = mapper;
     }
-    
 
     public async Task<GetEventDto> GetByIdAsync(Guid id, HttpRequest request)
     {
@@ -51,44 +51,19 @@ public class EventService : IEventService
     
     public async Task<EntitiesWithTotalCountDto<GetEventDto>> GetAllEventsAsync(EventQueryParamsDto eventParamsDto, HttpRequest request)
     {
-        EventFilters? filters = null;
-        if (eventParamsDto.Filters != null)
-        {
-            filters = _mapper.Map<EventFilters>(eventParamsDto.Filters);
-            if (eventParamsDto.Filters.Category != null)
-            {
-                var category = await _repositoriesManager.Categories.TryGetByNameAsync(eventParamsDto.Filters.Category);
-                if (category != null)
-                {
-                    filters.Category = category;
-                }
-            }
-        }
-
-        PageParams? pageParams = null;
-        if (eventParamsDto.PageParams != null)
-        { 
-            pageParams = new PageParams(
-                eventParamsDto.PageParams.Page,
-                eventParamsDto.PageParams.PageSize,
-                DefaultPage,
-                DefaultPageSize);
-        }
-        
+        var filters = await GetFiltersFromQueryParams(eventParamsDto.Filters);
+        var pageParams = GetPageParamsFromQueryParams(eventParamsDto.PageParams, DefaultPage, DefaultPageSize); 
         var eventParams = new EventQueryParams
         {
             Filters = filters,
             PageParams = pageParams
         };
-        
         var (events, totalFields) = await _repositoriesManager.Events.GetAllByParamsAsync(eventParams);
         events = AttachLinkToImage(events, request, ControllerRoute, EndpointRoute);
         var eventsWithImages = _mapper.Map<IEnumerable<GetEventDto>>(events);
         return new EntitiesWithTotalCountDto<GetEventDto>(eventsWithImages, totalFields);
     }
     
-    
-
     public async Task<GetEventDto> CreateAsync(CreateEventDto item)
     {
         var isUniqueName = await _repositoriesManager.Events.IsUniqueNameAsync(item.Name);
@@ -166,7 +141,7 @@ public class EventService : IEventService
         return (fileBytes, contentType);
     }
     
-    private async Task WriteFileAsync(IFormFile image, string imageFilePath)
+    private static async Task WriteFileAsync(IFormFile image, string imageFilePath)
     {
         await using (var stream = new FileStream(imageFilePath, FileMode.Create))
         {
@@ -188,5 +163,29 @@ public class EventService : IEventService
             item.Image = new Uri($"{request.Scheme}://{request.Host}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
         }
         return itemsList;
+    }
+
+    private async Task<EventFilters?> GetFiltersFromQueryParams(EventFiltersDto? filtersDto)
+    {
+        if (filtersDto == null) return null;
+        EventFilters filters = _mapper.Map<EventFilters>(filtersDto);
+        if (filtersDto.Category == null) return filters;
+        var category = await _repositoriesManager.Categories.TryGetByNameAsync(filtersDto.Category);
+        if (category != null)
+        {
+            filters.Category = category;
+        }
+        return filters;
+    }
+
+    private static PageParams? GetPageParamsFromQueryParams(PageParamsDto? pageParamsDro, int defaultPage, int defaultPageSize)
+    {
+        if (pageParamsDro == null) return null;
+        PageParams pageParams = new PageParams(
+            pageParamsDro.Page,
+            pageParamsDro.PageSize,
+            defaultPage,
+            defaultPageSize);
+        return pageParams;
     }
 }
