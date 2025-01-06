@@ -22,7 +22,7 @@ public class EventController : ControllerBase
     [ServiceFilter(typeof(ValidateEventQueryParamsAttribute))]
     public async Task<IActionResult> GetAllEvents([FromQuery]EventQueryParamsDto eventParamsDto)
     {
-        var events = await _eventService.GetAllEventsAsync(eventParamsDto, Request);
+        var events = await _eventService.GetAllAsync(eventParamsDto, Request);
         return Ok(events);
     }
     

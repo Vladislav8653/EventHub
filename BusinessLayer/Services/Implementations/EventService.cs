@@ -49,7 +49,7 @@ public class EventService : IEventService
         return eventDto;
     }
     
-    public async Task<EntitiesWithTotalCountDto<GetEventDto>> GetAllEventsAsync(EventQueryParamsDto eventParamsDto, HttpRequest request)
+    public async Task<EntitiesWithTotalCountDto<GetEventDto>> GetAllAsync(EventQueryParamsDto eventParamsDto, HttpRequest request)
     {
         var filters = await GetFiltersFromQueryParams(eventParamsDto.Filters);
         var pageParams = GetPageParamsFromQueryParams(eventParamsDto.PageParams, DefaultPage, DefaultPageSize); 
@@ -77,8 +77,8 @@ public class EventService : IEventService
         string? filename = null;
         if (item.Image != null) 
         {
-            var imageFilePath = Path.Combine("wwwroot", "images", item.Image.FileName);
             filename = item.Image.FileName;
+            var imageFilePath = Path.Combine("wwwroot", "images", filename);
             await WriteFileAsync(item.Image, imageFilePath);
         }
         eventForDb.Image = filename;
@@ -101,14 +101,20 @@ public class EventService : IEventService
             throw new EntityNotFoundException($"Category {item.Category} doesn't exits.");
         _mapper.Map(item, eventToUpdate);
         
-        string? filename = null;
+        string? newFileName = null;
         if (item.Image != null) 
         {
-            var imageFilePath = Path.Combine("wwwroot", "images", item.Image.FileName);
-            filename = item.Image.FileName;
+            newFileName = item.Image.FileName;
+            var imageFilePath = Path.Combine("wwwroot", "images", newFileName);
             await WriteFileAsync(item.Image, imageFilePath);
         }
-        eventToUpdate.Image = filename;
+        var oldFilename = eventToUpdate.Image;
+        if (oldFilename != null)
+        {
+            var imageFilePath = Path.Combine("wwwroot", "images", oldFilename);
+            DeleteFile(imageFilePath);
+        }
+        eventToUpdate.Image = newFileName;
         eventToUpdate.CategoryId = category.Id;
         
         _repositoriesManager.Events.Update(eventToUpdate);
@@ -123,6 +129,12 @@ public class EventService : IEventService
         var eventToDelete = await _repositoriesManager.Events.GetByIdAsync(id);
         if (eventToDelete == null)
             throw new EntityNotFoundException($"Event with id {id} doesn't exist");
+        var filename = eventToDelete.Image;
+        if (filename != null)
+        {
+            var imageFilePath = Path.Combine("wwwroot", "images", filename);
+            DeleteFile(imageFilePath);
+        }
         _repositoriesManager.Events.Delete(eventToDelete);
         await _repositoriesManager.SaveAsync();
         var eventDto = _mapper.Map<GetEventDto>(eventToDelete);
@@ -141,13 +153,18 @@ public class EventService : IEventService
         return (fileBytes, contentType);
     }
     
-    private static async Task WriteFileAsync(IFormFile image, string imageFilePath)
+    private static async Task WriteFileAsync(IFormFile image, string filePath)
     {
-        await using (var stream = new FileStream(imageFilePath, FileMode.Create))
+        await using (var stream = new FileStream(filePath, FileMode.Create))
         {
             await image.CopyToAsync(stream); 
         }
     }
+
+    private static void DeleteFile(string filePath)
+    {
+        File.Delete(filePath);
+    }    
 
     private static Event AttachLinkToImage(Event item, HttpRequest request, string controllerRoute, string endpointRoute)
     {
