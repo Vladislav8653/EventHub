@@ -9,7 +9,6 @@ namespace DataLayer.Repositories.RepositoriesImplementations;
 
 public class ParticipantRepository : RepositoryBase<Participant>, IParticipantRepository
 {
-
     private readonly IEventParticipantRepository _eventParticipantRepository;
     public ParticipantRepository(EventHubDbContext eventHubDbContext, 
         IEventParticipantRepository eventParticipantRepository) : base(eventHubDbContext)
