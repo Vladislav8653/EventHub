@@ -5,6 +5,7 @@ builder.Services.ConfigureCors();
 builder.Services.AddControllers();
 builder.Services.ConfigureValidation();
 builder.Services.ConfigureSqlContext(builder.Configuration);
+builder.Services.ConfigureRepositories();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureAutoMapper();
 builder.Services.ConfigureServices();

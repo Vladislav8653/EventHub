@@ -12,6 +12,8 @@ using BusinessLayer.Services.Contracts;
 using BusinessLayer.Services.Contracts.Auth;
 using BusinessLayer.Services.Implementations;
 using DataLayer.Data;
+using DataLayer.Repositories.RepositoriesImplementations;
+using DataLayer.Repositories.RepositoryContracts;
 using DataLayer.Repositories.UnitOfWork;
 using EventHub.MiddlewareHandlers;
 using EventHub.Validation.Category.Attributes;
@@ -54,6 +56,15 @@ public static class ServiceExtensions
         services.AddDbContext<EventHubDbContext>(opts =>
             opts.UseNpgsql(configuration.GetConnectionString("sqlConnection"), b => 
                 b.MigrationsAssembly("DataLayer")));
+    }
+
+    public static void ConfigureRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<IParticipantRepository, ParticipantRepository>();
+        services.AddScoped<IEventParticipantRepository, EventParticipantRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 
     public static void ConfigureRepositoryManager(this IServiceCollection services) =>
