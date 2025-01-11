@@ -24,9 +24,7 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
             .Include(e => e.Participants)
             .FirstOrDefaultAsync(e => e.Id == id);
     
- 
     
-
     public async Task<(IEnumerable<Event>, int)> GetAllByParamsAsync(EventQueryParams eventParams)
     {
         var filters = eventParams.Filters ?? null;
