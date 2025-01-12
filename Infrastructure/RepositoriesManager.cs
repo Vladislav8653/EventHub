@@ -1,4 +1,5 @@
-﻿using Infrastructure.Repositories.RepositoryContracts;
+﻿using Application.Contracts;
+using Application.Contracts.RepositoryContracts;
 
 namespace Infrastructure.Repositories.UnitOfWork;
 

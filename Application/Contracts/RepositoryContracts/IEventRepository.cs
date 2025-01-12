@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 
-namespace Infrastructure.Repositories.RepositoryContracts;
+namespace Application.Contracts.RepositoryContracts;
 
 public interface IEventRepository : IRepositoryBase<Event>
 {

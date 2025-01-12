@@ -1,6 +1,6 @@
-﻿using Infrastructure.Repositories.RepositoryContracts;
+﻿using Application.Contracts.RepositoryContracts;
 
-namespace Infrastructure.Repositories.UnitOfWork;
+namespace Application.Contracts;
 
 public interface IRepositoriesManager
 {

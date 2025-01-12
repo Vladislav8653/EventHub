@@ -1,8 +1,9 @@
-﻿using Domain.Models;
-using Infrastructure.Repositories.RepositoryContracts;
+﻿using Application.Contracts.RepositoryContracts;
+using Domain.Models;
+using Infrastructure.Repositories.RepositoriesImplementations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories.RepositoriesImplementations;
+namespace Infrastructure.RepositoryImplementations;
 
 
 public class CategoryRepository : RepositoryBase<Category>, ICategoryRepository

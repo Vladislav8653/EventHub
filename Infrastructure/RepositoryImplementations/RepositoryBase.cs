@@ -1,8 +1,6 @@
-﻿using System.Linq.Expressions;
-using Infrastructure.Repositories.RepositoryContracts;
-using Microsoft.EntityFrameworkCore;
+﻿using Application.Contracts.RepositoryContracts;
 
-namespace Infrastructure.Repositories.RepositoriesImplementations;
+namespace Infrastructure.RepositoryImplementations;
 
 public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
