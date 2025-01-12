@@ -1,4 +1,4 @@
-﻿namespace DataLayer.Models;
+﻿namespace Domain.Models;
 
 public class Event
 {

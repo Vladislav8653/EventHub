@@ -22,9 +22,7 @@ public class CategoryService : ICategoryService
 
     public Category? TryGetById(Guid id) =>
          _repositoriesManager.Categories.TryGetById(id);
-
-    public bool Exists(Guid id) => _repositoriesManager.Categories.Exists(id);
-
+    
     public async Task<IEnumerable<Category>> GetAllAsync() =>
         await _repositoriesManager.Categories.GetAllAsync();
 

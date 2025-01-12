@@ -8,7 +8,6 @@ public interface ICategoryService
 {
     Task<Category?> TryGetByNameAsync(string name);
     Category? TryGetById(Guid id);
-    bool Exists(Guid id);
     Task<IEnumerable<Category>> GetAllAsync();
     Task<Category> CreateAsync(CategoryDto item);
     
