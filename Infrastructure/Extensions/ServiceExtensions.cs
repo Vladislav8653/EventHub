@@ -20,7 +20,6 @@ using Application.Validation.Participants.Attributes;
 using Application.Validation.Participants.Validators;
 using Application.Validation.User.Attributes;
 using Application.Validation.User.Validators;
-using Infrastructure.Repositories.UnitOfWork;
 using Infrastructure.RepositoryImplementations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.CookiePolicy;
