@@ -8,7 +8,7 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepositories();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureAutoMapper();
-builder.Services.ConfigureServices();
+builder.Services.ConfigureUseCases();
 builder.Services.ConfigureLogger();
 builder.Services.ConfigureApiAuthentication(builder.Configuration);
 builder.Services.ConfigureSwagger();

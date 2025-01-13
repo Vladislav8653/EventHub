@@ -1,4 +1,5 @@
 ﻿using Application.Contracts;
+using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts;
 using Application.DtoModels.CommonDto;
 using Application.DtoModels.EventsDto;

@@ -1,4 +1,4 @@
-﻿using Application.Contracts.UseCaseContracts;
+﻿using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.DtoModels.CategoryDto;
 using Application.Validation.Category.Attributes;
 using Microsoft.AspNetCore.Authorization;
@@ -10,16 +10,24 @@ namespace Presentation.Controllers;
 [Route("categories")]
 public class CategoryController : ControllerBase
 {
-    private ICategoryService _categoryService;
-    public CategoryController(ICategoryService categoryService)
+    private readonly ICreateCategoryUseCase _createCategoryUseCase;
+    private readonly IDeleteCategoryUseCase _deleteCategoryUseCase;
+    private readonly IGetAllCategoriesUseCase _getAllCategoriesUseCase;
+    public CategoryController(
+        ICreateCategoryUseCase createCategoryUseCase, 
+        IGetAllCategoriesUseCase getAllCategoriesUseCase, 
+        IDeleteCategoryUseCase deleteCategoryUseCase
+        )
     {
-        _categoryService = categoryService;
+        _createCategoryUseCase = createCategoryUseCase;
+        _getAllCategoriesUseCase = getAllCategoriesUseCase;
+        _deleteCategoryUseCase = deleteCategoryUseCase;
     }
     
     [HttpGet]
     public async Task<IActionResult> GetCategories()
     {
-        var result = await _categoryService.GetAllAsync();
+        var result = await _getAllCategoriesUseCase.Handle();
         return Ok(result);
     }
 
@@ -28,7 +36,7 @@ public class CategoryController : ControllerBase
     [ServiceFilter(typeof(ValidateCategoryDtoAttribute))]
     public async Task<IActionResult> CreateCategory([FromBody] CategoryDto item)
     {
-        var newEvent = await _categoryService.CreateAsync(item);
+        var newEvent = await _createCategoryUseCase.Handle(item);
         return Ok(newEvent);
     }
 
@@ -36,7 +44,7 @@ public class CategoryController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult DeleteCategory(Guid id)
     {
-        _categoryService.Delete(id);
+        _deleteCategoryUseCase.Handle(id);
         return Ok();
     }
 }

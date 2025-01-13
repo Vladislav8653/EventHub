@@ -29,6 +29,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using FluentValidation;
 using System.Text;
+using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
+using Application.UseCases.CategoryUseCases;
 
 namespace Infrastructure.Extensions;
 
@@ -65,10 +67,15 @@ public static class ServiceExtensions
     public static void ConfigureRepositoryManager(this IServiceCollection services) =>
         services.AddScoped<IRepositoriesManager, RepositoriesManager>();
 
-    public static void ConfigureServices(this IServiceCollection services)
+    public static void ConfigureUseCases(this IServiceCollection services)
     {
+        services.AddScoped<ICreateCategoryUseCase, CreateCategoryUseCase>();
+        services.AddScoped<IDeleteCategoryUseCase, DeleteCategoryUseCase>();
+        services.AddScoped<IGetAllCategoriesUseCase, GetAllCategoriesUseCase>();
+        services.AddScoped<IGetCategoryByIdUseCase, GetCategoryByIdUseCase>();
+        services.AddScoped<IGetCategoryByNameUseCase, GetCategoryByNameUseCase>();
+        
         services.AddScoped<IEventService, EventService>();
-        services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IParticipantService, ParticipantService>();
         services.AddScoped<IUserService, UserService>();
     }

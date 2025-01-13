@@ -1,5 +1,6 @@
 ﻿using Application.Contracts;
 using Application.Contracts.AuthContracts;
+using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.DtoModels.UserDto;
