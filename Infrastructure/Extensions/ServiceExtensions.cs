@@ -50,7 +50,7 @@ public static class ServiceExtensions
     {
         services.AddDbContext<EventHubDbContext>(opts =>
             opts.UseNpgsql(configuration.GetConnectionString("sqlConnection"), b => 
-                b.MigrationsAssembly("DataLayer")));
+                b.MigrationsAssembly("Infrastructure")));
     }
 
     public static void ConfigureRepositories(this IServiceCollection services)

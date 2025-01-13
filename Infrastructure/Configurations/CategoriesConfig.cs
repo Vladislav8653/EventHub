@@ -8,9 +8,10 @@ public class CategoriesConfig : IEntityTypeConfiguration<Category>
 {
     public void Configure(EntityTypeBuilder<Category> builder)
     {
-        builder.HasKey(c => c.Id); 
+        builder.HasKey(c => c.Id);
 
         builder.Property(e => e.Id)
+            .HasColumnName("CategoryId")
             .ValueGeneratedOnAdd();
 
         builder.Property(e => e.Name)

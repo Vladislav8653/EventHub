@@ -18,21 +18,26 @@ public class ParticipantsConfig : IEntityTypeConfiguration<Participant>
             .HasForeignKey(p => p.UserId);
         
         builder.Property(e => e.Id)
-            .ValueGeneratedOnAdd();
+            .HasColumnName("ParticipantId") 
+            .ValueGeneratedOnAdd(); 
 
         builder.Property(e => e.Name)
-            .IsRequired()
-            .HasMaxLength(30);
+            .IsRequired() 
+            .HasMaxLength(30) 
+            .HasColumnName("Name"); 
 
         builder.Property(e => e.Surname)
             .IsRequired() 
-            .HasMaxLength(30); 
+            .HasMaxLength(30) 
+            .HasColumnName("Surname"); 
 
         builder.Property(e => e.DateOfBirth)
-            .IsRequired(); 
+            .IsRequired() 
+            .HasColumnName("DateOfBirth"); 
 
         builder.Property(e => e.Email)
             .IsRequired()
-            .HasMaxLength(254);
+            .HasMaxLength(254) 
+            .HasColumnName("Email"); 
     }
 }

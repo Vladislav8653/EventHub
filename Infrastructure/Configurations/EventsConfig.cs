@@ -17,6 +17,7 @@ public class EventsConfig : IEntityTypeConfiguration<Event>
             .HasForeignKey(e => e.CategoryId);
 
         builder.Property(e => e.Id)
+            .HasColumnName("EventId")
             .ValueGeneratedOnAdd();
 
         builder.Property(e => e.Name)
