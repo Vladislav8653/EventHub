@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using BusinessLayer.DtoModels.CategoryDto;
-using DataLayer.Models;
+﻿using Application.DtoModels.CategoryDto;
+using AutoMapper;
+using Domain.Models;
 
-
-namespace BusinessLayer.Mapper;
+namespace Application.MappingProfiles;
 
 public class CategoryMappingProfile : Profile
 {

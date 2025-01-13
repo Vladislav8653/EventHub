@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using BusinessLayer.DtoModels.UserDto;
-using DataLayer.Models;
+﻿using Application.DtoModels.UserDto;
+using AutoMapper;
+using Domain.Models;
 
-namespace BusinessLayer.Mapper;
+namespace Application.MappingProfiles;
 
 public class UserMappingProfile : Profile
 {

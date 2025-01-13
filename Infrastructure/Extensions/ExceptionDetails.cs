@@ -1,4 +1,4 @@
-﻿namespace EventHub.MiddlewareHandlers;
+﻿namespace Infrastructure.Extensions;
 
 public class ExceptionDetails
 {

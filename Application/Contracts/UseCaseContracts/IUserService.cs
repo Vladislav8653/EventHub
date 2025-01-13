@@ -1,8 +1,7 @@
-﻿using BusinessLayer.DtoModels.EventsDto;
-using BusinessLayer.DtoModels.UserDto;
-using Microsoft.AspNetCore.Http;
+﻿using Application.DtoModels.EventsDto;
+using Application.DtoModels.UserDto;
 
-namespace BusinessLayer.Services.Contracts;
+namespace Application.Contracts.UseCaseContracts;
 
 public interface IUserService
 {

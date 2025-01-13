@@ -1,9 +1,9 @@
-﻿using BusinessLayer.DtoModels.UserDto;
+﻿using Application.DtoModels.UserDto;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace EventHub.Validation.User.Attributes;
+namespace Application.Validation.User.Attributes;
 
 public class ValidateRegisterUserRequestAttribute : IAsyncActionFilter
 {

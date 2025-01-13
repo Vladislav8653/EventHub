@@ -1,9 +1,9 @@
-﻿using BusinessLayer.DtoModels.CategoryDto;
+﻿using Application.DtoModels.CategoryDto;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace EventHub.Validation.Category.Attributes;
+namespace Application.Validation.Category.Attributes;
 
 public class ValidateCategoryDtoAttribute : IAsyncActionFilter
 {

@@ -1,7 +1,7 @@
-﻿using BusinessLayer.DtoModels.EventsDto.QueryParams;
+﻿using Application.DtoModels.EventsDto.QueryParams;
 using FluentValidation;
 
-namespace EventHub.Validation.Event.Validators;
+namespace Application.Validation.Event.Validators;
 
 public class EventFiltersDtoValidator : AbstractValidator<EventFiltersDto>
 {

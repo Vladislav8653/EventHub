@@ -1,9 +1,9 @@
-﻿using BusinessLayer.DtoModels.CommonDto;
+﻿using Application.DtoModels.CommonDto;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace EventHub.Validation.CommonValidation;
+namespace Application.Validation.CommonValidation;
 
 public class ValidatePageParamsAttribute : IAsyncActionFilter
 {

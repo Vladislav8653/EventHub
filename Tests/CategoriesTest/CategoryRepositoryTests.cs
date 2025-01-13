@@ -1,5 +1,4 @@
-﻿
-using Domain.Models;
+﻿using Domain.Models;
 using Infrastructure;
 using Infrastructure.RepositoryImplementations;
 using Microsoft.EntityFrameworkCore;

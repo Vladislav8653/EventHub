@@ -1,7 +1,7 @@
-﻿using BusinessLayer.DtoModels.UserDto;
+﻿using Application.DtoModels.UserDto;
 using FluentValidation;
 
-namespace EventHub.Validation.User.Validators;
+namespace Application.Validation.User.Validators;
 
 public class LoginUserRequestValidator : AbstractValidator<LoginUserRequest>
 {

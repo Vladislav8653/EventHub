@@ -1,13 +1,12 @@
-﻿using BusinessLayer.DtoModels;
-using BusinessLayer.DtoModels.CategoryDto;
-using DataLayer.Models;
+﻿using Application.DtoModels.CategoryDto;
+using Domain.Models;
 
-namespace BusinessLayer.Services.Contracts;
+namespace Application.Contracts.UseCaseContracts;
 
 public interface ICategoryService
 {
     Task<Category?> TryGetByNameAsync(string name);
-    Category? TryGetById(Guid id);
+    Task<Category?> TryGetByIdAsync(Guid id);
     Task<IEnumerable<Category>> GetAllAsync();
     Task<Category> CreateAsync(CategoryDto item);
     

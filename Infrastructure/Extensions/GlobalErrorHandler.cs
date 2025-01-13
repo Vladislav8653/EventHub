@@ -1,11 +1,10 @@
 ﻿using System.Net;
-using AutoMapper;
-using BusinessLayer.Exceptions;
-using FluentValidation;
 using System.Text.Json;
-using NLog;
+using Application.Exceptions;
+using AutoMapper;
+using FluentValidation;
 
-namespace EventHub.MiddlewareHandlers;
+namespace Infrastructure.Extensions;
 
 public class GlobalErrorHandler
 {

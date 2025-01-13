@@ -1,6 +1,7 @@
-﻿using BusinessLayer.DtoModels.CommonDto;
+﻿using Application.DtoModels.CommonDto;
 using FluentValidation;
-namespace EventHub.Validation.CommonValidation;
+
+namespace Application.Validation.CommonValidation;
 
 public class PageParamsDtoValidator : AbstractValidator<PageParamsDto>
 {

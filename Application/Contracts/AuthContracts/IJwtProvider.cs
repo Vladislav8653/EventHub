@@ -1,6 +1,6 @@
-﻿using DataLayer.Models;
+﻿using Domain.Models;
 
-namespace BusinessLayer.Services.Contracts.Auth;
+namespace Application.Contracts.AuthContracts;
 
 public interface IJwtProvider
 {

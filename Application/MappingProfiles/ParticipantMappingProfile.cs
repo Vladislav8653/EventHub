@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using BusinessLayer.DtoModels.ParticipantDto;
-using DataLayer.Models;
-using DataLayer.Specifications.Dto.Participants;
+﻿using Application.DtoModels.ParticipantDto;
+using Application.Specifications.Dto.Participants;
+using AutoMapper;
+using Domain.Models;
 
-namespace BusinessLayer.Mapper;
+namespace Application.MappingProfiles;
 
 public class ParticipantMappingProfile : Profile
 {

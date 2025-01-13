@@ -1,7 +1,7 @@
-﻿using BusinessLayer.DtoModels.CategoryDto;
+﻿using Application.DtoModels.CategoryDto;
 using FluentValidation;
 
-namespace EventHub.Validation.Category.Validators;
+namespace Application.Validation.Category.Validators;
 
 public class CategoryDtoValidator : AbstractValidator<CategoryDto>
 {

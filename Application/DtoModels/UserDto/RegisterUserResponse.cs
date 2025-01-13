@@ -1,4 +1,4 @@
-﻿namespace BusinessLayer.DtoModels.UserDto;
+﻿namespace Application.DtoModels.UserDto;
 
 public class RegisterUserResponse
 {

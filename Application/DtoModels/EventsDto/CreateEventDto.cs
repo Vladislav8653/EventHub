@@ -14,5 +14,5 @@ public class CreateEventDto
 
     public uint MaxQuantityParticipant { get; set; }
 
-   // public IFormFile? Image { get; set; }
+    public IFormFile? Image { get; set; }
 }

@@ -1,7 +1,7 @@
-﻿using BusinessLayer.DtoModels.ParticipantDto;
+﻿using Application.DtoModels.ParticipantDto;
 using FluentValidation;
 
-namespace EventHub.Validation.Participants.Validators;
+namespace Application.Validation.Participants.Validators;
 
 public class ParticipantDtoValidator : AbstractValidator<CreateParticipantDto>
 {

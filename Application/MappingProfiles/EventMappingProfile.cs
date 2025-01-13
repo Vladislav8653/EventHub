@@ -1,10 +1,10 @@
-﻿using AutoMapper;
-using BusinessLayer.DtoModels.EventsDto;
-using BusinessLayer.DtoModels.EventsDto.QueryParams;
-using DataLayer.Models;
-using DataLayer.Specifications.Filtering;
+﻿using Application.DtoModels.EventsDto;
+using Application.DtoModels.EventsDto.QueryParams;
+using Application.Specifications.Filtering;
+using AutoMapper;
+using Domain.Models;
 
-namespace BusinessLayer.Mapper;
+namespace Application.MappingProfiles;
 
 public class EventMappingProfile : Profile
 {

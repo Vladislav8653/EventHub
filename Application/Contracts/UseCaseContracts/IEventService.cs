@@ -1,8 +1,7 @@
-﻿using BusinessLayer.DtoModels.CommonDto;
-using BusinessLayer.DtoModels.EventsDto;
-using Microsoft.AspNetCore.Http;
+﻿using Application.DtoModels.CommonDto;
+using Application.DtoModels.EventsDto;
 
-namespace BusinessLayer.Services.Contracts;
+namespace Application.Contracts.UseCaseContracts;
 
 public interface IEventService
 {

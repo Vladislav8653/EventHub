@@ -1,4 +1,4 @@
-﻿namespace BusinessLayer.Services.Contracts.Auth;
+﻿namespace Application.Contracts.AuthContracts;
 
 public interface IPasswordHasher
 {

@@ -1,11 +1,11 @@
-﻿using BusinessLayer.DtoModels.CommonDto;
-using BusinessLayer.DtoModels.EventsDto;
-using BusinessLayer.DtoModels.EventsDto.QueryParams;
+﻿using Application.DtoModels.CommonDto;
+using Application.DtoModels.EventsDto;
+using Application.DtoModels.EventsDto.QueryParams;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace EventHub.Validation.Event.Attributes;
+namespace Application.Validation.Event.Attributes;
 
 public class ValidateEventQueryParamsAttribute : IAsyncActionFilter
 {

@@ -1,7 +1,7 @@
-﻿using BusinessLayer.DtoModels.CommonDto;
-using BusinessLayer.DtoModels.ParticipantDto;
+﻿using Application.DtoModels.CommonDto;
+using Application.DtoModels.ParticipantDto;
 
-namespace BusinessLayer.Services.Contracts;
+namespace Application.Contracts.UseCaseContracts;
 
 public interface IParticipantService
 {
