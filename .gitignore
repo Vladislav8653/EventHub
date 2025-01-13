@@ -1,6 +1,6 @@
-﻿/images/
-/global.json
-/Migrations/
+﻿images/
+global.json
+Migrations/
 # IDE-specific
 .idea/
 .vscode/
