@@ -1,4 +1,5 @@
 ﻿using Application.Contracts.RepositoryContracts;
+using Application.Specifications.Pagination;
 
 namespace Infrastructure.RepositoryImplementations;
 

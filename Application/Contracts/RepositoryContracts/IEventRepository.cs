@@ -1,4 +1,5 @@
-﻿using Domain.Models;
+﻿using Application.Specifications.Dto;
+using Domain.Models;
 
 namespace Application.Contracts.RepositoryContracts;
 

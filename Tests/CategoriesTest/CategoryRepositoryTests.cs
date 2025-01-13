@@ -1,6 +1,7 @@
-﻿using DataLayer.Data;
-using DataLayer.Models;
-using DataLayer.Repositories.RepositoriesImplementations;
+﻿
+using Domain.Models;
+using Infrastructure;
+using Infrastructure.RepositoryImplementations;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 

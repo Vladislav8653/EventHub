@@ -1,9 +1,8 @@
 ﻿using Application.Contracts.RepositoryContracts;
 using Domain.Models;
-using Infrastructure.RepositoryImplementations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories.RepositoriesImplementations;
+namespace Infrastructure.RepositoryImplementations;
 
 public class EventParticipantRepository : 
     RepositoryBase<EventParticipant>, IEventParticipantRepository

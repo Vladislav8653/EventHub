@@ -1,4 +1,6 @@
-﻿namespace Application.Contracts.RepositoryContracts;
+﻿using Application.Specifications.Pagination;
+
+namespace Application.Contracts.RepositoryContracts;
 
 public interface IRepositoryBase<T>
 {

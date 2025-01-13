@@ -1,9 +1,10 @@
 ﻿using Application.Contracts.RepositoryContracts;
+using Application.Specifications.Dto;
+using Application.Specifications.Filtering;
 using Domain.Models;
-using Infrastructure.RepositoryImplementations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories.RepositoriesImplementations;
+namespace Infrastructure.RepositoryImplementations;
 
 public class EventRepository : RepositoryBase<Event>, IEventRepository
 {

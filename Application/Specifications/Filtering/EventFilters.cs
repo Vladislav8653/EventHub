@@ -1,6 +1,6 @@
-﻿using DataLayer.Models;
+﻿using Domain.Models;
 
-namespace DataLayer.Specifications.Filtering;
+namespace Application.Specifications.Filtering;
 
 public class EventFilters
 {

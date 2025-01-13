@@ -1,4 +1,6 @@
-﻿using Domain.Models;
+﻿using Application.Specifications.Dto.Participants;
+using Application.Specifications.Pagination;
+using Domain.Models;
 
 namespace Application.Contracts.RepositoryContracts;
 

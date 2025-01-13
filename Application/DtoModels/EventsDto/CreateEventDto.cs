@@ -1,5 +1,4 @@
-﻿
-namespace Application.DtoModels.EventsDto;
+﻿namespace Application.DtoModels.EventsDto;
 
 public class CreateEventDto
 {
@@ -15,5 +14,5 @@ public class CreateEventDto
 
     public uint MaxQuantityParticipant { get; set; }
 
-    public IFormFile? Image { get; set; }
+   // public IFormFile? Image { get; set; }
 }

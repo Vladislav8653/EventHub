@@ -1,7 +1,7 @@
-﻿using DataLayer.Specifications.Filtering;
-using DataLayer.Specifications.Pagination;
+﻿using Application.Specifications.Filtering;
+using Application.Specifications.Pagination;
 
-namespace DataLayer.Specifications.Dto;
+namespace Application.Specifications.Dto;
 
 public class EventQueryParams
 {

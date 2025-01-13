@@ -1,6 +1,6 @@
-﻿using DataLayer.Models;
+﻿using Domain.Models;
 
-namespace DataLayer.Specifications.Dto.Participants;
+namespace Application.Specifications.Dto.Participants;
 
 public class ParticipantWithAddInfoDto
 {

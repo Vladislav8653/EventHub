@@ -1,6 +1,5 @@
 ﻿using Application.Contracts.RepositoryContracts;
 using Domain.Models;
-using Infrastructure.Repositories.RepositoriesImplementations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.RepositoryImplementations;

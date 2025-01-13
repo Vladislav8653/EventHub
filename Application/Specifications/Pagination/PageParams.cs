@@ -1,4 +1,4 @@
-﻿namespace DataLayer.Specifications.Pagination;
+﻿namespace Application.Specifications.Pagination;
 
 public class PageParams
 {

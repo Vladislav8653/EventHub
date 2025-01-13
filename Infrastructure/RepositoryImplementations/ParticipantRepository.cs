@@ -1,9 +1,10 @@
 ﻿using Application.Contracts.RepositoryContracts;
+using Application.Specifications.Dto.Participants;
+using Application.Specifications.Pagination;
 using Domain.Models;
-using Infrastructure.RepositoryImplementations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Repositories.RepositoriesImplementations;
+namespace Infrastructure.RepositoryImplementations;
 
 public class ParticipantRepository : RepositoryBase<Participant>, IParticipantRepository
 {
