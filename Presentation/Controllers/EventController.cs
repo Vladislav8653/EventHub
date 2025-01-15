@@ -13,7 +13,7 @@ namespace Presentation.Controllers;
 public class EventController : ControllerBase
 {
     private readonly ImageUrlConfiguration _imageUrlConfiguration;
-    private readonly string _imageStorageRelativePath;
+    private readonly string _imageStoragePath;
     private readonly IImageService _imageService;
     private readonly ICreateEventUseCase _createEventUseCase;
     private readonly IDeleteEventUseCase _deleteEventUseCase;
@@ -29,12 +29,12 @@ public class EventController : ControllerBase
         IUpdateEventUseCase updateEventUseCase, 
         IGetEventByIdUseCase getEventByIdUseCase, 
         IGetAllEventsUseCase getAllEventsUseCase, 
-        IGetEventByNameUseCase getEventByNameUseCase)
+        IGetEventByNameUseCase getEventByNameUseCase, 
+        IWebHostEnvironment hostingEnvironment)
     {
-        _imageUrlConfiguration = InitializeImageUrlConfiguration(httpContextAccessor);
-        _imageStorageRelativePath = InitializeImageStoragePath(configuration);
-        
-        _imageService = imageService;
+        _imageUrlConfiguration = InitializeImageUrlConfiguration(httpContextAccessor); // для формирования URL к изображению
+        _imageStoragePath = InitializeImageStoragePath(configuration, hostingEnvironment); // для формирования пути к изображениям
+        _imageService = imageService; // сервис для работы с изображениями
         _createEventUseCase = createEventUseCase;
         _deleteEventUseCase = deleteEventUseCase;
         _updateEventUseCase = updateEventUseCase;
@@ -72,7 +72,7 @@ public class EventController : ControllerBase
     [ServiceFilter(typeof(ValidateEventDtoAttribute))]
     public async Task<IActionResult> CreateEvent([FromForm]CreateEventDto item)
     {
-        var newEvent = await _createEventUseCase.Handle(item);
+        var newEvent = await _createEventUseCase.Handle(item, _imageStoragePath);
         return Ok(newEvent);
     }
 
@@ -82,7 +82,7 @@ public class EventController : ControllerBase
     [ServiceFilter(typeof(ValidateEventDtoAttribute))]
     public async Task<IActionResult> UpdateEvent([FromForm]CreateEventDto item, Guid id)
     {
-        var updatedEvent =  await _updateEventUseCase.Handle(id, item);
+        var updatedEvent =  await _updateEventUseCase.Handle(id, item, _imageStoragePath);
         return Ok(updatedEvent);
     }
 
@@ -91,7 +91,7 @@ public class EventController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteEvent(Guid id)
     {
-        var result = await _deleteEventUseCase.Handle(id);
+        var result = await _deleteEventUseCase.Handle(id, _imageStoragePath);
         return Ok(result);
     }
     
@@ -99,7 +99,7 @@ public class EventController : ControllerBase
     [HttpGet("images/{fileName}")]
     public async Task<IActionResult> GetImage(string fileName)
     {
-        var (fileBytes, contentType) = await _imageService.GetImageAsync(fileName, _imageStorageRelativePath);
+        var (fileBytes, contentType) = await _imageService.GetImageAsync(fileName, _imageStoragePath);
         return File(fileBytes, contentType, fileName);
     }
 
@@ -112,11 +112,12 @@ public class EventController : ControllerBase
         return new ImageUrlConfiguration(request);
     }
 
-    private string InitializeImageStoragePath(IConfiguration configuration)
+    private string InitializeImageStoragePath(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
     {
         var config = configuration["ImageStorage:wwwrootRelativePath"];
         if (config == null)
             throw new InvalidOperationException("Image storage path is not available.");
-        return config;
+        var imagePath = Path.Combine(hostingEnvironment.WebRootPath, config);
+        return imagePath;
     }
 }

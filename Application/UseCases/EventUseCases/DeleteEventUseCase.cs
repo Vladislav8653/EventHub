@@ -11,7 +11,7 @@ public class DeleteEventUseCase : IDeleteEventUseCase
 {
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
-    private IImageService _imageService;
+    private readonly IImageService _imageService;
     public DeleteEventUseCase(IRepositoriesManager repositoriesManager, IMapper mapper, IImageService imageService) 
     {
         _repositoriesManager = repositoriesManager;
@@ -19,7 +19,7 @@ public class DeleteEventUseCase : IDeleteEventUseCase
         _imageService = imageService;
     }
 
-    public async Task<GetEventDto> Handle(Guid id)
+    public async Task<GetEventDto> Handle(Guid id, string imageStoragePath)
     {
         var eventToDelete = await _repositoriesManager.Events.GetByIdAsync(id);
         if (eventToDelete == null)
@@ -27,7 +27,7 @@ public class DeleteEventUseCase : IDeleteEventUseCase
         var filename = eventToDelete.Image;
         if (filename != null)
         {
-            var imageFilePath = Path.Combine("wwwroot", "images", filename);
+            var imageFilePath = Path.Combine(imageStoragePath, filename);
             _imageService.DeleteFile(imageFilePath);
         }
         _repositoriesManager.Events.Delete(eventToDelete);

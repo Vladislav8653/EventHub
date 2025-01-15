@@ -5,17 +5,10 @@ namespace Application.FileManager;
 
 public class ImageService : IImageService
 {
-    private readonly IWebHostEnvironment _hostingEnvironment;
-
-    public ImageService(IWebHostEnvironment hostingEnvironment)
-    {
-        _hostingEnvironment = hostingEnvironment;
-    }
-    
     public async Task<(byte[] fileBytes, string contentType)> GetImageAsync
-        (string fileName, string relativeFilePath)
+        (string fileName, string imageStoragePath)
     {
-        var filePath = Path.Combine(_hostingEnvironment.WebRootPath, relativeFilePath, fileName);
+        var filePath = Path.Combine(imageStoragePath, fileName);
         if (!File.Exists(filePath))
         {
             throw new EntityNotFoundException("Image is not found.");

@@ -21,7 +21,7 @@ public class UpdateEventUseCase : IUpdateEventUseCase
         _imageService = imageService;
     }
     
-    public async Task<GetEventDto> Handle(Guid id, CreateEventDto item)
+    public async Task<GetEventDto> Handle(Guid id, CreateEventDto item, string imageStoragePath)
     {
         var eventToUpdate = await _repositoriesManager.Events.GetByIdAsync(id);
         if (eventToUpdate == null)
@@ -35,13 +35,13 @@ public class UpdateEventUseCase : IUpdateEventUseCase
         if (item.Image != null) 
         {
             newFileName = item.Image.FileName;
-            var imageFilePath = Path.Combine("wwwroot", "images", newFileName);
+            var imageFilePath = Path.Combine(imageStoragePath, newFileName);
             await _imageService.WriteFileAsync(item.Image, imageFilePath);
         }
         var oldFilename = eventToUpdate.Image;
         if (oldFilename != null)
         {
-            var imageFilePath = Path.Combine("wwwroot", "images", oldFilename);
+            var imageFilePath = Path.Combine(imageStoragePath, oldFilename);
             _imageService.DeleteFile(imageFilePath);
         }
         eventToUpdate.Image = newFileName;

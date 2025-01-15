@@ -12,7 +12,7 @@ public class CreateEventUseCase : ICreateEventUseCase
 {
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
-    private IImageService _imageService;
+    private readonly IImageService _imageService;
 
     public CreateEventUseCase(IRepositoriesManager repositoriesManager, IMapper mapper, IImageService imageService)
     {
@@ -21,7 +21,7 @@ public class CreateEventUseCase : ICreateEventUseCase
         _imageService = imageService;
     }
     
-    public async Task<GetEventDto> Handle(CreateEventDto item)
+    public async Task<GetEventDto> Handle(CreateEventDto item, string imageStoragePath)
     {
         var isUniqueName = await _repositoriesManager.Events.IsUniqueNameAsync(item.Name);
         if (!isUniqueName)
@@ -35,7 +35,7 @@ public class CreateEventUseCase : ICreateEventUseCase
         if (item.Image != null) 
         {
             filename = item.Image.FileName;
-            var imageFilePath = Path.Combine("wwwroot", "images", filename);
+            var imageFilePath = Path.Combine(imageStoragePath, filename);
             await _imageService.WriteFileAsync(item.Image, imageFilePath);
         }
         eventForDb.Image = filename;

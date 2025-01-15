@@ -28,6 +28,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using FluentValidation;
 using System.Text;
+using Application;
 using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.FileManager;
@@ -178,11 +179,6 @@ public static class ServiceExtensions
     public static void ConfigureImageService(this IServiceCollection services)
     {
         services.AddScoped<IImageService, ImageService>();
-    }
-    
-    public static void ConfigureHttpContextAccessor(this IServiceCollection services)
-    {
-        services.AddHttpContextAccessor();
     }
     
     public static void ConfigureUseCases(this IServiceCollection services)

@@ -4,5 +4,5 @@ namespace Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 
 public interface IDeleteEventUseCase
 {
-    Task<GetEventDto> Handle(Guid id);
+    Task<GetEventDto> Handle(Guid id, string imageStoragePath);
 }
