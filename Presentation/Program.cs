@@ -12,6 +12,7 @@ builder.Services.ConfigureImageService();
 builder.Services.ConfigureUseCases();
 builder.Services.ConfigureLogger();
 builder.Services.ConfigureApiAuthentication(builder.Configuration);
+builder.Services.ConfigureHttpContextAccessor();
 builder.Services.ConfigureSwagger();
 var app = builder.Build();
 app.AppendMiddlewareErrorHandler();

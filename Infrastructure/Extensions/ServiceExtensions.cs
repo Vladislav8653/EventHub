@@ -29,8 +29,10 @@ using Microsoft.OpenApi.Models;
 using FluentValidation;
 using System.Text;
 using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
+using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.FileManager;
 using Application.UseCases.CategoryUseCases;
+using Application.UseCases.EventUseCases;
 using Infrastructure.Authentication;
 
 namespace Infrastructure.Extensions;
@@ -67,19 +69,6 @@ public static class ServiceExtensions
 
     public static void ConfigureRepositoryManager(this IServiceCollection services) =>
         services.AddScoped<IRepositoriesManager, RepositoriesManager>();
-
-    public static void ConfigureUseCases(this IServiceCollection services)
-    {
-        services.AddScoped<ICreateCategoryUseCase, CreateCategoryUseCase>();
-        services.AddScoped<IDeleteCategoryUseCase, DeleteCategoryUseCase>();
-        services.AddScoped<IGetAllCategoriesUseCase, GetAllCategoriesUseCase>();
-        services.AddScoped<IGetCategoryByIdUseCase, GetCategoryByIdUseCase>();
-        services.AddScoped<IGetCategoryByNameUseCase, GetCategoryByNameUseCase>();
-        
-        services.AddScoped<IEventService, EventService>();
-        services.AddScoped<IParticipantService, ParticipantService>();
-        services.AddScoped<IUserService, UserService>();
-    }
     
     public static void ConfigureApiAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
@@ -190,5 +179,36 @@ public static class ServiceExtensions
     {
         services.AddScoped<IImageService, ImageService>();
     }
-        
+    
+    public static void ConfigureHttpContextAccessor(this IServiceCollection services)
+    {
+        services.AddHttpContextAccessor();
+    }
+    
+    public static void ConfigureUseCases(this IServiceCollection services)
+    {
+        ConfigureCategoryUseCases(services);
+        ConfigureEventUseCases(services);
+        services.AddScoped<IParticipantService, ParticipantService>();
+        services.AddScoped<IUserService, UserService>();
+    }
+    
+    private static void ConfigureCategoryUseCases(this IServiceCollection services)
+    {
+        services.AddScoped<ICreateCategoryUseCase, CreateCategoryUseCase>();
+        services.AddScoped<IDeleteCategoryUseCase, DeleteCategoryUseCase>();
+        services.AddScoped<IGetAllCategoriesUseCase, GetAllCategoriesUseCase>();
+        services.AddScoped<IGetCategoryByIdUseCase, GetCategoryByIdUseCase>();
+        services.AddScoped<IGetCategoryByNameUseCase, GetCategoryByNameUseCase>();
+    }
+    
+    private static void ConfigureEventUseCases(this IServiceCollection services)
+    {
+        services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
+        services.AddScoped<IDeleteEventUseCase, DeleteEventUseCase>();
+        services.AddScoped<IGetAllEventsUseCase, GetAllEventsUseCase>();
+        services.AddScoped<IGetEventByIdUseCase, GetEventByIdUseCase>();
+        services.AddScoped<IGetEventByNameUseCase, GetEventByNameUseCase>();
+        services.AddScoped<IUpdateEventUseCase, UpdateEventUseCase>();
+    }
 }
