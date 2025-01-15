@@ -1,3 +1,4 @@
+using Application.Contracts;
 using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.CommonDto;
@@ -7,6 +8,7 @@ using Application.Specifications.Dto;
 using Application.Specifications.Filtering;
 using Application.Specifications.Pagination;
 using AutoMapper;
+using Domain.Models;
 
 namespace Application.UseCases.EventUseCases;
 
@@ -62,5 +64,15 @@ public class GetAllEventsUseCase : IGetAllEventsUseCase
             defaultPage,
             defaultPageSize);
         return pageParams;
+    }
+    
+    private static List<Event> AttachLinkToImage(IEnumerable<Event> items, HttpRequest request,  string controllerRoute, string endpointRoute)
+    {
+        var itemsList = items.ToList();
+        foreach (var item in itemsList.Where(item => !string.IsNullOrEmpty(item.Image)))
+        {
+            item.Image = new Uri($"{request.Scheme}://{request.Host}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
+        }
+        return itemsList;
     }
 }

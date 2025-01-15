@@ -3,6 +3,7 @@ using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.Exceptions;
 using AutoMapper;
+using Domain.Models;
 
 namespace Application.UseCases.EventUseCases;
 
@@ -10,8 +11,6 @@ public class GetEventByIdUseCase :IGetEventByIdUseCase
 {
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
-    private const int DefaultPage = 1;
-    private const int DefaultPageSize = 5;
     private const string ControllerRoute = "events";
     private const string EndpointRoute = "images";
 
@@ -29,5 +28,12 @@ public class GetEventByIdUseCase :IGetEventByIdUseCase
         eventById = AttachLinkToImage(eventById, request, ControllerRoute, EndpointRoute);
         var eventDto = _mapper.Map<GetEventDto>(eventById);
         return eventDto;
+    }
+    
+    private static Event AttachLinkToImage(Event item, HttpRequest request, string controllerRoute, string endpointRoute)
+    {
+        if (!string.IsNullOrEmpty(item.Image)) 
+            item.Image = new Uri($"{request.Scheme}://{request.Host}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
+        return item;
     }
 }

@@ -3,6 +3,7 @@ using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.Exceptions;
 using AutoMapper;
+using Domain.Models;
 
 namespace Application.UseCases.EventUseCases;
 
@@ -27,5 +28,12 @@ public class GetEventByNameUseCase :IGetEventByNameUseCase
         eventByName = AttachLinkToImage(eventByName, request, ControllerRoute, EndpointRoute);
         var eventDto = _mapper.Map<GetEventDto>(eventByName);
         return eventDto;
+    }
+    
+    private static Event AttachLinkToImage(Event item, HttpRequest request, string controllerRoute, string endpointRoute)
+    {
+        if (!string.IsNullOrEmpty(item.Image)) 
+            item.Image = new Uri($"{request.Scheme}://{request.Host}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
+        return item;
     }
 }
