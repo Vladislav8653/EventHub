@@ -1,7 +1,6 @@
 ﻿using Application.Contracts.AuthContracts;
 
-
-namespace Application.Authentication;
+namespace Infrastructure.Authentication;
 
 public class PasswordHasher : IPasswordHasher
 {

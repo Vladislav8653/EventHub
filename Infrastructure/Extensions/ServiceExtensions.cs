@@ -1,5 +1,4 @@
-﻿using Application.Authentication;
-using Application.Contracts;
+﻿using Application.Contracts;
 using Application.Contracts.AuthContracts;
 using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts;
@@ -31,6 +30,7 @@ using FluentValidation;
 using System.Text;
 using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.UseCases.CategoryUseCases;
+using Infrastructure.Authentication;
 
 namespace Infrastructure.Extensions;
 
