@@ -29,6 +29,7 @@ using Microsoft.OpenApi.Models;
 using FluentValidation;
 using System.Text;
 using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
+using Application.FileManager;
 using Application.UseCases.CategoryUseCases;
 using Infrastructure.Authentication;
 
@@ -183,6 +184,11 @@ public static class ServiceExtensions
             cfg.AddProfile<ParticipantMappingProfile>();
             cfg.AddProfile<UserMappingProfile>();
         }, AppDomain.CurrentDomain.GetAssemblies());
+    }
+
+    public static void ConfigureImageService(this IServiceCollection services)
+    {
+        services.AddScoped<IImageService, ImageService>();
     }
         
 }
