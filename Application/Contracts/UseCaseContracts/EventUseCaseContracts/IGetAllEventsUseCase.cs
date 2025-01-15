@@ -5,6 +5,6 @@ namespace Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 
 public interface IGetAllEventsUseCase
 {
-    Task<EntitiesWithTotalCountDto<GetEventDto>> Handle(EventQueryParamsDto eventParamsDto, HttpRequest request);
+    Task<EntitiesWithTotalCountDto<GetEventDto>> Handle(EventQueryParamsDto eventParamsDto, ImageUrlConfiguration request);
 
 }

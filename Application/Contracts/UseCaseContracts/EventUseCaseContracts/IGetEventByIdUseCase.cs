@@ -4,5 +4,5 @@ namespace Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 
 public interface IGetEventByIdUseCase
 {
-    Task<GetEventDto> Handle(Guid id, HttpRequest request);
+    Task<GetEventDto> Handle(Guid id, ImageUrlConfiguration request);
 }

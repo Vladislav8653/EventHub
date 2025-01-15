@@ -27,7 +27,7 @@ public class GetAllEventsUseCase : IGetAllEventsUseCase
         _mapper = mapper;
     }
     
-    public async Task<EntitiesWithTotalCountDto<GetEventDto>> Handle(EventQueryParamsDto eventParamsDto, HttpRequest request)
+    public async Task<EntitiesWithTotalCountDto<GetEventDto>> Handle(EventQueryParamsDto eventParamsDto, ImageUrlConfiguration request)
     {
         var filters = await GetFiltersFromQueryParams(eventParamsDto.Filters);
         var pageParams = GetPageParamsFromQueryParams(eventParamsDto.PageParams, DefaultPage, DefaultPageSize); 
@@ -66,12 +66,12 @@ public class GetAllEventsUseCase : IGetAllEventsUseCase
         return pageParams;
     }
     
-    private static List<Event> AttachLinkToImage(IEnumerable<Event> items, HttpRequest request,  string controllerRoute, string endpointRoute)
+    private static List<Event> AttachLinkToImage(IEnumerable<Event> items, ImageUrlConfiguration request,  string controllerRoute, string endpointRoute)
     {
         var itemsList = items.ToList();
         foreach (var item in itemsList.Where(item => !string.IsNullOrEmpty(item.Image)))
         {
-            item.Image = new Uri($"{request.Scheme}://{request.Host}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
+            item.Image = new Uri($"{request.BaseUrl}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
         }
         return itemsList;
     }

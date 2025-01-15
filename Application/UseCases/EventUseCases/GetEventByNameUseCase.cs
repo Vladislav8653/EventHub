@@ -7,7 +7,7 @@ using Domain.Models;
 
 namespace Application.UseCases.EventUseCases;
 
-public class GetEventByNameUseCase :IGetEventByNameUseCase
+public class GetEventByNameUseCase : IGetEventByNameUseCase
 {
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ public class GetEventByNameUseCase :IGetEventByNameUseCase
         _mapper = mapper;
     }
     
-    public async Task<GetEventDto> Handle(string name, HttpRequest request)
+    public async Task<GetEventDto> Handle(string name, ImageUrlConfiguration request)
     {
         var eventByName = await _repositoriesManager.Events.GetByNameAsync(name);
         if (eventByName == null)
@@ -30,10 +30,10 @@ public class GetEventByNameUseCase :IGetEventByNameUseCase
         return eventDto;
     }
     
-    private static Event AttachLinkToImage(Event item, HttpRequest request, string controllerRoute, string endpointRoute)
+    private static Event AttachLinkToImage(Event item, ImageUrlConfiguration request, string controllerRoute, string endpointRoute)
     {
         if (!string.IsNullOrEmpty(item.Image)) 
-            item.Image = new Uri($"{request.Scheme}://{request.Host}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
+            item.Image = new Uri($"{request.BaseUrl}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
         return item;
     }
 }
