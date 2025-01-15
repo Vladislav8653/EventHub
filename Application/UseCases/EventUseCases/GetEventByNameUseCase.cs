@@ -11,8 +11,6 @@ public class GetEventByNameUseCase : IGetEventByNameUseCase
 {
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
-    private const string ControllerRoute = "events";
-    private const string EndpointRoute = "images";
 
     public GetEventByNameUseCase(IRepositoriesManager repositoriesManager, IMapper mapper)
     {
@@ -25,15 +23,15 @@ public class GetEventByNameUseCase : IGetEventByNameUseCase
         var eventByName = await _repositoriesManager.Events.GetByNameAsync(name);
         if (eventByName == null)
             throw new EntityNotFoundException($"Event with name {name} doesn't exist");
-        eventByName = AttachLinkToImage(eventByName, request, ControllerRoute, EndpointRoute);
+        eventByName = AttachLinkToImage(eventByName, request);
         var eventDto = _mapper.Map<GetEventDto>(eventByName);
         return eventDto;
     }
     
-    private static Event AttachLinkToImage(Event item, ImageUrlConfiguration request, string controllerRoute, string endpointRoute)
+    private static Event AttachLinkToImage(Event item, ImageUrlConfiguration request)
     {
         if (!string.IsNullOrEmpty(item.Image)) 
-            item.Image = new Uri($"{request.BaseUrl}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
+            item.Image = new Uri($"{request.BaseUrl}/{request.ControllerRoute}/{request.EndpointRoute}/{item.Image}").ToString();
         return item;
     }
 }

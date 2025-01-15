@@ -1,4 +1,3 @@
-using Application.Contracts;
 using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.CommonDto;
@@ -18,8 +17,6 @@ public class GetAllEventsUseCase : IGetAllEventsUseCase
     private readonly IMapper _mapper;
     private const int DefaultPage = 1;
     private const int DefaultPageSize = 5;
-    private const string ControllerRoute = "events";
-    private const string EndpointRoute = "images";
     
     public GetAllEventsUseCase(IRepositoriesManager repositoriesManager, IMapper mapper)
     {
@@ -37,7 +34,7 @@ public class GetAllEventsUseCase : IGetAllEventsUseCase
             PageParams = pageParams
         };
         var (events, totalFields) = await _repositoriesManager.Events.GetAllByParamsAsync(eventParams);
-        events = AttachLinkToImage(events, request, ControllerRoute, EndpointRoute);
+        events = AttachLinkToImage(events, request);
         var eventsWithImages = _mapper.Map<IEnumerable<GetEventDto>>(events);
         return new EntitiesWithTotalCountDto<GetEventDto>(eventsWithImages, totalFields);
     }
@@ -66,12 +63,12 @@ public class GetAllEventsUseCase : IGetAllEventsUseCase
         return pageParams;
     }
     
-    private static List<Event> AttachLinkToImage(IEnumerable<Event> items, ImageUrlConfiguration request,  string controllerRoute, string endpointRoute)
+    private static List<Event> AttachLinkToImage(IEnumerable<Event> items, ImageUrlConfiguration request)
     {
         var itemsList = items.ToList();
         foreach (var item in itemsList.Where(item => !string.IsNullOrEmpty(item.Image)))
         {
-            item.Image = new Uri($"{request.BaseUrl}/{controllerRoute}/{endpointRoute}/{item.Image}").ToString();
+            item.Image = new Uri($"{request.BaseUrl}/{request.ControllerRoute}/{request.EndpointRoute}/{item.Image}").ToString();
         }
         return itemsList;
     }

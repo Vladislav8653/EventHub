@@ -9,12 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace Presentation.Controllers;
 
 [ApiController]
-[Route("events")]
+[Route(ControllerRoute)]
 public class EventController : ControllerBase
 {
-    private readonly ImageUrlConfiguration _imageUrlConfiguration;
-    private readonly string _imageStoragePath;
-    private readonly IImageService _imageService;
+    private const string ControllerRoute = "events";
+    private const string ImageEndpointRoute = "images";
+    private readonly ImageUrlConfiguration _imageUrlConfiguration; // для формирования URL к изображению
+    private readonly string _imageStoragePath; // для формирования пути к изображениям
+    private readonly IImageService _imageService;  // сервис для работы с изображениями
     private readonly ICreateEventUseCase _createEventUseCase;
     private readonly IDeleteEventUseCase _deleteEventUseCase;
     private readonly IUpdateEventUseCase _updateEventUseCase;
@@ -32,9 +34,9 @@ public class EventController : ControllerBase
         IGetEventByNameUseCase getEventByNameUseCase, 
         IWebHostEnvironment hostingEnvironment)
     {
-        _imageUrlConfiguration = InitializeImageUrlConfiguration(httpContextAccessor); // для формирования URL к изображению
-        _imageStoragePath = InitializeImageStoragePath(configuration, hostingEnvironment); // для формирования пути к изображениям
-        _imageService = imageService; // сервис для работы с изображениями
+        _imageUrlConfiguration = InitializeImageUrlConfiguration(httpContextAccessor); 
+        _imageStoragePath = InitializeImageStoragePath(configuration, hostingEnvironment); 
+        _imageService = imageService;
         _createEventUseCase = createEventUseCase;
         _deleteEventUseCase = deleteEventUseCase;
         _updateEventUseCase = updateEventUseCase;
@@ -96,7 +98,7 @@ public class EventController : ControllerBase
     }
     
     
-    [HttpGet("images/{fileName}")]
+    [HttpGet(ImageEndpointRoute + "/{fileName}")]
     public async Task<IActionResult> GetImage(string fileName)
     {
         var (fileBytes, contentType) = await _imageService.GetImageAsync(fileName, _imageStoragePath);
@@ -109,7 +111,7 @@ public class EventController : ControllerBase
         if (httpContext == null)
             throw new InvalidOperationException("HttpContext is not available");
         var request = httpContext.Request;
-        return new ImageUrlConfiguration(request);
+        return new ImageUrlConfiguration(request, ControllerRoute, ImageEndpointRoute);
     }
 
     private string InitializeImageStoragePath(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)

@@ -12,7 +12,7 @@ public class UpdateEventUseCase : IUpdateEventUseCase
     
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
-    private IImageService _imageService;
+    private readonly IImageService _imageService;
 
     public UpdateEventUseCase(IRepositoriesManager repositoriesManager, IMapper mapper, IImageService imageService)
     {
