@@ -16,8 +16,7 @@ public class CategoryController : ControllerBase
     public CategoryController(
         ICreateCategoryUseCase createCategoryUseCase, 
         IGetAllCategoriesUseCase getAllCategoriesUseCase, 
-        IDeleteCategoryUseCase deleteCategoryUseCase
-        )
+        IDeleteCategoryUseCase deleteCategoryUseCase)
     {
         _createCategoryUseCase = createCategoryUseCase;
         _getAllCategoriesUseCase = getAllCategoriesUseCase;
