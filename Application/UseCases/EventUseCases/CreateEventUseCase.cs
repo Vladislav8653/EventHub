@@ -1,3 +1,4 @@
+using Application.Contracts;
 using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
@@ -11,11 +12,13 @@ public class CreateEventUseCase : ICreateEventUseCase
 {
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
+    private IImageService _imageService;
 
-    public CreateEventUseCase(IRepositoriesManager repositoriesManager, IMapper mapper)
+    public CreateEventUseCase(IRepositoriesManager repositoriesManager, IMapper mapper, IImageService imageService)
     {
         _repositoriesManager = repositoriesManager;
         _mapper = mapper;
+        _imageService = imageService;
     }
     
     public async Task<GetEventDto> Handle(CreateEventDto item)
@@ -33,7 +36,7 @@ public class CreateEventUseCase : ICreateEventUseCase
         {
             filename = item.Image.FileName;
             var imageFilePath = Path.Combine("wwwroot", "images", filename);
-            await WriteFileAsync(item.Image, imageFilePath);
+            await _imageService.WriteFileAsync(item.Image, imageFilePath);
         }
         eventForDb.Image = filename;
         eventForDb.CategoryId = category.Id;

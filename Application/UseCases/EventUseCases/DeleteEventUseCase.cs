@@ -1,3 +1,4 @@
+using Application.Contracts;
 using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
@@ -10,10 +11,12 @@ public class DeleteEventUseCase : IDeleteEventUseCase
 {
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
-    public DeleteEventUseCase(IRepositoriesManager repositoriesManager, IMapper mapper) 
+    private IImageService _imageService;
+    public DeleteEventUseCase(IRepositoriesManager repositoriesManager, IMapper mapper, IImageService imageService) 
     {
         _repositoriesManager = repositoriesManager;
         _mapper = mapper;
+        _imageService = imageService;
     }
 
     public async Task<GetEventDto> Handle(Guid id)
@@ -25,7 +28,7 @@ public class DeleteEventUseCase : IDeleteEventUseCase
         if (filename != null)
         {
             var imageFilePath = Path.Combine("wwwroot", "images", filename);
-            DeleteFile(imageFilePath);
+            _imageService.DeleteFile(imageFilePath);
         }
         _repositoriesManager.Events.Delete(eventToDelete);
         await _repositoriesManager.SaveAsync();

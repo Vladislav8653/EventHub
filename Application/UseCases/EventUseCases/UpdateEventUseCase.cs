@@ -1,3 +1,4 @@
+using Application.Contracts;
 using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
@@ -11,11 +12,13 @@ public class UpdateEventUseCase : IUpdateEventUseCase
     
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
+    private IImageService _imageService;
 
-    public UpdateEventUseCase(IRepositoriesManager repositoriesManager, IMapper mapper)
+    public UpdateEventUseCase(IRepositoriesManager repositoriesManager, IMapper mapper, IImageService imageService)
     {
         _repositoriesManager = repositoriesManager;
         _mapper = mapper;
+        _imageService = imageService;
     }
     
     public async Task<GetEventDto> Handle(Guid id, CreateEventDto item)
@@ -33,13 +36,13 @@ public class UpdateEventUseCase : IUpdateEventUseCase
         {
             newFileName = item.Image.FileName;
             var imageFilePath = Path.Combine("wwwroot", "images", newFileName);
-            await WriteFileAsync(item.Image, imageFilePath);
+            await _imageService.WriteFileAsync(item.Image, imageFilePath);
         }
         var oldFilename = eventToUpdate.Image;
         if (oldFilename != null)
         {
             var imageFilePath = Path.Combine("wwwroot", "images", oldFilename);
-            DeleteFile(imageFilePath);
+            _imageService.DeleteFile(imageFilePath);
         }
         eventToUpdate.Image = newFileName;
         eventToUpdate.CategoryId = category.Id;
