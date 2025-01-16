@@ -2,6 +2,7 @@
 using Application.Contracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
+using Application.Specifications;
 using Application.Validation.Event.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

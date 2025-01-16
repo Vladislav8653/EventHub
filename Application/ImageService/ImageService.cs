@@ -1,7 +1,7 @@
 using Application.Contracts;
 using Application.Exceptions;
 
-namespace Application.FileManager;
+namespace Application.ImageService;
 
 public class ImageService : IImageService
 {

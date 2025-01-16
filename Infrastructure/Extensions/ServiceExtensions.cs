@@ -31,7 +31,7 @@ using System.Text;
 using Application;
 using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
-using Application.FileManager;
+using Application.ImageService;
 using Application.UseCases.CategoryUseCases;
 using Application.UseCases.EventUseCases;
 using Infrastructure.Authentication;
