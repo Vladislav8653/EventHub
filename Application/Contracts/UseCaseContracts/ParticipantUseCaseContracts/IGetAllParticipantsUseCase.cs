@@ -3,7 +3,7 @@ using Application.DtoModels.ParticipantDto;
 
 namespace Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 
-public interface IGetParticipantsUseCase
+public interface IGetAllParticipantsUseCase
 {
-    Task<IEnumerable<GetParticipantDto>> Handle(PageParamsDto? pageParamsDto, Guid eventId);
+    Task<PagedResult<GetParticipantDto>> Handle(PageParamsDto? pageParamsDto, Guid eventId);
 }

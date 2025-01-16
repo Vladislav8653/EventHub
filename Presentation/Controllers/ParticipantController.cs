@@ -15,16 +15,16 @@ public class ParticipantController : ControllerBase
 {
     private readonly ICreateParticipantUseCase _createParticipantUseCase;
     private readonly IDeleteParticipantUseCase _deleteParticipantUseCase;
-    private readonly IGetParticipantsUseCase _getParticipantsUseCase;
+    private readonly IGetAllParticipantsUseCase _getAllParticipantsUseCase;
     private readonly IGetParticipantUseCase _getParticipantUseCase;
     public ParticipantController(ICreateParticipantUseCase createParticipantUseCase, 
         IDeleteParticipantUseCase deleteParticipantUseCase, 
-        IGetParticipantsUseCase getParticipantsUseCase, 
+        IGetAllParticipantsUseCase getAllParticipantsUseCase, 
         IGetParticipantUseCase getParticipantUseCase)
     {
         _createParticipantUseCase = createParticipantUseCase;
         _deleteParticipantUseCase = deleteParticipantUseCase;
-        _getParticipantsUseCase = getParticipantsUseCase;
+        _getAllParticipantsUseCase = getAllParticipantsUseCase;
         _getParticipantUseCase = getParticipantUseCase;
     }
     
@@ -33,7 +33,7 @@ public class ParticipantController : ControllerBase
     [ServiceFilter(typeof(ValidatePageParamsAttribute))]
     public async Task<IActionResult> GetAllParticipants([FromQuery]PageParamsDto pageParams, Guid eventId)
     {
-        var participants = await _getParticipantsUseCase.Handle(pageParams, eventId);
+        var participants = await _getAllParticipantsUseCase.Handle(pageParams, eventId);
         return Ok(participants);
     }
     

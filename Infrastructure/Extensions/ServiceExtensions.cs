@@ -202,7 +202,7 @@ public static class ServiceExtensions
     {
         services.AddScoped<ICreateParticipantUseCase, CreateParticipantUseCase>();
         services.AddScoped<IDeleteParticipantUseCase, DeleteParticipantUseCase>();
-        services.AddScoped<IGetParticipantsUseCase, GetParticipantsUseCase>();
+        services.AddScoped<IGetAllParticipantsUseCase, GetAllParticipantsUseCase>();
         services.AddScoped<IGetParticipantUseCase, GetParticipantUseCase>();
     }
 
