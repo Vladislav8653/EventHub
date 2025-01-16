@@ -12,6 +12,7 @@ public class EventsConfig : IEntityTypeConfiguration<Event>
         builder.HasMany(e => e.Participants)
             .WithOne(ep => ep.Event)
             .HasForeignKey(ep => ep.EventId);
+        
         builder.HasOne(e => e.Category)
             .WithMany()
             .HasForeignKey(e => e.CategoryId);

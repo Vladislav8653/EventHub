@@ -9,9 +9,9 @@ public class ParticipantsConfig : IEntityTypeConfiguration<Participant>
     public void Configure(EntityTypeBuilder<Participant> builder)
     {
         builder.HasKey(p => p.Id);
-        builder.HasMany(p => p.Events)
-            .WithOne(ep => ep.Participant)
-            .HasForeignKey(ep => ep.ParticipantId);
+        builder.HasOne(p => p.Event)
+            .WithMany(ep => ep.Participants)
+            .HasForeignKey(ep => ep.EventId);
 
         builder.HasOne(p => p.User)
             .WithMany(u => u.Participants)
