@@ -19,7 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Contracts\UseCaseContracts\ParticipantUseCaseContracts\" />
       <Folder Include="Contracts\UseCaseContracts\UserUseCaseContracts\" />
     </ItemGroup>
 

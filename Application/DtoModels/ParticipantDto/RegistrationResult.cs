@@ -2,7 +2,7 @@
 
 public class RegistrationResult
 {
-    public required string Message { get; set; }
-    public required bool Success { get; set; }
-    public required GetParticipantDto? Participant { get; set; } 
+    public required string Message;
+    public required bool Success;
+    public required GetParticipantDto? Participant;
 }

@@ -28,12 +28,13 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using FluentValidation;
 using System.Text;
-using Application;
 using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
+using Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 using Application.ImageService;
 using Application.UseCases.CategoryUseCases;
 using Application.UseCases.EventUseCases;
+using Application.UseCases.ParticipantUseCases;
 using Infrastructure.Authentication;
 
 namespace Infrastructure.Extensions;
@@ -63,7 +64,6 @@ public static class ServiceExtensions
     {
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<IParticipantRepository, ParticipantRepository>();
-        services.AddScoped<IEventParticipantRepository, EventParticipantRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
     }
@@ -185,7 +185,7 @@ public static class ServiceExtensions
     {
         ConfigureCategoryUseCases(services);
         ConfigureEventUseCases(services);
-        services.AddScoped<IParticipantService, ParticipantService>();
+        ConfigureParticipantUseCases(services);
         services.AddScoped<IUserService, UserService>();
     }
     
@@ -197,7 +197,15 @@ public static class ServiceExtensions
         services.AddScoped<IGetCategoryByIdUseCase, GetCategoryByIdUseCase>();
         services.AddScoped<IGetCategoryByNameUseCase, GetCategoryByNameUseCase>();
     }
-    
+
+    private static void ConfigureParticipantUseCases(this IServiceCollection services)
+    {
+        services.AddScoped<ICreateParticipantUseCase, CreateParticipantUseCase>();
+        services.AddScoped<IDeleteParticipantUseCase, DeleteParticipantUseCase>();
+        services.AddScoped<IGetParticipantsUseCase, GetParticipantsUseCase>();
+        services.AddScoped<IGetParticipantUseCase, GetParticipantUseCase>();
+    }
+
     private static void ConfigureEventUseCases(this IServiceCollection services)
     {
         services.AddScoped<ICreateEventUseCase, CreateEventUseCase>();
