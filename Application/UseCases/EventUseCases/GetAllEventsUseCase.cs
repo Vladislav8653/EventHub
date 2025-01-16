@@ -25,19 +25,17 @@ public class GetAllEventsUseCase : IGetAllEventsUseCase
         _mapper = mapper;
     }
     
-    public async Task<EntitiesWithTotalCountDto<GetEventDto>> Handle(EventQueryParamsDto eventParamsDto, ImageUrlConfiguration request)
+    public async Task<PagedResult<GetEventDto>> Handle(EventQueryParamsDto eventParamsDto, ImageUrlConfiguration request)
     {
         var filters = await GetFiltersFromQueryParams(eventParamsDto.Filters);
-        var pageParams = GetPageParamsFromQueryParams(eventParamsDto.PageParams, DefaultPage, DefaultPageSize); 
-        var eventParams = new EventQueryParams
-        {
-            Filters = filters,
-            PageParams = pageParams
-        };
-        var (events, totalFields) = await _repositoriesManager.Events.GetAllByParamsAsync(eventParams);
-        events = AttachLinkToImage(events, request);
+        var pageParamsDto = eventParamsDto.PageParams;
+        var pageParams = pageParamsDto == null ? new PageParams(DefaultPage, DefaultPageSize) : 
+            new PageParams(pageParamsDto.Page ?? DefaultPage, pageParamsDto.PageSize ?? DefaultPageSize);
+        var eventParams = new EventQueryParams(filters, pageParams);
+        var pagedResult = await _repositoriesManager.Events.GetAllByParamsAsync(eventParams);
+        var events = AttachLinkToImage(pagedResult.Items, request);
         var eventsWithImages = _mapper.Map<IEnumerable<GetEventDto>>(events);
-        return new EntitiesWithTotalCountDto<GetEventDto>(eventsWithImages, totalFields);
+        return new PagedResult<GetEventDto>(eventsWithImages, pagedResult.Total);
     }
     
     private async Task<EventFilters?> GetFiltersFromQueryParams(EventFiltersDto? filtersDto)
@@ -53,16 +51,7 @@ public class GetAllEventsUseCase : IGetAllEventsUseCase
         return filters;
     }
 
-    private static PageParams? GetPageParamsFromQueryParams(PageParamsDto? pageParamsDro, int defaultPage, int defaultPageSize)
-    {
-        if (pageParamsDro == null) return null;
-        PageParams pageParams = new PageParams(
-            pageParamsDro.Page,
-            pageParamsDro.PageSize,
-            defaultPage,
-            defaultPageSize);
-        return pageParams;
-    }
+   
     
     private static List<Event> AttachLinkToImage(IEnumerable<Event> items, ImageUrlConfiguration request)
     {

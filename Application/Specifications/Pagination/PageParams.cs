@@ -1,13 +1,7 @@
 ﻿namespace Application.Specifications.Pagination;
 
-public class PageParams
+public class PageParams(int page, int pageSize)
 {
-    public PageParams(int? page, int? pageSize, int defaultPage, int defaultPageSize)
-    {
-        Page = page ?? defaultPage;
-        PageSize = pageSize ?? defaultPageSize;
-    }
-
-    public int Page { get; }
-    public int PageSize { get; }
+    public int Page { get; } = page;
+    public int PageSize { get; } = pageSize;
 }

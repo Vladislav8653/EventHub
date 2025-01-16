@@ -27,15 +27,10 @@ public class ParticipantService : IParticipantService
         var eventDb = await _repositoriesManager.Events.GetByIdAsync(eventId);
         if (eventDb == null)
             throw new EntityNotFoundException($"Event with id {eventId} doesn't exist");
-        PageParams? pageParams = null;
-        if (pageParamsDto != null)
-        { 
-            pageParams = new PageParams(
-                pageParamsDto.Page,
-                pageParamsDto.PageSize,
-                DefaultPage,
-                DefaultPageSize);
-        }
+        
+        var pageParams = pageParamsDto == null ? new PageParams(DefaultPage, DefaultPageSize) : 
+            new PageParams(pageParamsDto.Page ?? DefaultPage, pageParamsDto.PageSize ?? DefaultPageSize);
+        
         var participants = await _repositoriesManager.Participants.GetParticipantsAsync(pageParams, eventId);
         var participantsDto = _mapper.Map<IEnumerable<GetParticipantDto>>(participants);
         return participantsDto;

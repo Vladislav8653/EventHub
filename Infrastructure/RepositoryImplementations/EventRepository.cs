@@ -1,6 +1,7 @@
 ﻿using Application.Contracts.RepositoryContracts;
+using Application.DtoModels.CommonDto;
 using Application.Specifications.Dto;
-using Application.Specifications.Filtering;
+using Application.Specifications.Pagination;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,19 +23,23 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
             .Include(e => e.Participants)
             .FirstOrDefaultAsync(e => e.Id == id);
     
-    
-    public async Task<(IEnumerable<Event>, int)> GetAllByParamsAsync(EventQueryParams eventParams)
+    public async Task<PagedResult<Event>> GetAllByParamsAsync(EventQueryParams eventParams)
     {
-        var filters = eventParams.Filters ?? null;
-        var pageParams = eventParams.PageParams ?? null;
-        // query - итоговый результат после всех "ограничений"
         var query = Repository.Events.Include(e => e.Category).AsQueryable();
-        if (pageParams != null)
-            query = GetByPage(query, pageParams);
-        if (filters != null)
-            query = GetByFilters(query, filters);
-        var totalFields = Repository.Events.Count();
-        return (await query.ToListAsync(), totalFields);
+        var filters = eventParams.Filters ?? null;
+        if (filters != null) 
+        {   // query - итоговый результат после всех "ограничений"
+            if (filters.Date.HasValue) // если событие в эту дату
+                query = query.Where(e => e.DateTime == filters.Date);
+            if (filters is { StartDate: not null, FinishDate: not null }) // если событие [с...по]
+                query = query.Where(e => e.DateTime > filters.StartDate && e.DateTime < filters.FinishDate);
+            if (filters.Category != null)
+                query = query.Where(e => e.Category == filters.Category);
+            if (!string.IsNullOrEmpty(filters.Place))
+                query = query.Where(e => e.Place == filters.Place);
+        }
+        var pagedResult = await GetByPageAsync(query, eventParams.PageParams);
+        return pagedResult;
     }
 
     public async Task<IEnumerable<Event>> GetAllUserEventsAsync(Guid userId)
@@ -48,30 +53,4 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
             .Select(ep => ep.Event);
         return await events.ToListAsync();
     }
-
-    private IQueryable<Event> GetByFilters(IQueryable<Event> query, EventFilters filters)
-    {
-        if (filters.Date.HasValue) // если событие в эту дату
-        {
-            query = query.Where(e => e.DateTime == filters.Date);
-        }
-
-        if (filters is { StartDate: not null, FinishDate: not null }) // если событие [c...по]
-        {
-            query = query.Where(e => e.DateTime > filters.StartDate && e.DateTime < filters.FinishDate);
-        }
-
-        if (filters.Category != null)
-        {
-            query = query.Where(e => e.Category == filters.Category);
-        }
-
-        if (!string.IsNullOrEmpty(filters.Place))
-        {
-            query = query.Where(e => e.Place == filters.Place);
-        }
-
-        return query;
-    }
-    
 }

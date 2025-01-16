@@ -1,11 +1,8 @@
-﻿using Application.Specifications.Pagination;
+﻿namespace Application.Contracts.RepositoryContracts;
 
-namespace Application.Contracts.RepositoryContracts;
-
-public interface IRepositoryBase<T>
+public interface IRepositoryBase<in T>
 {
     Task CreateAsync(T entity);
     void Delete(T entity);
     void Update(T entity);
-    IQueryable<T> GetByPage(IQueryable<T> query, PageParams pageParams);
 }

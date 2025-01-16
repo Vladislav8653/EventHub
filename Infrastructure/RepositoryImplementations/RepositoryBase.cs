@@ -1,5 +1,7 @@
 ﻿using Application.Contracts.RepositoryContracts;
+using Application.DtoModels.CommonDto;
 using Application.Specifications.Pagination;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.RepositoryImplementations;
 
@@ -13,14 +15,13 @@ public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     public async Task CreateAsync(T entity) => await Repository.Set<T>().AddAsync(entity);
     public void Delete(T entity) => Repository.Set<T>().Remove(entity);
     public void Update(T entity) => Repository.Set<T>().Update(entity);
-    public IQueryable<T> GetByPage(IQueryable<T> query, PageParams pageParams)
+    public async Task<PagedResult<T>> GetByPageAsync(IQueryable<T> query, PageParams pageParams)
     {
+        var totalCount = query.Count();
         var page = pageParams.Page;
         var pageSize = pageParams.PageSize;
         var skip = (page - 1) * pageSize;
         query = query.Skip(skip).Take(pageSize);
-        return query;
+        return new PagedResult<T>(await query.ToListAsync(), totalCount);
     }
-    
-   
 }

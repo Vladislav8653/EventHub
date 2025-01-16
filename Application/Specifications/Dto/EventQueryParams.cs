@@ -3,8 +3,8 @@ using Application.Specifications.Pagination;
 
 namespace Application.Specifications.Dto;
 
-public class EventQueryParams
+public class EventQueryParams (EventFilters? filters, PageParams pageParams)
 {
-    public EventFilters? Filters { get; set; }
-    public PageParams? PageParams { get; set; }
+    public EventFilters? Filters { get; } = filters;
+    public PageParams PageParams { get; } = pageParams;
 }
