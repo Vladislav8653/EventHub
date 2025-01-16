@@ -15,11 +15,7 @@ public class ParticipantRepository : RepositoryBase<Participant>, IParticipantRe
         var query = Repository.EventsParticipants
             .Where(ep => ep.EventId == eventId)
             .Include(ep => ep.Participant)
-            .Select(ep => new ParticipantWithAddInfoDto()
-            {
-                Participant = ep.Participant,
-                RegistrationTime = ep.RegistrationTime
-            });
+            .Select(ep => new ParticipantWithAddInfoDto(ep.Participant, ep.RegistrationTime));
         return await GetByPageAsync(query, pageParams);
     }
 
@@ -27,15 +23,10 @@ public class ParticipantRepository : RepositoryBase<Participant>, IParticipantRe
         await Repository.EventsParticipants
             .Where(ep => ep.EventId == eventId && ep.ParticipantId == participantId)
             .Include(ep => ep.Participant)
-            .Select(ep => new ParticipantWithAddInfoDto()
-            {
-                Participant = ep.Participant,
-                RegistrationTime = ep.RegistrationTime
-            })
+            .Select(ep => new ParticipantWithAddInfoDto(ep.Participant, ep.RegistrationTime))
             .FirstOrDefaultAsync();
     
-    // так как я возвращаю кастомный тип, а не базовый Participant, я не могу использовать этот метод из RepositoryBase
-    private async Task<IEnumerable<ParticipantWithAddInfoDto>> GetByPageAsync(IQueryable<ParticipantWithAddInfoDto> query, PageParams pageParams)
+     private async Task<IEnumerable<ParticipantWithAddInfoDto>> GetByPageAsync(IQueryable<ParticipantWithAddInfoDto> query, PageParams pageParams)
     {
         var page = pageParams.Page;
         var pageSize = pageParams.PageSize;

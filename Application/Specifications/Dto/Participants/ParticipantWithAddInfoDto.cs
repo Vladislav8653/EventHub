@@ -2,8 +2,8 @@
 
 namespace Application.Specifications.Dto.Participants;
 
-public class ParticipantWithAddInfoDto
+public class ParticipantWithAddInfoDto (Participant participant, DateTime regTime)
 {
-    public required Participant Participant { get; set; }
-    public required DateTime RegistrationTime { get; set; }
+    public Participant Participant { get; } = participant;
+    public DateTime RegistrationTime { get; } = regTime;
 }
