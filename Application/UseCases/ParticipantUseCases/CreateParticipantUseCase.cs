@@ -35,7 +35,7 @@ public class CreateParticipantUseCase : ICreateParticipantUseCase
         var userId = Guid.Parse(userIdStr);
         participant.UserId = userId;
         participant.EventId = eventId;
-        participant.RegistrationTime = DateTime.Now;
+        participant.RegistrationTime = DateTime.UtcNow;
         await _repositoriesManager.Participants.CreateAsync(participant);
         await _repositoriesManager.SaveAsync();
         var participantDto = _mapper.Map<GetParticipantDto>(participant);

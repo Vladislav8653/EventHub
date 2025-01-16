@@ -2,7 +2,7 @@
 
 public class RegistrationResult
 {
-    public required string Message;
-    public required bool Success;
-    public required GetParticipantDto? Participant;
+    public string Message { get; init; } = string.Empty;
+    public bool Success  { get; init; }
+    public GetParticipantDto? Participant { get; init; }
 }
