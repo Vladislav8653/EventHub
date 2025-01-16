@@ -26,9 +26,9 @@ public class DeleteParticipantUseCase : IDeleteParticipantUseCase
         if(participant == null)
             throw new EntityNotFoundException($"Participant with id {participantId} doesn't exist");
         var userId = Guid.Parse(userIdStr);
-        if (participant.Participant.UserId != userId)
+        if (participant.UserId != userId)
             throw new UnauthorizedAccessException("User does not have permission to remove other participants.");
-        _repositoriesManager.Participants.Delete(participant.Participant);
+        _repositoriesManager.Participants.Delete(participant);
         await _repositoriesManager.SaveAsync();
         var participantDto = _mapper.Map<GetParticipantDto>(participant);
         return participantDto;

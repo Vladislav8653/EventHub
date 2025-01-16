@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using Application.Contracts.UseCaseContracts;
+using Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 using Application.DtoModels.CommonDto;
 using Application.DtoModels.ParticipantDto;
 using Application.Validation.CommonValidation;
@@ -13,10 +13,19 @@ namespace Presentation.Controllers;
 [ApiController]
 public class ParticipantController : ControllerBase
 {
-    private readonly IParticipantService _participantService;
-    public ParticipantController(IParticipantService participantService)
+    private readonly ICreateParticipantUseCase _createParticipantUseCase;
+    private readonly IDeleteParticipantUseCase _deleteParticipantUseCase;
+    private readonly IGetParticipantsUseCase _getParticipantsUseCase;
+    private readonly IGetParticipantUseCase _getParticipantUseCase;
+    public ParticipantController(ICreateParticipantUseCase createParticipantUseCase, 
+        IDeleteParticipantUseCase deleteParticipantUseCase, 
+        IGetParticipantsUseCase getParticipantsUseCase, 
+        IGetParticipantUseCase getParticipantUseCase)
     {
-        _participantService = participantService;
+        _createParticipantUseCase = createParticipantUseCase;
+        _deleteParticipantUseCase = deleteParticipantUseCase;
+        _getParticipantsUseCase = getParticipantsUseCase;
+        _getParticipantUseCase = getParticipantUseCase;
     }
     
     [Authorize]
@@ -24,7 +33,7 @@ public class ParticipantController : ControllerBase
     [ServiceFilter(typeof(ValidatePageParamsAttribute))]
     public async Task<IActionResult> GetAllParticipants([FromQuery]PageParamsDto pageParams, Guid eventId)
     {
-        var participants = await _participantService.GetParticipantsAsync(pageParams, eventId);
+        var participants = await _getParticipantsUseCase.Handle(pageParams, eventId);
         return Ok(participants);
     }
     
@@ -40,7 +49,7 @@ public class ParticipantController : ControllerBase
             return Unauthorized(); 
         }
         var userId = userIdClaim.Value; 
-        var registration = await _participantService.RegisterParticipantAsync(eventId, item, userId);
+        var registration = await _createParticipantUseCase.Handle(eventId, item, userId);
         return Ok(registration);
     }
     
@@ -48,7 +57,7 @@ public class ParticipantController : ControllerBase
     [HttpGet("{participantId:guid}")]
     public async Task<IActionResult> GetParticipantById(Guid eventId, Guid participantId)
     {
-        var participant = await _participantService.GetParticipantAsync(eventId, participantId);
+        var participant = await _getParticipantUseCase.Handle(eventId, participantId);
         return Ok(participant);
     }
     
@@ -65,7 +74,7 @@ public class ParticipantController : ControllerBase
             return Unauthorized(); 
         }
         var userId = userIdClaim.Value; 
-        var participant = await _participantService.RemoveParticipantAsync(eventId, participantId, userId);
+        var participant = await _deleteParticipantUseCase.Handle(eventId, participantId, userId);
         return Ok(participant);
     }
     
