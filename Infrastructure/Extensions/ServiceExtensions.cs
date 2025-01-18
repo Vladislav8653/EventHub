@@ -31,10 +31,13 @@ using System.Text;
 using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
+using Application.Contracts.UseCaseContracts.UserUseCaseContracts;
+using Application.CookieService;
 using Application.ImageService;
 using Application.UseCases.CategoryUseCases;
 using Application.UseCases.EventUseCases;
 using Application.UseCases.ParticipantUseCases;
+using Application.UseCases.UserUseCases;
 using Infrastructure.Authentication;
 
 namespace Infrastructure.Extensions;
@@ -181,12 +184,18 @@ public static class ServiceExtensions
         services.AddScoped<IImageService, ImageService>();
     }
     
+    public static void ConfigureCookieService(this IServiceCollection services)
+    {
+        services.AddScoped<ICookieService, CookieService>();
+    }
+    
+    
     public static void ConfigureUseCases(this IServiceCollection services)
     {
         ConfigureCategoryUseCases(services);
         ConfigureEventUseCases(services);
         ConfigureParticipantUseCases(services);
-        services.AddScoped<IUserService, UserService>();
+        ConfigureUserUseCases(services);
     }
     
     private static void ConfigureCategoryUseCases(this IServiceCollection services)
@@ -214,5 +223,14 @@ public static class ServiceExtensions
         services.AddScoped<IGetEventByIdUseCase, GetEventByIdUseCase>();
         services.AddScoped<IGetEventByNameUseCase, GetEventByNameUseCase>();
         services.AddScoped<IUpdateEventUseCase, UpdateEventUseCase>();
+        services.AddScoped<IGetAllUserEventsUseCase, GetAllUserEventsUseCase>();
     }
+
+    private static void ConfigureUserUseCases(this IServiceCollection services)
+    {
+        services.AddScoped<ILoginUserUseCase, LoginUserUseCase>();
+        services.AddScoped<IRefreshTokenUseCase, RefreshTokenUseCase>();
+        services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
+    }
+    
 }

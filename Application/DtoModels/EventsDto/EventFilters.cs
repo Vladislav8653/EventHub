@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 
-namespace Application.Specifications.Filtering;
+namespace Application.DtoModels.EventsDto;
 
 public class EventFilters
 {

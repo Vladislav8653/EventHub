@@ -1,7 +1,6 @@
-﻿using Application.Specifications.Filtering;
-using Application.Specifications.Pagination;
+﻿using Application.DtoModels.CommonDto;
 
-namespace Application.Specifications.Dto;
+namespace Application.DtoModels.EventsDto;
 
 public class EventQueryParams (EventFilters? filters, PageParams pageParams)
 {

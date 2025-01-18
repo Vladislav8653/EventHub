@@ -1,4 +1,4 @@
-﻿namespace Application.Specifications.Pagination;
+﻿namespace Application.DtoModels.CommonDto;
 
 public class PageParams(int page, int pageSize)
 {

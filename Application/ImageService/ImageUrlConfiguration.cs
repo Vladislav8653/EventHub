@@ -1,4 +1,4 @@
-namespace Application.Specifications;
+namespace Application.ImageService;
 
 public class ImageUrlConfiguration(HttpRequest request, string controllerName, string endpointName)
 {
