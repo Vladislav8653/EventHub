@@ -1,8 +1,8 @@
-﻿using Application;
-using Application.Contracts;
+﻿using Application.Contracts;
+using Application.Contracts.AuthContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
-using Application.Specifications;
+using Application.ImageService;
 using Application.Validation.Event.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,17 +15,20 @@ public class EventController : ControllerBase
 {
     private const string ControllerRoute = "events";
     private const string ImageEndpointRoute = "images";
+    //private const string AccessTokenCookieName = "access-token";
     private readonly ImageUrlConfiguration _imageUrlConfiguration; // для формирования URL к изображению
     private readonly string _imageStoragePath; // для формирования пути к изображениям
     private readonly IImageService _imageService;  // сервис для работы с изображениями
+    private readonly IJwtProvider _jwtProvider;
+    private readonly ICookieService _cookieService;
     private readonly ICreateEventUseCase _createEventUseCase;
     private readonly IDeleteEventUseCase _deleteEventUseCase;
     private readonly IUpdateEventUseCase _updateEventUseCase;
     private readonly IGetAllEventsUseCase _getAllEventsUseCase;
     private readonly IGetEventByIdUseCase _getEventByIdUseCase;
     private readonly IGetEventByNameUseCase _getEventByNameUseCase;
-    public EventController(IHttpContextAccessor httpContextAccessor, 
-        IImageService imageService,
+    private readonly IGetAllUserEventsUseCase _getAllUserEventsUseCase;
+    public EventController(IImageService imageService,
         IConfiguration configuration,
         ICreateEventUseCase createEventUseCase, 
         IDeleteEventUseCase deleteEventUseCase,
@@ -33,9 +36,11 @@ public class EventController : ControllerBase
         IGetEventByIdUseCase getEventByIdUseCase, 
         IGetAllEventsUseCase getAllEventsUseCase, 
         IGetEventByNameUseCase getEventByNameUseCase, 
-        IWebHostEnvironment hostingEnvironment)
+        IWebHostEnvironment hostingEnvironment,
+        IJwtProvider jwtProvider,
+        ICookieService cookieService, IGetAllUserEventsUseCase getAllUserEventsUseCase)
     {
-        _imageUrlConfiguration = InitializeImageUrlConfiguration(httpContextAccessor); 
+        _imageUrlConfiguration = InitializeImageUrlConfiguration(); 
         _imageStoragePath = InitializeImageStoragePath(configuration, hostingEnvironment); 
         _imageService = imageService;
         _createEventUseCase = createEventUseCase;
@@ -44,6 +49,9 @@ public class EventController : ControllerBase
         _getEventByIdUseCase = getEventByIdUseCase;
         _getAllEventsUseCase = getAllEventsUseCase;
         _getEventByNameUseCase = getEventByNameUseCase;
+        _jwtProvider = jwtProvider;
+        _cookieService = cookieService;
+        _getAllUserEventsUseCase = getAllUserEventsUseCase;
     }
     
     [HttpGet]
@@ -98,6 +106,15 @@ public class EventController : ControllerBase
         return Ok(result);
     }
     
+    [Authorize]
+    [HttpGet("my")]
+    public async Task<IActionResult> GetAllUserEvents()
+    {
+        var userId = _jwtProvider.GetUserIdAccessToken(_cookieService.GetCookie(Request, UserController.AccessTokenCookieName));
+        var events = await _getAllUserEventsUseCase.Handle(userId, _imageUrlConfiguration);
+        return Ok(events);
+    }
+    
     
     [HttpGet(ImageEndpointRoute + "/{fileName}")]
     public async Task<IActionResult> GetImage(string fileName)
@@ -106,12 +123,11 @@ public class EventController : ControllerBase
         return File(fileBytes, contentType, fileName);
     }
 
-    private ImageUrlConfiguration InitializeImageUrlConfiguration(IHttpContextAccessor httpContextAccessor)
+    private ImageUrlConfiguration InitializeImageUrlConfiguration()
     {
-        var httpContext = httpContextAccessor.HttpContext;
-        if (httpContext == null)
+        if (HttpContext == null)
             throw new InvalidOperationException("HttpContext is not available");
-        var request = httpContext.Request;
+        var request = HttpContext.Request;
         return new ImageUrlConfiguration(request, ControllerRoute, ImageEndpointRoute);
     }
 
