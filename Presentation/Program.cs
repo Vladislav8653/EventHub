@@ -9,6 +9,7 @@ builder.Services.ConfigureRepositories();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureAutoMapper();
 builder.Services.ConfigureImageService();
+builder.Services.ConfigureCookieService();
 builder.Services.ConfigureUseCases();
 builder.Services.ConfigureLogger();
 builder.Services.ConfigureApiAuthentication(builder.Configuration);
