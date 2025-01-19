@@ -29,5 +29,8 @@ public class UsersConfig : IEntityTypeConfiguration<User>
         builder.Property(u => u.Role)
             .IsRequired()
             .HasMaxLength(50);
+
+        builder.Property(u => u.RefreshToken)
+            .HasMaxLength(32);
     }
 }
