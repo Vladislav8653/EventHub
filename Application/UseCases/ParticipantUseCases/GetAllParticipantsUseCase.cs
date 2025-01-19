@@ -3,7 +3,6 @@ using Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 using Application.DtoModels.CommonDto;
 using Application.DtoModels.ParticipantDto;
 using Application.Exceptions;
-using Application.Specifications.Pagination;
 using AutoMapper;
 
 namespace Application.UseCases.ParticipantUseCases;

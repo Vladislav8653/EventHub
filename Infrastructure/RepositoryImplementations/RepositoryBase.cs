@@ -1,6 +1,5 @@
 ﻿using Application.Contracts.RepositoryContracts;
 using Application.DtoModels.CommonDto;
-using Application.Specifications.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.RepositoryImplementations;

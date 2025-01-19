@@ -1,6 +1,5 @@
 ﻿using Application.DtoModels.EventsDto;
 using Application.DtoModels.EventsDto.QueryParams;
-using Application.Specifications.Filtering;
 using AutoMapper;
 using Domain.Models;
 

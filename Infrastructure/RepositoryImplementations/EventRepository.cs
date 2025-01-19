@@ -1,7 +1,6 @@
 ﻿using Application.Contracts.RepositoryContracts;
 using Application.DtoModels.CommonDto;
-using Application.Specifications.Dto;
-using Application.Specifications.Pagination;
+using Application.DtoModels.EventsDto;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 

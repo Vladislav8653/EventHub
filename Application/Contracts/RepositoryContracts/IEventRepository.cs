@@ -1,6 +1,5 @@
 ﻿using Application.DtoModels.CommonDto;
-using Application.Specifications.Dto;
-using Application.Specifications.Pagination;
+using Application.DtoModels.EventsDto;
 using Domain.Models;
 
 namespace Application.Contracts.RepositoryContracts;
