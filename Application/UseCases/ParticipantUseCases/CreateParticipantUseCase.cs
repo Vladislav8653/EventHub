@@ -17,7 +17,7 @@ public class CreateParticipantUseCase : ICreateParticipantUseCase
         _mapper = mapper;
     }
     
-    public async Task<RegistrationResult> Handle(Guid eventId, CreateParticipantDto item, string userIdStr)
+    public async Task<RegistrationResult> Handle(Guid eventId, CreateParticipantDto item, Guid userId)
     {
         var eventDb = await _repositoriesManager.Events.GetByIdAsync(eventId);
         if (eventDb == null)
@@ -32,7 +32,6 @@ public class CreateParticipantUseCase : ICreateParticipantUseCase
             };
         }
         var participant = _mapper.Map<Participant>(item);
-        var userId = Guid.Parse(userIdStr);
         participant.UserId = userId;
         participant.EventId = eventId;
         participant.RegistrationTime = DateTime.UtcNow;

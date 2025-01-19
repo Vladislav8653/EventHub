@@ -17,7 +17,7 @@ public class DeleteParticipantUseCase : IDeleteParticipantUseCase
     }
 
 
-    public async Task<GetParticipantDto> Handle(Guid eventId, Guid participantId, string userIdStr)
+    public async Task<GetParticipantDto> Handle(Guid eventId, Guid participantId, Guid userId)
     {
         var eventDb = await _repositoriesManager.Events.GetByIdAsync(eventId);
         if (eventDb == null)
@@ -25,7 +25,6 @@ public class DeleteParticipantUseCase : IDeleteParticipantUseCase
         var participant = await _repositoriesManager.Participants.GetParticipantAsync(eventId, participantId);
         if(participant == null)
             throw new EntityNotFoundException($"Participant with id {participantId} doesn't exist");
-        var userId = Guid.Parse(userIdStr);
         if (participant.UserId != userId)
             throw new UnauthorizedAccessException("User does not have permission to remove other participants.");
         _repositoriesManager.Participants.Delete(participant);
