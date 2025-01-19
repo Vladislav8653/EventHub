@@ -2,11 +2,13 @@
 
 public class LoginUserResponse
 {
-    public LoginUserResponse(string message, string token = "")
+    public LoginUserResponse(string message, string accessToken = "", string refreshToken = "")
     {
         Message = message;
-        Token = token;
+        AccessToken = accessToken;
+        RefreshToken = refreshToken;
     }
     public string Message { get; set; }
-    public string Token { get; set; }
+    public string AccessToken { get; set; }
+    public string RefreshToken { get; set; }
 }
