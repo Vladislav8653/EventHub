@@ -36,6 +36,7 @@ using Application.UseCases.CategoryUseCases;
 using Application.UseCases.EventUseCases;
 using Application.UseCases.ParticipantUseCases;
 using Application.UseCases.UserUseCases;
+using Application.Validation;
 using Infrastructure.Authentication;
 
 namespace Infrastructure.Extensions;
@@ -124,13 +125,6 @@ public static class ServiceExtensions
         services.AddTransient<IValidator<CreateParticipantDto>, ParticipantDtoValidator>();
         services.AddTransient<IValidator<RegisterUserRequest>, RegisterUserRequestValidator>();
         services.AddTransient<IValidator<LoginUserRequest>, LoginUserRequestValidator>();
-        services.AddScoped<ValidateEventDtoAttribute>();
-        services.AddScoped<ValidateEventQueryParamsAttribute>();
-        services.AddScoped<ValidateParticipantDtoAttribute>();
-        services.AddScoped<ValidateCategoryDtoAttribute>();
-        services.AddScoped<ValidatePageParamsAttribute>();
-        services.AddScoped<ValidateRegisterUserRequestAttribute>();
-        services.AddScoped<ValidateLoginUserRequestAttribute>();
     }
     
     public static void AppendMiddlewareErrorHandler(this IApplicationBuilder builder)
