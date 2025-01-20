@@ -15,7 +15,6 @@ public class EventController : ControllerBase
 {
     private const string ControllerRoute = "events";
     private const string ImageEndpointRoute = "images";
-    //private const string AccessTokenCookieName = "access-token";
     private readonly ImageUrlConfiguration _imageUrlConfiguration; // для формирования URL к изображению
     private readonly string _imageStoragePath; // для формирования пути к изображениям
     private readonly IImageService _imageService;  // сервис для работы с изображениями
@@ -56,24 +55,24 @@ public class EventController : ControllerBase
     
     [HttpGet]
     [ServiceFilter(typeof(ValidateEventQueryParamsAttribute))]
-    public async Task<IActionResult> GetAllEvents([FromQuery]EventQueryParamsDto eventParamsDto)
+    public async Task<IActionResult> GetAllEvents([FromQuery]EventQueryParamsDto eventParamsDto, CancellationToken cancellationToken)
     {
         var events = 
-            await _getAllEventsUseCase.Handle(eventParamsDto, _imageUrlConfiguration);
+            await _getAllEventsUseCase.Handle(eventParamsDto, _imageUrlConfiguration, cancellationToken);
         return Ok(events);
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetEventById(Guid id)
+    public async Task<IActionResult> GetEventById(Guid id, CancellationToken cancellationToken)
     {
-        var events = await _getEventByIdUseCase.Handle(id, _imageUrlConfiguration);
+        var events = await _getEventByIdUseCase.Handle(id, _imageUrlConfiguration, cancellationToken);
         return Ok(events);
     }
     
     [HttpGet("{name}")]
-    public async Task<IActionResult> GetEventByName(string name)
+    public async Task<IActionResult> GetEventByName(string name, CancellationToken cancellationToken)
     {
-        var events = await _getEventByNameUseCase.Handle(name, _imageUrlConfiguration);
+        var events = await _getEventByNameUseCase.Handle(name, _imageUrlConfiguration, cancellationToken);
         return Ok(events);
     }
     
@@ -81,9 +80,9 @@ public class EventController : ControllerBase
     [Authorize]
     [HttpPost]
     [ServiceFilter(typeof(ValidateEventDtoAttribute))]
-    public async Task<IActionResult> CreateEvent([FromForm]CreateEventDto item)
+    public async Task<IActionResult> CreateEvent([FromForm]CreateEventDto item, CancellationToken cancellationToken)
     {
-        var newEvent = await _createEventUseCase.Handle(item, _imageStoragePath);
+        var newEvent = await _createEventUseCase.Handle(item, _imageStoragePath, cancellationToken);
         return Ok(newEvent);
     }
 
@@ -91,27 +90,27 @@ public class EventController : ControllerBase
     [Authorize]
     [HttpPut("{id:guid}")]
     [ServiceFilter(typeof(ValidateEventDtoAttribute))]
-    public async Task<IActionResult> UpdateEvent([FromForm]CreateEventDto item, Guid id)
+    public async Task<IActionResult> UpdateEvent([FromForm]CreateEventDto item, Guid id, CancellationToken cancellationToken)
     {
-        var updatedEvent =  await _updateEventUseCase.Handle(id, item, _imageStoragePath);
+        var updatedEvent =  await _updateEventUseCase.Handle(id, item, _imageStoragePath, cancellationToken);
         return Ok(updatedEvent);
     }
 
     
     [Authorize]
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteEvent(Guid id)
+    public async Task<IActionResult> DeleteEvent(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _deleteEventUseCase.Handle(id, _imageStoragePath);
+        var result = await _deleteEventUseCase.Handle(id, _imageStoragePath, cancellationToken);
         return Ok(result);
     }
     
     [Authorize]
     [HttpGet("my")]
-    public async Task<IActionResult> GetAllUserEvents()
+    public async Task<IActionResult> GetAllUserEvents(CancellationToken cancellationToken)
     {
         var userId = _jwtProvider.GetUserIdAccessToken(_cookieService.GetCookie(Request, UserController.AccessTokenCookieName));
-        var events = await _getAllUserEventsUseCase.Handle(userId, _imageUrlConfiguration);
+        var events = await _getAllUserEventsUseCase.Handle(userId, _imageUrlConfiguration, cancellationToken);
         return Ok(events);
     }
     

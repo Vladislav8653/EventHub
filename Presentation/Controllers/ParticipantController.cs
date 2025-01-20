@@ -36,27 +36,27 @@ public class ParticipantController : ControllerBase
     [Authorize]
     [HttpGet]
     [ServiceFilter(typeof(ValidatePageParamsAttribute))]
-    public async Task<IActionResult> GetAllParticipants([FromQuery]PageParamsDto pageParams, Guid eventId)
+    public async Task<IActionResult> GetAllParticipants([FromQuery]PageParamsDto pageParams, Guid eventId, CancellationToken cancellationToken)
     {
-        var participants = await _getAllParticipantsUseCase.Handle(pageParams, eventId);
+        var participants = await _getAllParticipantsUseCase.Handle(pageParams, eventId, cancellationToken);
         return Ok(participants);
     }
     
     [Authorize]
     [HttpPost]
     [ServiceFilter(typeof(ValidateParticipantDtoAttribute))]
-    public async Task<IActionResult> RegisterParticipant([FromBody]CreateParticipantDto item, Guid eventId)
+    public async Task<IActionResult> RegisterParticipant([FromBody]CreateParticipantDto item, Guid eventId, CancellationToken cancellationToken)
     {
         var userId = _jwtProvider.GetUserIdAccessToken(_cookieService.GetCookie(Request, UserController.AccessTokenCookieName));
-        var registration = await _createParticipantUseCase.Handle(eventId, item, userId);
+        var registration = await _createParticipantUseCase.Handle(eventId, item, userId, cancellationToken);
         return Ok(registration);
     }
     
     [Authorize]
     [HttpGet("{participantId:guid}")]
-    public async Task<IActionResult> GetParticipantById(Guid eventId, Guid participantId)
+    public async Task<IActionResult> GetParticipantById(Guid eventId, Guid participantId, CancellationToken cancellationToken)
     {
-        var participant = await _getParticipantUseCase.Handle(eventId, participantId);
+        var participant = await _getParticipantUseCase.Handle(eventId, participantId, cancellationToken);
         return Ok(participant);
     }
     
@@ -64,10 +64,10 @@ public class ParticipantController : ControllerBase
     
     [Authorize]
     [HttpDelete("{participantId:guid}")]
-    public async Task<IActionResult> RemoveParticipant(Guid eventId, Guid participantId)
+    public async Task<IActionResult> RemoveParticipant(Guid eventId, Guid participantId, CancellationToken cancellationToken)
     {
         var userId = _jwtProvider.GetUserIdAccessToken(_cookieService.GetCookie(Request, UserController.AccessTokenCookieName));
-        var participant = await _deleteParticipantUseCase.Handle(eventId, participantId, userId);
+        var participant = await _deleteParticipantUseCase.Handle(eventId, participantId, userId, cancellationToken);
         return Ok(participant);
     }
     

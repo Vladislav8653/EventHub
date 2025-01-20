@@ -28,17 +28,17 @@ public class UserController : ControllerBase
 
     [HttpPost("register")]
     [ServiceFilter(typeof(ValidateRegisterUserRequestAttribute))]
-    public async Task<IActionResult> Register([FromBody]RegisterUserRequest request)
+    public async Task<IActionResult> Register([FromBody]RegisterUserRequest request, CancellationToken cancellationToken)
     {
-        var response = await _registerUserUseCase.Handle(request);
+        var response = await _registerUserUseCase.Handle(request, cancellationToken);
         return Ok(response);
     }
     
     [HttpPost("login")]
     [ServiceFilter(typeof(ValidateLoginUserRequestAttribute))]
-    public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginUserRequest request, CancellationToken cancellationToken)
     {
-        var response = await _loginUserUseCase.Handle(request);
+        var response = await _loginUserUseCase.Handle(request, cancellationToken);
         _cookieService.AddCookie(Response, AccessTokenCookieName, response.AccessToken);
         _cookieService.AddCookie(Response, RefreshTokenCookieName, response.RefreshToken);
         return Ok(response.Message);
@@ -53,11 +53,11 @@ public class UserController : ControllerBase
     }
     
     [HttpPost("refresh")]
-    public async Task<IActionResult> Refresh()
+    public async Task<IActionResult> Refresh(CancellationToken cancellationToken)
     {
         var refreshToken = _cookieService.GetCookie(Request, RefreshTokenCookieName);
         var oldAccessToken = _cookieService.GetCookie(Request, AccessTokenCookieName);
-        var newAccessToken = await _refreshTokenUseCase.Handle(oldAccessToken, refreshToken);
+        var newAccessToken = await _refreshTokenUseCase.Handle(oldAccessToken, refreshToken, cancellationToken);
         _cookieService.AddCookie(Response, AccessTokenCookieName, newAccessToken);
         return Ok("Access token updated");
     }

@@ -24,26 +24,26 @@ public class CategoryController : ControllerBase
     }
     
     [HttpGet]
-    public async Task<IActionResult> GetCategories()
+    public async Task<IActionResult> GetCategories(CancellationToken cancellationToken)
     {
-        var result = await _getAllCategoriesUseCase.Handle();
+        var result = await _getAllCategoriesUseCase.Handle(cancellationToken);
         return Ok(result);
     }
 
     [Authorize(Policy = "AdminOnly")]
     [HttpPost]
     [ServiceFilter(typeof(ValidateCategoryDtoAttribute))]
-    public async Task<IActionResult> CreateCategory([FromBody] CategoryDto item)
+    public async Task<IActionResult> CreateCategory([FromBody] CategoryDto item, CancellationToken cancellationToken)
     {
-        var newEvent = await _createCategoryUseCase.Handle(item);
+        var newEvent = await _createCategoryUseCase.Handle(item, cancellationToken);
         return Ok(newEvent);
     }
 
     [Authorize(Policy = "AdminOnly")]
     [HttpDelete("{id}")]
-    public IActionResult DeleteCategory(Guid id)
+    public IActionResult DeleteCategory(Guid id, CancellationToken cancellationToken)
     {
-        _deleteCategoryUseCase.Handle(id);
+        _deleteCategoryUseCase.Handle(id, cancellationToken);
         return Ok();
     }
 }
