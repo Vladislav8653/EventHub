@@ -5,6 +5,6 @@ namespace Application.Contracts.RepositoryContracts;
 
 public interface IParticipantRepository : IRepositoryBase<Participant>
 {
-    Task<PagedResult<Participant>> GetParticipantsAsync(PageParams pageParams, Guid eventId);
-    Task<Participant?> GetParticipantAsync(Guid eventId, Guid participantId);
+    Task<PagedResult<Participant>> GetParticipantsAsync(PageParams pageParams, Guid eventId, CancellationToken cancellationToken);
+    Task<Participant?> GetParticipantAsync(Guid eventId, Guid participantId, CancellationToken cancellationToken);
 }

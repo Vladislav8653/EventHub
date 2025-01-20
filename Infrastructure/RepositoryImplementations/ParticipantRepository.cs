@@ -9,14 +9,14 @@ public class ParticipantRepository : RepositoryBase<Participant>, IParticipantRe
 {
     public ParticipantRepository(EventHubDbContext eventHubDbContext) : base(eventHubDbContext){ }
 
-    public async Task<PagedResult<Participant>> GetParticipantsAsync(PageParams pageParams, Guid eventId)
+    public async Task<PagedResult<Participant>> GetParticipantsAsync(PageParams pageParams, Guid eventId, CancellationToken cancellationToken)
     {
         var query = Repository.Participants.AsQueryable();
-        return await GetByPageAsync(query, pageParams);
+        return await GetByPageAsync(query, pageParams, cancellationToken);
     }
 
-    public async Task<Participant?> GetParticipantAsync(Guid eventId, Guid participantId) =>
+    public async Task<Participant?> GetParticipantAsync(Guid eventId, Guid participantId, CancellationToken cancellationToken) =>
         await Repository.Participants
             .Where(p => p.Id == participantId && p.EventId == eventId)
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync(cancellationToken);
 }
