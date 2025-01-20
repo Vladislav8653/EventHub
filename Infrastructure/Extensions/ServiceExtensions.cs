@@ -132,16 +132,6 @@ public static class ServiceExtensions
         services.AddScoped<ValidateRegisterUserRequestAttribute>();
         services.AddScoped<ValidateLoginUserRequestAttribute>();
     }
-
-    public static void ConfigureLogger(this IServiceCollection services)
-    {
-        /*
-        services.AddScoped<ILoggerManager, LoggerManager>();
-        var currentDirection = Directory.GetCurrentDirectory();
-        var parent = Directory.GetParent(currentDirection);
-        var nlogConfigPath = Path.Combine(parent.FullName, nameof(BusinessLayer), "Logger", "nlog.config"); 
-        LogManager.Setup().LoadConfigurationFromFile(nlogConfigPath);*/
-    }
     
     public static void AppendMiddlewareErrorHandler(this IApplicationBuilder builder)
     {
