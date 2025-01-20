@@ -19,9 +19,9 @@ public class DeleteEventUseCase : IDeleteEventUseCase
         _imageService = imageService;
     }
 
-    public async Task<GetEventDto> Handle(Guid id, string imageStoragePath)
+    public async Task<GetEventDto> Handle(Guid id, string imageStoragePath, CancellationToken cancellationToken)
     {
-        var eventToDelete = await _repositoriesManager.Events.GetByIdAsync(id);
+        var eventToDelete = await _repositoriesManager.Events.GetByIdAsync(id, cancellationToken);
         if (eventToDelete == null)
             throw new EntityNotFoundException($"Event with id {id} doesn't exist");
         var filename = eventToDelete.Image;

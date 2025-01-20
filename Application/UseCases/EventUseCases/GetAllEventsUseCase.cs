@@ -22,25 +22,25 @@ public class GetAllEventsUseCase : IGetAllEventsUseCase
         _mapper = mapper;
     }
     
-    public async Task<PagedResult<GetEventDto>> Handle(EventQueryParamsDto eventParamsDto, ImageUrlConfiguration request)
+    public async Task<PagedResult<GetEventDto>> Handle(EventQueryParamsDto eventParamsDto, ImageUrlConfiguration request, CancellationToken cancellationToken)
     {
-        var filters = await GetFiltersFromQueryParams(eventParamsDto.Filters);
+        var filters = await GetFiltersFromQueryParams(eventParamsDto.Filters, cancellationToken);
         var pageParamsDto = eventParamsDto.PageParams;
         var pageParams = pageParamsDto == null ? new PageParams(DefaultPage, DefaultPageSize) : 
             new PageParams(pageParamsDto.Page ?? DefaultPage, pageParamsDto.PageSize ?? DefaultPageSize);
         var eventParams = new EventQueryParams(filters, pageParams);
-        var pagedResult = await _repositoriesManager.Events.GetAllByParamsAsync(eventParams);
+        var pagedResult = await _repositoriesManager.Events.GetAllByParamsAsync(eventParams, cancellationToken);
         var events = AttachLinkToImage(pagedResult.Items, request);
         var eventsWithImages = _mapper.Map<IEnumerable<GetEventDto>>(events);
         return new PagedResult<GetEventDto>(eventsWithImages, pagedResult.Total);
     }
     
-    private async Task<EventFilters?> GetFiltersFromQueryParams(EventFiltersDto? filtersDto)
+    private async Task<EventFilters?> GetFiltersFromQueryParams(EventFiltersDto? filtersDto, CancellationToken cancellationToken)
     {
         if (filtersDto == null) return null;
         EventFilters filters = _mapper.Map<EventFilters>(filtersDto);
         if (filtersDto.Category == null) return filters;
-        var category = await _repositoriesManager.Categories.TryGetByNameAsync(filtersDto.Category);
+        var category = await _repositoriesManager.Categories.TryGetByNameAsync(filtersDto.Category, cancellationToken);
         if (category != null)
         {
             filters.Category = category;

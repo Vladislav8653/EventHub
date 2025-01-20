@@ -16,13 +16,13 @@ public class CreateCategoryUseCase : ICreateCategoryUseCase
         _repositoriesManager = repository;
         _mapper = mapper;
     }
-    public async Task<Category> Handle(CategoryDto item)
+    public async Task<Category> Handle(CategoryDto item, CancellationToken cancellationToken)
     {
-        var isUniqueName = await _repositoriesManager.Categories.IsUniqueNameAsync(item.Name);
+        var isUniqueName = await _repositoriesManager.Categories.IsUniqueNameAsync(item.Name, cancellationToken);
         if (!isUniqueName)
             throw new EntityAlreadyExistException(nameof(Category),"name" ,item.Name);
         var categoryForDb = _mapper.Map<Category>(item);
-        await _repositoriesManager.Categories.CreateAsync(categoryForDb);
+        await _repositoriesManager.Categories.CreateAsync(categoryForDb, cancellationToken);
         await _repositoriesManager.SaveAsync();
         return categoryForDb;
     }

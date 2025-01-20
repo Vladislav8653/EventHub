@@ -5,5 +5,5 @@ namespace Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 
 public interface ICreateCategoryUseCase
 {
-    Task<Category> Handle(CategoryDto item);
+    Task<Category> Handle(CategoryDto item, CancellationToken cancellationToken);
 }

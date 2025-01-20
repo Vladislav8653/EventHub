@@ -17,9 +17,9 @@ public class GetAllUserEventsUseCase : IGetAllUserEventsUseCase
         _mapper = mapper;
     }
     
-    public async Task<IEnumerable<GetEventDto>> Handle(Guid userId, ImageUrlConfiguration request)
+    public async Task<IEnumerable<GetEventDto>> Handle(Guid userId, ImageUrlConfiguration request, CancellationToken cancellationToken)
     {
-        var rawEvents = await _repositoriesManager.Events.GetAllUserEventsAsync(userId);
+        var rawEvents = await _repositoriesManager.Events.GetAllUserEventsAsync(userId, cancellationToken);
         var events = AttachLinkToImage(rawEvents, request);
         var eventsWithImages = _mapper.Map<IEnumerable<GetEventDto>>(events);
         return eventsWithImages;

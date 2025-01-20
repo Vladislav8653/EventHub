@@ -21,12 +21,12 @@ public class CreateEventUseCase : ICreateEventUseCase
         _imageService = imageService;
     }
     
-    public async Task<GetEventDto> Handle(CreateEventDto item, string imageStoragePath)
+    public async Task<GetEventDto> Handle(CreateEventDto item, string imageStoragePath, CancellationToken cancellationToken)
     {
-        var isUniqueName = await _repositoriesManager.Events.IsUniqueNameAsync(item.Name);
+        var isUniqueName = await _repositoriesManager.Events.IsUniqueNameAsync(item.Name, cancellationToken);
         if (!isUniqueName)
             throw new EntityAlreadyExistException(nameof(Event), "name", item.Name);
-        var category = await _repositoriesManager.Categories.TryGetByNameAsync(item.Category);
+        var category = await _repositoriesManager.Categories.TryGetByNameAsync(item.Category, cancellationToken);
         if (category == null)
             throw new EntityNotFoundException($"Category {item.Category} doesn't exits.");
         var eventForDb = _mapper.Map<Event>(item);
@@ -41,7 +41,7 @@ public class CreateEventUseCase : ICreateEventUseCase
         eventForDb.Image = filename;
         eventForDb.CategoryId = category.Id;
         
-        await _repositoriesManager.Events.CreateAsync(eventForDb);
+        await _repositoriesManager.Events.CreateAsync(eventForDb, cancellationToken);
         await _repositoriesManager.SaveAsync();
         var eventDto = _mapper.Map<GetEventDto>(eventForDb);
         eventDto.Category = item.Category;

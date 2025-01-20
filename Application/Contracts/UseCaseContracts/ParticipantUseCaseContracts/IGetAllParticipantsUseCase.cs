@@ -5,5 +5,5 @@ namespace Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 
 public interface IGetAllParticipantsUseCase
 {
-    Task<PagedResult<GetParticipantDto>> Handle(PageParamsDto? pageParamsDto, Guid eventId);
+    Task<PagedResult<GetParticipantDto>> Handle(PageParamsDto? pageParamsDto, Guid eventId, CancellationToken cancellationToken);
 }

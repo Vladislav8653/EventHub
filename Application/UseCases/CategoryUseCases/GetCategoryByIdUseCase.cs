@@ -11,6 +11,6 @@ public class GetCategoryByIdUseCase : IGetCategoryByIdUseCase
     {
         _repositoriesManager = repositoriesManager;
     }
-    public async Task<Category?> Handle(Guid id) =>
-        await _repositoriesManager.Categories.TryGetByIdAsync(id);
+    public async Task<Category?> Handle(Guid id, CancellationToken cancellationToken) =>
+        await _repositoriesManager.Categories.TryGetByIdAsync(id, cancellationToken);
 }

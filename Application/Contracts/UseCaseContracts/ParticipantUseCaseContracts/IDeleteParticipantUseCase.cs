@@ -4,5 +4,5 @@ namespace Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 
 public interface IDeleteParticipantUseCase
 {
-    Task<GetParticipantDto> Handle(Guid eventId, Guid participantId, Guid userId);
+    Task<GetParticipantDto> Handle(Guid eventId, Guid participantId, Guid userId, CancellationToken cancellationToken);
 }

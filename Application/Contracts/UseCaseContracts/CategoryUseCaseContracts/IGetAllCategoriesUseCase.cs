@@ -4,5 +4,5 @@ namespace Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 
 public interface IGetAllCategoriesUseCase
 {
-    Task<IEnumerable<Category>> Handle();
+    Task<IEnumerable<Category>> Handle(CancellationToken cancellationToken);
 }

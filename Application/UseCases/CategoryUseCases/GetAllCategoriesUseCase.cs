@@ -11,6 +11,6 @@ public class GetAllCategoriesUseCase : IGetAllCategoriesUseCase
     {
         _repositoriesManager = repositoriesManager;
     }
-    public async Task<IEnumerable<Category>> Handle() =>
-        await _repositoriesManager.Categories.GetAllAsync();
+    public async Task<IEnumerable<Category>> Handle(CancellationToken cancellationToken) =>
+        await _repositoriesManager.Categories.GetAllAsync(cancellationToken);
 }

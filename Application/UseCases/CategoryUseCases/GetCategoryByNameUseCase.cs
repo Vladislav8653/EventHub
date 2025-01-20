@@ -11,6 +11,6 @@ public class GetCategoryByNameUseCase : IGetCategoryByNameUseCase
     {
         _repositoriesManager = repositoriesManager;
     }
-    public async Task<Category?> Handle(string name) =>
-        await _repositoriesManager.Categories.TryGetByNameAsync(name);
+    public async Task<Category?> Handle(string name, CancellationToken cancellationToken) =>
+        await _repositoriesManager.Categories.TryGetByNameAsync(name, cancellationToken);
 }

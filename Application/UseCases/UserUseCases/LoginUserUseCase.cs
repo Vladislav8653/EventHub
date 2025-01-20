@@ -19,9 +19,9 @@ public class LoginUserUseCase : ILoginUserUseCase
         _jwtProvider = jwtProvider;
     }
     
-    public async Task<LoginUserResponse> Handle(LoginUserRequest request)
+    public async Task<LoginUserResponse> Handle(LoginUserRequest request, CancellationToken cancellationToken)
     {
-        var user = await _repositoriesManager.Users.GetUserByLoginAsync(request.Login);
+        var user = await _repositoriesManager.Users.GetUserByLoginAsync(request.Login, cancellationToken);
         if (user == null)
         {
             return new LoginUserResponse($"User with login {request.Login} doesn't exists.");

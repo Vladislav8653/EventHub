@@ -11,9 +11,9 @@ public class DeleteCategoryUseCase : IDeleteCategoryUseCase
     {
         _repositoriesManager = repositoriesManager;
     }
-    public async Task Handle(Guid id)
+    public async Task Handle(Guid id, CancellationToken cancellationToken)
     {
-        var entity = await _repositoriesManager.Categories.TryGetByIdAsync(id);
+        var entity = await _repositoriesManager.Categories.TryGetByIdAsync(id, cancellationToken);
         if (entity == null)
             throw new EntityNotFoundException($"Category with id {id} not found");
         _repositoriesManager.Categories.Delete(entity);

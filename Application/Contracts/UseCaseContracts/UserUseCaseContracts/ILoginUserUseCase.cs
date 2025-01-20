@@ -4,5 +4,5 @@ namespace Application.Contracts.UseCaseContracts.UserUseCaseContracts;
 
 public interface ILoginUserUseCase
 {
-    Task<LoginUserResponse> Handle(LoginUserRequest request);
+    Task<LoginUserResponse> Handle(LoginUserRequest request, CancellationToken cancellationToken);
 }

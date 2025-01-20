@@ -19,9 +19,9 @@ public class GetEventByIdUseCase : IGetEventByIdUseCase
         _mapper = mapper;
     }
     
-    public async Task<GetEventDto> Handle(Guid id, ImageUrlConfiguration request)
+    public async Task<GetEventDto> Handle(Guid id, ImageUrlConfiguration request, CancellationToken cancellationToken)
     {
-        var eventById = await _repositoriesManager.Events.GetByIdAsync(id);
+        var eventById = await _repositoriesManager.Events.GetByIdAsync(id, cancellationToken);
         if (eventById == null)
             throw new EntityNotFoundException($"Event with id {id} doesn't exist");
         eventById = AttachLinkToImage(eventById, request);

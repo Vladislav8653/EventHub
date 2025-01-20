@@ -19,9 +19,9 @@ public class GetEventByNameUseCase : IGetEventByNameUseCase
         _mapper = mapper;
     }
     
-    public async Task<GetEventDto> Handle(string name, ImageUrlConfiguration request)
+    public async Task<GetEventDto> Handle(string name, ImageUrlConfiguration request, CancellationToken cancellationToken)
     {
-        var eventByName = await _repositoriesManager.Events.GetByNameAsync(name);
+        var eventByName = await _repositoriesManager.Events.GetByNameAsync(name, cancellationToken);
         if (eventByName == null)
             throw new EntityNotFoundException($"Event with name {name} doesn't exist");
         eventByName = AttachLinkToImage(eventByName, request);

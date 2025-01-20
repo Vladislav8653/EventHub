@@ -23,9 +23,9 @@ public class RegisterUserUseCase : IRegisterUserUseCase
         _mapper = mapper;
     }
     
-    public async Task<RegisterUserResponse> Handle(RegisterUserRequest request)
+    public async Task<RegisterUserResponse> Handle(RegisterUserRequest request, CancellationToken cancellationToken)
     {
-        var checkUser = await _repositoriesManager.Users.GetUserByLoginAsync(request.Login);
+        var checkUser = await _repositoriesManager.Users.GetUserByLoginAsync(request.Login, cancellationToken);
         if (checkUser != null)
             return new RegisterUserResponse($"User with login {request.Login} already exists.");
         if (!Enum.GetNames(typeof(Roles)).Contains(request.Role))
@@ -35,7 +35,7 @@ public class RegisterUserUseCase : IRegisterUserUseCase
         var hashedPassword = _passwordHasher.Generate(request.Password);
         var user = _mapper.Map<User>(request);
         user.Password = hashedPassword;
-        await _repositoriesManager.Users.CreateAsync(user);
+        await _repositoriesManager.Users.CreateAsync(user, cancellationToken);
         await _repositoriesManager.SaveAsync();
         return new RegisterUserResponse($"User with login {request.Login} created!");
     }

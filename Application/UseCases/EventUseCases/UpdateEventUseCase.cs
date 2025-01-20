@@ -21,12 +21,12 @@ public class UpdateEventUseCase : IUpdateEventUseCase
         _imageService = imageService;
     }
     
-    public async Task<GetEventDto> Handle(Guid id, CreateEventDto item, string imageStoragePath)
+    public async Task<GetEventDto> Handle(Guid id, CreateEventDto item, string imageStoragePath, CancellationToken cancellationToken)
     {
-        var eventToUpdate = await _repositoriesManager.Events.GetByIdAsync(id);
+        var eventToUpdate = await _repositoriesManager.Events.GetByIdAsync(id, cancellationToken);
         if (eventToUpdate == null)
             throw new EntityNotFoundException($"Event with id {id} doesn't exist");
-        var category = await _repositoriesManager.Categories.TryGetByNameAsync(item.Category);
+        var category = await _repositoriesManager.Categories.TryGetByNameAsync(item.Category, cancellationToken);
         if (category == null)
             throw new EntityNotFoundException($"Category {item.Category} doesn't exits.");
         _mapper.Map(item, eventToUpdate);

@@ -16,7 +16,7 @@ public class RefreshTokenUseCase : IRefreshTokenUseCase
         _repositoriesManager = repositoriesManager;
     }
 
-    public async Task<string> Handle(string? accessToken, string? refreshToken)
+    public async Task<string> Handle(string? accessToken, string? refreshToken, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(refreshToken))
         {
@@ -32,7 +32,7 @@ public class RefreshTokenUseCase : IRefreshTokenUseCase
             throw new UnauthorizedAccessException("Invalid token, can't extract user ID.");
         if (Guid.TryParse(userId, out var userIdGuid))
             throw new InvalidDataTypeException("Can't parse user ID to type Guid.");
-        var user = await _repositoriesManager.Users.GetUserByIdAsync(userIdGuid);
+        var user = await _repositoriesManager.Users.GetUserByIdAsync(userIdGuid, cancellationToken);
         if (user == null)
             throw new EntityNotFoundException("User", "id", userId);
         _jwtProvider.ValidateRefreshToken(user.RefreshToken, refreshToken, user.RefreshTokenExpireTime);

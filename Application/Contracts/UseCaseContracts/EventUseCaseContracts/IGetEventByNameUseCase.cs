@@ -5,5 +5,5 @@ namespace Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 
 public interface IGetEventByNameUseCase
 {
-    Task<GetEventDto> Handle(string name, ImageUrlConfiguration request);
+    Task<GetEventDto> Handle(string name, ImageUrlConfiguration request, CancellationToken cancellationToken);
 }
