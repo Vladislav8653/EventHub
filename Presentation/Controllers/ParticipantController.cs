@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using Application.Contracts;
+﻿using Application.Contracts;
 using Application.Contracts.AuthContracts;
 using Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 using Application.DtoModels.CommonDto;

@@ -1,7 +1,6 @@
 ﻿using Application.Contracts;
 using Application.Contracts.AuthContracts;
 using Application.Contracts.RepositoryContracts;
-using Application.Contracts.UseCaseContracts;
 using Application.DtoModels.CategoryDto;
 using Application.DtoModels.CommonDto;
 using Application.DtoModels.EventsDto;
@@ -9,7 +8,6 @@ using Application.DtoModels.EventsDto.QueryParams;
 using Application.DtoModels.ParticipantDto;
 using Application.DtoModels.UserDto;
 using Application.MappingProfiles;
-using Application.UseCases;
 using Application.Validation.Category.Attributes;
 using Application.Validation.Category.Validators;
 using Application.Validation.CommonValidation;

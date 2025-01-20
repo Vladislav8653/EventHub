@@ -1,5 +1,4 @@
-﻿using Application.Contracts;
-using Application.Contracts.RepositoryContracts;
+﻿using Application.Contracts.RepositoryContracts;
 
 namespace Infrastructure;
 

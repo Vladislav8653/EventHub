@@ -8,7 +8,6 @@ public class EventDtoValidator : AbstractValidator<CreateEventDto>
     private const int MaxNameLength = 100;
     private const int MaxDescriptionLength = 1000;
     private const int MaxPlaceLength = 100;
-    private const int MaxImageLength = 100;
     
     public EventDtoValidator()
     {
