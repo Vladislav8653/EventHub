@@ -1,6 +1,6 @@
 ﻿using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.DtoModels.CategoryDto;
-using Application.Validation.Category.Attributes;
+using Application.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,8 +32,8 @@ public class CategoryController : ControllerBase
 
     [Authorize(Policy = "AdminOnly")]
     [HttpPost]
-    [ServiceFilter(typeof(ValidateCategoryDtoAttribute))]
-    public async Task<IActionResult> CreateCategory([FromBody] CategoryDto item, CancellationToken cancellationToken)
+    [ValidateDtoServiceFilter<CategoryDto>]
+    public async Task<IActionResult> CreateCategory([FromBody]CategoryDto item, CancellationToken cancellationToken)
     {
         var newEvent = await _createCategoryUseCase.Handle(item, cancellationToken);
         return Ok(newEvent);

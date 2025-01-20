@@ -3,7 +3,7 @@ using Application.Contracts.AuthContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.ImageService;
-using Application.Validation.Event.Attributes;
+using Application.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -54,7 +54,7 @@ public class EventController : ControllerBase
     }
     
     [HttpGet]
-    [ServiceFilter(typeof(ValidateEventQueryParamsAttribute))]
+    [ValidateDtoServiceFilter<EventQueryParamsDto>]
     public async Task<IActionResult> GetAllEvents([FromQuery]EventQueryParamsDto eventParamsDto, CancellationToken cancellationToken)
     {
         var events = 
@@ -79,7 +79,7 @@ public class EventController : ControllerBase
     
     [Authorize]
     [HttpPost]
-    [ServiceFilter(typeof(ValidateEventDtoAttribute))]
+    [ValidateDtoServiceFilter<CreateEventDto>]
     public async Task<IActionResult> CreateEvent([FromForm]CreateEventDto item, CancellationToken cancellationToken)
     {
         var newEvent = await _createEventUseCase.Handle(item, _imageStoragePath, cancellationToken);
@@ -89,7 +89,7 @@ public class EventController : ControllerBase
     
     [Authorize]
     [HttpPut("{id:guid}")]
-    [ServiceFilter(typeof(ValidateEventDtoAttribute))]
+    [ValidateDtoServiceFilter<CreateEventDto>]
     public async Task<IActionResult> UpdateEvent([FromForm]CreateEventDto item, Guid id, CancellationToken cancellationToken)
     {
         var updatedEvent =  await _updateEventUseCase.Handle(id, item, _imageStoragePath, cancellationToken);

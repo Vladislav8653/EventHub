@@ -3,8 +3,7 @@ using Application.Contracts.AuthContracts;
 using Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 using Application.DtoModels.CommonDto;
 using Application.DtoModels.ParticipantDto;
-using Application.Validation.CommonValidation;
-using Application.Validation.Participants.Attributes;
+using Application.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +34,7 @@ public class ParticipantController : ControllerBase
     
     [Authorize]
     [HttpGet]
-    [ServiceFilter(typeof(ValidatePageParamsAttribute))]
+    [ValidateDtoServiceFilter<PageParamsDto>]
     public async Task<IActionResult> GetAllParticipants([FromQuery]PageParamsDto pageParams, Guid eventId, CancellationToken cancellationToken)
     {
         var participants = await _getAllParticipantsUseCase.Handle(pageParams, eventId, cancellationToken);
@@ -44,7 +43,7 @@ public class ParticipantController : ControllerBase
     
     [Authorize]
     [HttpPost]
-    [ServiceFilter(typeof(ValidateParticipantDtoAttribute))]
+    [ValidateDtoServiceFilter<CreateParticipantDto>]
     public async Task<IActionResult> RegisterParticipant([FromBody]CreateParticipantDto item, Guid eventId, CancellationToken cancellationToken)
     {
         var userId = _jwtProvider.GetUserIdAccessToken(_cookieService.GetCookie(Request, UserController.AccessTokenCookieName));

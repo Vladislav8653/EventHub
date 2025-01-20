@@ -1,8 +1,8 @@
 ﻿using Application.Contracts;
 using Application.Contracts.UseCaseContracts.UserUseCaseContracts;
 using Application.DtoModels.UserDto;
-using Application.Validation.User.Attributes;
 using Microsoft.AspNetCore.Mvc;
+using Application.Validation;
 
 namespace Presentation.Controllers;
 
@@ -27,7 +27,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("register")]
-    [ServiceFilter(typeof(ValidateRegisterUserRequestAttribute))]
+    [ValidateDtoServiceFilter<RegisterUserRequest>]
     public async Task<IActionResult> Register([FromBody]RegisterUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _registerUserUseCase.Handle(request, cancellationToken);
@@ -35,7 +35,7 @@ public class UserController : ControllerBase
     }
     
     [HttpPost("login")]
-    [ServiceFilter(typeof(ValidateLoginUserRequestAttribute))]
+    [ValidateDtoServiceFilter<LoginUserRequest>]
     public async Task<IActionResult> Login([FromBody] LoginUserRequest request, CancellationToken cancellationToken)
     {
         var response = await _loginUserUseCase.Handle(request, cancellationToken);
