@@ -1,9 +1,9 @@
-using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 using Application.DtoModels.ParticipantDto;
 using Application.Exceptions;
 using AutoMapper;
 using Domain.Models;
+using Domain.RepositoryContracts;
 
 namespace Application.UseCases.ParticipantUseCases;
 

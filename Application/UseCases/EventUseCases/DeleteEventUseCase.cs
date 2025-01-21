@@ -1,5 +1,5 @@
 using Application.Contracts;
-using Application.Contracts.RepositoryContracts;
+using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.Exceptions;

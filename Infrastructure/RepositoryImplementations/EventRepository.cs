@@ -1,6 +1,6 @@
-﻿using Application.Contracts.RepositoryContracts;
+﻿using Domain.RepositoryContracts;
 using Application.DtoModels.CommonDto;
-using Application.DtoModels.EventsDto;
+using Domain.DTOs;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 

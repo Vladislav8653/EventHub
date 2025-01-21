@@ -1,4 +1,6 @@
-﻿namespace Application.Contracts.RepositoryContracts;
+﻿using Domain.RepositoryContracts;
+
+namespace Domain.RepositoryContracts;
 
 public interface IRepositoriesManager
 {

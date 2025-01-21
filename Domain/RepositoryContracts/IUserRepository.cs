@@ -1,6 +1,6 @@
 ﻿using Domain.Models;
 
-namespace Application.Contracts.RepositoryContracts;
+namespace Domain.RepositoryContracts;
 
 public interface IUserRepository : IRepositoryBase<User>
 {

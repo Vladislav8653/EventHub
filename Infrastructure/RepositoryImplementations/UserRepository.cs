@@ -1,4 +1,4 @@
-﻿using Application.Contracts.RepositoryContracts;
+﻿using Domain.RepositoryContracts;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 

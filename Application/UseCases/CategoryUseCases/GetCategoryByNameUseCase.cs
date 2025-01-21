@@ -1,4 +1,4 @@
-using Application.Contracts.RepositoryContracts;
+using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Domain.Models;
 

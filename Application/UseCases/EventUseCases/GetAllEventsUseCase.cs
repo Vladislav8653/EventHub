@@ -1,10 +1,11 @@
-using Application.Contracts.RepositoryContracts;
+using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.CommonDto;
 using Application.DtoModels.EventsDto;
 using Application.DtoModels.EventsDto.QueryParams;
 using Application.ImageService;
 using AutoMapper;
+using Domain.DTOs;
 using Domain.Models;
 
 namespace Application.UseCases.EventUseCases;

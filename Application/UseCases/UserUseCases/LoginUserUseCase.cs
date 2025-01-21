@@ -1,7 +1,7 @@
 using Application.Contracts.AuthContracts;
-using Application.Contracts.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.UserUseCaseContracts;
 using Application.DtoModels.UserDto;
+using Domain.RepositoryContracts;
 
 namespace Application.UseCases.UserUseCases;
 

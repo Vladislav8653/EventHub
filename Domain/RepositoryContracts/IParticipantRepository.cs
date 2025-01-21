@@ -1,7 +1,7 @@
 ﻿using Application.DtoModels.CommonDto;
 using Domain.Models;
 
-namespace Application.Contracts.RepositoryContracts;
+namespace Domain.RepositoryContracts;
 
 public interface IParticipantRepository : IRepositoryBase<Participant>
 {

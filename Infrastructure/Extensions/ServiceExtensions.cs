@@ -1,6 +1,6 @@
 ﻿using Application.Contracts;
 using Application.Contracts.AuthContracts;
-using Application.Contracts.RepositoryContracts;
+using Domain.RepositoryContracts;
 using Application.DtoModels.CategoryDto;
 using Application.DtoModels.CommonDto;
 using Application.DtoModels.EventsDto;

@@ -1,4 +1,4 @@
-﻿using Application.Contracts.RepositoryContracts;
+﻿using Domain.RepositoryContracts;
 using Application.DtoModels.CommonDto;
 using Microsoft.EntityFrameworkCore;
 

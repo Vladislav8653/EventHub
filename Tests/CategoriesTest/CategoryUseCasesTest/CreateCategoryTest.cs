@@ -1,9 +1,10 @@
-using Application.Contracts.RepositoryContracts;
+using Domain.RepositoryContracts;
 using Application.DtoModels.CategoryDto;
 using Application.Exceptions;
 using Application.UseCases.CategoryUseCases;
 using AutoMapper;
 using Domain.Models;
+using Domain.RepositoryContracts;
 using Moq;
 using Xunit;
 

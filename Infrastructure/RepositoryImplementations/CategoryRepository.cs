@@ -1,5 +1,6 @@
-﻿using Application.Contracts.RepositoryContracts;
+﻿using Domain.RepositoryContracts;
 using Domain.Models;
+using Domain.RepositoryContracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.RepositoryImplementations;
