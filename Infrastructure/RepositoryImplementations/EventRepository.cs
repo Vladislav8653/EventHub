@@ -1,8 +1,10 @@
-﻿using Domain.RepositoryContracts;
+﻿using System.Linq.Expressions;
+using Domain.RepositoryContracts;
 using Application.DtoModels.CommonDto;
 using Domain.DTOs;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using LinqKit;
 
 namespace Infrastructure.RepositoryImplementations;
 
@@ -35,15 +37,15 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
         var filters = eventParams.Filters ?? null;
         if (filters == null) 
             return await GetByPageAsync(query, eventParams.PageParams, cancellationToken);
-        // query - итоговый результат после всех "ограничений"
+        Expression<Func<Event, bool>> filter = e => true;
         if (filters.Date.HasValue) // если событие в эту дату
-            query = query.Where(e => e.DateTime == filters.Date);
+            filter = filter.And(e => e.DateTime == filters.Date);
         if (filters is { StartDate: not null, FinishDate: not null }) // если событие [с...по]
-            query = query.Where(e => e.DateTime > filters.StartDate && e.DateTime < filters.FinishDate);
+            filter = filter.And(e => e.DateTime > filters.StartDate && e.DateTime < filters.FinishDate);
         if (filters.Category != null)
-            query = query.Where(e => e.Category == filters.Category);
+            filter = filter.And(e => e.Category == filters.Category);
         if (!string.IsNullOrEmpty(filters.Place))
-            query = query.Where(e => e.Place == filters.Place);
-        return await GetByPageAsync(query, eventParams.PageParams, cancellationToken);
+            filter = filter.And(e => e.Place == filters.Place);
+        return await GetByPageAsync(query.Where(filter), eventParams.PageParams, cancellationToken);
     }
 }
