@@ -11,7 +11,7 @@
 ```bash
 git clone https://github.com/Vladislav8653/EventHub
 ```
-- **Step 2**: Find `EventHub/EventHub/appsettings.json` and configure field **sqlConnection** in **ConnectionStrings** option. This is connection string to your database.
+- **Step 2**: Find `Presentation/appsettings.json` and configure field **sqlConnection** in **ConnectionStrings** option. This is connection string to your database.
 - **Step 3**: Create Migrations via terminal from project root:
 ```bash
 dotnet ef migrations add mg1 --project Infrastructure --startup-project Presentation
