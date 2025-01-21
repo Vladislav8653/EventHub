@@ -27,8 +27,9 @@ public class EventRepository : RepositoryBase<Event>, IEventRepository
     public async Task<IEnumerable<Event>> GetAllUserEventsAsync(Guid userId, CancellationToken cancellationToken) =>
         await Repository.Participants
             .Where(p => p.UserId == userId)
-            .Include(p => p.Event)
+            //.Include(p => p.Event)
             .Select(p => p.Event)
+            .Distinct()
             .ToListAsync(cancellationToken);
     
     public async Task<PagedResult<Event>> GetAllByParamsAsync(EventQueryParams eventParams, CancellationToken cancellationToken)
