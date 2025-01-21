@@ -1,7 +1,7 @@
 ﻿using Application.DtoModels.ParticipantDto;
 using FluentValidation;
 
-namespace Application.Validation.Participants.Validators;
+namespace Application.Validation.Participants;
 
 public class ParticipantDtoValidator : AbstractValidator<CreateParticipantDto>
 {

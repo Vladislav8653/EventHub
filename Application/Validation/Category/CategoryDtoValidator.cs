@@ -1,7 +1,7 @@
 ﻿using Application.DtoModels.CategoryDto;
 using FluentValidation;
 
-namespace Application.Validation.Category.Validators;
+namespace Application.Validation.Category;
 
 public class CategoryDtoValidator : AbstractValidator<CategoryDto>
 {

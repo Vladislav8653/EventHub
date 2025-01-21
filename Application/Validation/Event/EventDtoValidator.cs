@@ -1,7 +1,7 @@
 ﻿using Application.DtoModels.EventsDto;
 using FluentValidation;
 
-namespace Application.Validation.Event.Validators;
+namespace Application.Validation.Event;
 
 public class EventDtoValidator : AbstractValidator<CreateEventDto>
 {
