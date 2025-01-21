@@ -89,7 +89,7 @@ public static class ServiceExtensions
                 {
                     OnMessageReceived = context =>
                     {
-                        context.Token = context.Request.Cookies["token"];
+                        context.Token = context.Request.Cookies["access-token"];
                         return Task.CompletedTask;
                     }
                 };
