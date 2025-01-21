@@ -1,4 +1,3 @@
-using Application.Contracts;
 using Application.Contracts.ImageServiceContracts;
 using Application.Exceptions;
 

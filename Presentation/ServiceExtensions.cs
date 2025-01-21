@@ -27,13 +27,13 @@ using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 using Application.Contracts.UseCaseContracts.UserUseCaseContracts;
-using Application.CookieService;
 using Application.UseCases.CategoryUseCases;
 using Application.UseCases.EventUseCases;
 using Application.UseCases.ParticipantUseCases;
 using Application.UseCases.UserUseCases;
 using Infrastructure;
 using Infrastructure.Authentication;
+using Infrastructure.CookieService;
 using Infrastructure.ImageService;
 
 namespace Presentation;

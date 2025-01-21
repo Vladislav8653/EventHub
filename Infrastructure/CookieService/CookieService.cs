@@ -1,6 +1,6 @@
 using Application.Contracts;
 
-namespace Application.CookieService;
+namespace Infrastructure.CookieService;
 
 public class CookieService : ICookieService
 {
