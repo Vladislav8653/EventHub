@@ -35,6 +35,7 @@ public class LoginUserUseCase : ILoginUserUseCase
         var refreshToken = _jwtProvider.GenerateRefreshToken();
         user.RefreshToken = refreshToken;
         user.RefreshTokenExpireTime = DateTime.UtcNow.AddSeconds(RefreshTokenLifeTimeSec);
+        await _repositoriesManager.SaveAsync();
         return new LoginUserResponse($"Success!", accessToken, refreshToken);
     }
 }

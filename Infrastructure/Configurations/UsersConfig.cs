@@ -31,6 +31,6 @@ public class UsersConfig : IEntityTypeConfiguration<User>
             .HasMaxLength(50);
 
         builder.Property(u => u.RefreshToken)
-            .HasMaxLength(32);
+            .HasMaxLength(60);
     }
 }
