@@ -1,4 +1,5 @@
 using Application.Contracts;
+using Application.Contracts.ImageServiceContracts;
 using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;

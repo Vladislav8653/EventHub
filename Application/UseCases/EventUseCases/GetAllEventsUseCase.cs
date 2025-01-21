@@ -3,7 +3,7 @@ using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.CommonDto;
 using Application.DtoModels.EventsDto;
 using Application.DtoModels.EventsDto.QueryParams;
-using Application.ImageService;
+using Application.Contracts.ImageServiceContracts;
 using AutoMapper;
 using Domain.DTOs;
 using Domain.Models;

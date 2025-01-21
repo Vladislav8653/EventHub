@@ -1,7 +1,7 @@
 using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
-using Application.ImageService;
+using Application.Contracts.ImageServiceContracts;
 using AutoMapper;
 using Domain.Models;
 

@@ -22,19 +22,21 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using FluentValidation;
 using System.Text;
+using Application.Contracts.ImageServiceContracts;
 using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 using Application.Contracts.UseCaseContracts.UserUseCaseContracts;
 using Application.CookieService;
-using Application.ImageService;
 using Application.UseCases.CategoryUseCases;
 using Application.UseCases.EventUseCases;
 using Application.UseCases.ParticipantUseCases;
 using Application.UseCases.UserUseCases;
+using Infrastructure;
 using Infrastructure.Authentication;
+using Infrastructure.ImageService;
 
-namespace Infrastructure.Extensions;
+namespace Presentation;
 
 public static class ServiceExtensions
 {
