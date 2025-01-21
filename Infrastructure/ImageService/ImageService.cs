@@ -44,7 +44,8 @@ public class ImageService : IImageService
         var config = configuration[ImageStoragePath];
         if (config == null)
             throw new InvalidOperationException("Image storage path is not available.");
-        var imagePath = Path.Combine(hostingEnvironment.WebRootPath, config);
+        var tempRoot = "wwwroot"; // временное решение, так как WebRootPath возвращает null, когда запускаю проект с github, и все в порядке, когда с моего ПК
+        var imagePath = Path.Combine(/*hostingEnvironment.WebRootPath*/tempRoot, config);
         return imagePath;
     }
 }
