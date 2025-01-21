@@ -4,7 +4,7 @@ using Application.Exceptions;
 using AutoMapper;
 using FluentValidation;
 
-namespace Presentation;
+namespace Presentation.Middlewares;
 
 
 public class GlobalErrorHandler
