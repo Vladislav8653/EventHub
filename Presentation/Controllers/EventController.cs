@@ -15,7 +15,6 @@ public class EventController : ControllerBase
 {
     private const string ControllerRoute = "events";
     private const string ImageEndpointRoute = "images";
-    private readonly ImageUrlConfiguration _imageUrlConfiguration; // для формирования URL к изображению
     private readonly string _imageStoragePath; // для формирования пути к изображениям
     private readonly IImageService _imageService;  // сервис для работы с изображениями
     private readonly IJwtProvider _jwtProvider;
@@ -39,7 +38,7 @@ public class EventController : ControllerBase
         IJwtProvider jwtProvider,
         ICookieService cookieService, IGetAllUserEventsUseCase getAllUserEventsUseCase)
     {
-        _imageUrlConfiguration = InitializeImageUrlConfiguration(); 
+        //_imageUrlConfiguration = InitializeImageUrlConfiguration(); 
         _imageStoragePath = InitializeImageStoragePath(configuration, hostingEnvironment); 
         _imageService = imageService;
         _createEventUseCase = createEventUseCase;
@@ -57,22 +56,24 @@ public class EventController : ControllerBase
     [ValidateDtoServiceFilter<EventQueryParamsDto>]
     public async Task<IActionResult> GetAllEvents([FromQuery]EventQueryParamsDto eventParamsDto, CancellationToken cancellationToken)
     {
-        var events = 
-            await _getAllEventsUseCase.Handle(eventParamsDto, _imageUrlConfiguration, cancellationToken);
+        var imageUrlConfig = InitializeImageUrlConfiguration(HttpContext);
+        var events = await _getAllEventsUseCase.Handle(eventParamsDto, imageUrlConfig, cancellationToken);
         return Ok(events);
     }
     
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetEventById(Guid id, CancellationToken cancellationToken)
     {
-        var events = await _getEventByIdUseCase.Handle(id, _imageUrlConfiguration, cancellationToken);
+        var imageUrlConfig = InitializeImageUrlConfiguration(HttpContext);
+        var events = await _getEventByIdUseCase.Handle(id, imageUrlConfig, cancellationToken);
         return Ok(events);
     }
     
     [HttpGet("{name}")]
     public async Task<IActionResult> GetEventByName(string name, CancellationToken cancellationToken)
     {
-        var events = await _getEventByNameUseCase.Handle(name, _imageUrlConfiguration, cancellationToken);
+        var imageUrlConfig = InitializeImageUrlConfiguration(HttpContext);
+        var events = await _getEventByNameUseCase.Handle(name, imageUrlConfig, cancellationToken);
         return Ok(events);
     }
     
@@ -109,8 +110,9 @@ public class EventController : ControllerBase
     [HttpGet("my")]
     public async Task<IActionResult> GetAllUserEvents(CancellationToken cancellationToken)
     {
+        var imageUrlConfig = InitializeImageUrlConfiguration(HttpContext);
         var userId = _jwtProvider.GetUserIdAccessToken(_cookieService.GetCookie(Request, UserController.AccessTokenCookieName));
-        var events = await _getAllUserEventsUseCase.Handle(userId, _imageUrlConfiguration, cancellationToken);
+        var events = await _getAllUserEventsUseCase.Handle(userId, imageUrlConfig, cancellationToken);
         return Ok(events);
     }
     
@@ -122,11 +124,11 @@ public class EventController : ControllerBase
         return File(fileBytes, contentType, fileName);
     }
 
-    private ImageUrlConfiguration InitializeImageUrlConfiguration()
+    private ImageUrlConfiguration InitializeImageUrlConfiguration(HttpContext httpContext)
     {
-        if (HttpContext == null)
+        if (httpContext == null)
             throw new InvalidOperationException("HttpContext is not available");
-        var request = HttpContext.Request;
+        var request = httpContext.Request;
         return new ImageUrlConfiguration(request, ControllerRoute, ImageEndpointRoute);
     }
 

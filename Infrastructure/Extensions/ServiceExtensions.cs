@@ -120,6 +120,7 @@ public static class ServiceExtensions
         services.AddTransient<IValidator<CreateParticipantDto>, ParticipantDtoValidator>();
         services.AddTransient<IValidator<RegisterUserRequest>, RegisterUserRequestValidator>();
         services.AddTransient<IValidator<LoginUserRequest>, LoginUserRequestValidator>();
+        services.AddTransient<IValidator<EventQueryParamsDto>, EventQueryParamsDtoValidator>();
     }
     
     public static void AppendMiddlewareErrorHandler(this IApplicationBuilder builder)
