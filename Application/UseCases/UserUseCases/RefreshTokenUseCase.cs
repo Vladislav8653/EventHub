@@ -30,7 +30,7 @@ public class RefreshTokenUseCase : IRefreshTokenUseCase
         var userId = claims.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userId))
             throw new UnauthorizedAccessException("Invalid token, can't extract user ID.");
-        if (Guid.TryParse(userId, out var userIdGuid))
+        if (!Guid.TryParse(userId, out var userIdGuid))
             throw new InvalidDataTypeException("Can't parse user ID to type Guid.");
         var user = await _repositoriesManager.Users.GetUserByIdAsync(userIdGuid, cancellationToken);
         if (user == null)

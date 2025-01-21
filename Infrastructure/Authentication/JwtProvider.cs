@@ -53,15 +53,10 @@ public class JwtProvider : IJwtProvider
     public ClaimsPrincipal GetClaimsAccessToken(string token)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var validationParameters = new TokenValidationParameters
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ClockSkew = TimeSpan.Zero
-        };
-        var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+        var jwtToken = tokenHandler.ReadJwtToken(token);
+        var claims = jwtToken.Claims;
+        var identity = new ClaimsIdentity(claims, "jwt");
+        var principal = new ClaimsPrincipal(identity);
         return principal;
     }
 
