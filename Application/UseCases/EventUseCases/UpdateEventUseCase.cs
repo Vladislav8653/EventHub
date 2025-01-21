@@ -1,6 +1,4 @@
-using Application.Contracts;
 using Application.Contracts.ImageServiceContracts;
-using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.Exceptions;
@@ -23,7 +21,7 @@ public class UpdateEventUseCase : IUpdateEventUseCase
         _imageService = imageService;
     }
     
-    public async Task<GetEventDto> Handle(Guid id, CreateEventDto item, string imageStoragePath, CancellationToken cancellationToken)
+    public async Task<GetEventDto> Handle(Guid id, CreateEventDto item, CancellationToken cancellationToken)
     {
         var eventToUpdate = await _repositoriesManager.Events.GetByIdAsync(id, cancellationToken);
         if (eventToUpdate == null)
@@ -37,13 +35,13 @@ public class UpdateEventUseCase : IUpdateEventUseCase
         if (item.Image != null) 
         {
             newFileName = item.Image.FileName;
-            var imageFilePath = Path.Combine(imageStoragePath, newFileName);
+            var imageFilePath = Path.Combine(_imageService.GetImageStoragePath(), newFileName);
             await _imageService.WriteFileAsync(item.Image, imageFilePath);
         }
         var oldFilename = eventToUpdate.Image;
         if (oldFilename != null)
         {
-            var imageFilePath = Path.Combine(imageStoragePath, oldFilename);
+            var imageFilePath = Path.Combine(_imageService.GetImageStoragePath(), oldFilename);
             _imageService.DeleteFile(imageFilePath);
         }
         eventToUpdate.Image = newFileName;

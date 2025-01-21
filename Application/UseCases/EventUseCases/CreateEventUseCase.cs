@@ -1,6 +1,4 @@
-using Application.Contracts;
 using Application.Contracts.ImageServiceContracts;
-using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.Exceptions;
@@ -23,7 +21,7 @@ public class CreateEventUseCase : ICreateEventUseCase
         _imageService = imageService;
     }
     
-    public async Task<GetEventDto> Handle(CreateEventDto item, string imageStoragePath, CancellationToken cancellationToken)
+    public async Task<GetEventDto> Handle(CreateEventDto item, CancellationToken cancellationToken)
     {
         var isUniqueName = await _repositoriesManager.Events.IsUniqueNameAsync(item.Name, cancellationToken);
         if (!isUniqueName)
@@ -37,7 +35,7 @@ public class CreateEventUseCase : ICreateEventUseCase
         if (item.Image != null) 
         {
             filename = item.Image.FileName;
-            var imageFilePath = Path.Combine(imageStoragePath, filename);
+            var imageFilePath = Path.Combine(_imageService.GetImageStoragePath(), filename);
             await _imageService.WriteFileAsync(item.Image, imageFilePath);
         }
         eventForDb.Image = filename;

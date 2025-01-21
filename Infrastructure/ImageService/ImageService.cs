@@ -1,16 +1,20 @@
 using Application.Contracts.ImageServiceContracts;
 using Application.Exceptions;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.ImageService;
 
 public class ImageService : IImageService
 {
-    private const string ImageStoragePath = "ImageStorage:wwwrootRelativePath";
-    
-    public async Task<(byte[] fileBytes, string contentType)> GetImageAsync
-        (string fileName, string imageStoragePath)
+    private readonly string _imageStoragePath;
+    public ImageService(IOptions<ImageStorageSettings> imageStorageSettings)
     {
-        var filePath = Path.Combine(imageStoragePath, fileName);
+        _imageStoragePath = imageStorageSettings.Value.Path;
+    }
+    
+    public async Task<(byte[] fileBytes, string contentType)> GetImageAsync (string fileName)
+    {
+        var filePath = Path.Combine(GetImageStoragePath(), fileName);
         if (!File.Exists(filePath))
         {
             throw new EntityNotFoundException("Image is not found.");
@@ -38,14 +42,9 @@ public class ImageService : IImageService
         var request = httpContext.Request;
         return new ImageUrlConfiguration(request, controllerRoute, imageEndpointRoute);
     }
-
-    public string InitializeImageStoragePath(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
+    
+    public string GetImageStoragePath()
     {
-        var config = configuration[ImageStoragePath];
-        if (config == null)
-            throw new InvalidOperationException("Image storage path is not available.");
-        var tempRoot = "wwwroot"; // временное решение, так как WebRootPath возвращает null, когда запускаю проект с github, и все в порядке, когда с моего ПК
-        var imagePath = Path.Combine(/*hostingEnvironment.WebRootPath*/tempRoot, config);
-        return imagePath;
+        return _imageStoragePath;
     }
 }

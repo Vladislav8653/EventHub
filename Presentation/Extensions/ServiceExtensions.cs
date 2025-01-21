@@ -162,9 +162,10 @@ public static class ServiceExtensions
         }, AppDomain.CurrentDomain.GetAssemblies());
     }
 
-    public static void ConfigureImageService(this IServiceCollection services)
+    public static void ConfigureImageService(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IImageService, ImageService>();
+        services.Configure<ImageStorageSettings>(configuration.GetSection("ImageStorage"));
+        services.AddSingleton<IImageService, ImageService>();
     }
     
     public static void ConfigureCookieService(this IServiceCollection services)

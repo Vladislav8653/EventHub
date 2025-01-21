@@ -15,8 +15,7 @@ public class EventController : ControllerBase
 {
     private const string ControllerRoute = "events";
     private const string ImageEndpointRoute = "images";
-    private readonly string _imageStoragePath; // для формирования пути к изображениям
-    private readonly IImageService _imageService;  // сервис для работы с изображениями
+    private readonly IImageService _imageService; 
     private readonly IJwtProvider _jwtProvider;
     private readonly ICookieService _cookieService;
     private readonly ICreateEventUseCase _createEventUseCase;
@@ -27,19 +26,16 @@ public class EventController : ControllerBase
     private readonly IGetEventByNameUseCase _getEventByNameUseCase;
     private readonly IGetAllUserEventsUseCase _getAllUserEventsUseCase;
     public EventController(IImageService imageService,
-        IConfiguration configuration,
         ICreateEventUseCase createEventUseCase, 
         IDeleteEventUseCase deleteEventUseCase,
         IUpdateEventUseCase updateEventUseCase, 
         IGetEventByIdUseCase getEventByIdUseCase, 
         IGetAllEventsUseCase getAllEventsUseCase, 
         IGetEventByNameUseCase getEventByNameUseCase, 
-        IWebHostEnvironment hostingEnvironment,
         IJwtProvider jwtProvider,
         ICookieService cookieService, IGetAllUserEventsUseCase getAllUserEventsUseCase)
     {
         _imageService = imageService;
-        _imageStoragePath = _imageService.InitializeImageStoragePath(configuration, hostingEnvironment); 
         _createEventUseCase = createEventUseCase;
         _deleteEventUseCase = deleteEventUseCase;
         _updateEventUseCase = updateEventUseCase;
@@ -82,7 +78,7 @@ public class EventController : ControllerBase
     [ValidateDtoServiceFilter<CreateEventDto>]
     public async Task<IActionResult> CreateEvent([FromForm]CreateEventDto item, CancellationToken cancellationToken)
     {
-        var newEvent = await _createEventUseCase.Handle(item, _imageStoragePath, cancellationToken);
+        var newEvent = await _createEventUseCase.Handle(item, cancellationToken);
         return Ok(newEvent);
     }
 
@@ -92,7 +88,7 @@ public class EventController : ControllerBase
     [ValidateDtoServiceFilter<CreateEventDto>]
     public async Task<IActionResult> UpdateEvent([FromForm]CreateEventDto item, Guid id, CancellationToken cancellationToken)
     {
-        var updatedEvent =  await _updateEventUseCase.Handle(id, item, _imageStoragePath, cancellationToken);
+        var updatedEvent =  await _updateEventUseCase.Handle(id, item, cancellationToken);
         return Ok(updatedEvent);
     }
 
@@ -101,7 +97,7 @@ public class EventController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteEvent(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _deleteEventUseCase.Handle(id, _imageStoragePath, cancellationToken);
+        var result = await _deleteEventUseCase.Handle(id, cancellationToken);
         return Ok(result);
     }
     
@@ -119,7 +115,7 @@ public class EventController : ControllerBase
     [HttpGet(ImageEndpointRoute + "/{fileName}")]
     public async Task<IActionResult> GetImage(string fileName)
     {
-        var (fileBytes, contentType) = await _imageService.GetImageAsync(fileName, _imageStoragePath);
+        var (fileBytes, contentType) = await _imageService.GetImageAsync(fileName);
         return File(fileBytes, contentType, fileName);
     }
 }

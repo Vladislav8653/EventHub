@@ -4,5 +4,5 @@ namespace Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 
 public interface IUpdateEventUseCase
 {
-    Task<GetEventDto> Handle(Guid id, CreateEventDto item, string imageStoragePath, CancellationToken cancellationToken);
+    Task<GetEventDto> Handle(Guid id, CreateEventDto item, CancellationToken cancellationToken);
 }

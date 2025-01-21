@@ -21,7 +21,7 @@ public class DeleteEventUseCase : IDeleteEventUseCase
         _imageService = imageService;
     }
 
-    public async Task<GetEventDto> Handle(Guid id, string imageStoragePath, CancellationToken cancellationToken)
+    public async Task<GetEventDto> Handle(Guid id, CancellationToken cancellationToken)
     {
         var eventToDelete = await _repositoriesManager.Events.GetByIdAsync(id, cancellationToken);
         if (eventToDelete == null)
@@ -29,7 +29,7 @@ public class DeleteEventUseCase : IDeleteEventUseCase
         var filename = eventToDelete.Image;
         if (filename != null)
         {
-            var imageFilePath = Path.Combine(imageStoragePath, filename);
+            var imageFilePath = Path.Combine(_imageService.GetImageStoragePath(), filename);
             _imageService.DeleteFile(imageFilePath);
         }
         _repositoriesManager.Events.Delete(eventToDelete);
