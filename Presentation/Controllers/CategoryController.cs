@@ -1,6 +1,6 @@
 ﻿using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.DtoModels.CategoryDto;
-using Application.Validation;
+using Infrastructure.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

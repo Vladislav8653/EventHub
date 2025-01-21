@@ -3,7 +3,7 @@ using Application.Contracts.AuthContracts;
 using Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 using Application.DtoModels.CommonDto;
 using Application.DtoModels.ParticipantDto;
-using Application.Validation;
+using Infrastructure.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

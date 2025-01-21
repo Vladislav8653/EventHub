@@ -1,7 +1,7 @@
 ﻿using Application.DtoModels.CommonDto;
 using FluentValidation;
 
-namespace Application.Validation.CommonValidation;
+namespace Infrastructure.Validation.CommonValidation;
 
 public class PageParamsDtoValidator : AbstractValidator<PageParamsDto>
 {

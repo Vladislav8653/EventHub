@@ -2,7 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Application.Validation
+namespace Infrastructure.Validation
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
     public class ValidateDtoServiceFilterAttribute<T> : Attribute, IAsyncActionFilter where T : class

@@ -3,7 +3,7 @@ using Application.Contracts.AuthContracts;
 using Application.Contracts.ImageServiceContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
-using Application.Validation;
+using Infrastructure.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

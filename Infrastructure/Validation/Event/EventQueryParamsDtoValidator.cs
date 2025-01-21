@@ -1,8 +1,8 @@
 using Application.DtoModels.EventsDto;
-using Application.Validation.CommonValidation;
 using FluentValidation;
+using Infrastructure.Validation.CommonValidation;
 
-namespace Application.Validation.Event;
+namespace Infrastructure.Validation.Event;
 
 public class EventQueryParamsDtoValidator : AbstractValidator<EventQueryParamsDto>
 {

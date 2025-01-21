@@ -2,7 +2,7 @@
 using Application.Contracts.UseCaseContracts.UserUseCaseContracts;
 using Application.DtoModels.UserDto;
 using Microsoft.AspNetCore.Mvc;
-using Application.Validation;
+using Infrastructure.Validation;
 
 namespace Presentation.Controllers;
 
