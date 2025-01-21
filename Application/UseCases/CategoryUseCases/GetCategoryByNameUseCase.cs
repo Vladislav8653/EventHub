@@ -1,5 +1,6 @@
 using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
+using Domain;
 using Domain.Models;
 
 namespace Application.UseCases.CategoryUseCases;

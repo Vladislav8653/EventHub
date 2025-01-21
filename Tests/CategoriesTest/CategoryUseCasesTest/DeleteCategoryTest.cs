@@ -1,6 +1,7 @@
 using Domain.RepositoryContracts;
 using Application.Exceptions;
 using Application.UseCases.CategoryUseCases;
+using Domain;
 using Domain.Models;
 using Domain.RepositoryContracts;
 using Moq;

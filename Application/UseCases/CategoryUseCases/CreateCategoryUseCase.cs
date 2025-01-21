@@ -3,6 +3,7 @@ using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.DtoModels.CategoryDto;
 using Application.Exceptions;
 using AutoMapper;
+using Domain;
 using Domain.Models;
 
 namespace Application.UseCases.CategoryUseCases;

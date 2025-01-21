@@ -5,6 +5,7 @@ using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.Exceptions;
 using AutoMapper;
+using Domain;
 
 namespace Application.UseCases.EventUseCases;
 

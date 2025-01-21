@@ -1,4 +1,5 @@
-﻿using Domain.RepositoryContracts;
+﻿using Domain;
+using Domain.RepositoryContracts;
 
 namespace Infrastructure;
 

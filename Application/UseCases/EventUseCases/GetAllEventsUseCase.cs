@@ -5,6 +5,7 @@ using Application.DtoModels.EventsDto;
 using Application.DtoModels.EventsDto.QueryParams;
 using Application.Contracts.ImageServiceContracts;
 using AutoMapper;
+using Domain;
 using Domain.DTOs;
 using Domain.Models;
 

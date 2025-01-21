@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Application.Contracts.AuthContracts;
 using Application.Contracts.UseCaseContracts.UserUseCaseContracts;
 using Application.Exceptions;
+using Domain;
 using Domain.RepositoryContracts;
 
 namespace Application.UseCases.UserUseCases;

@@ -1,6 +1,7 @@
 using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.CategoryUseCaseContracts;
 using Application.Exceptions;
+using Domain;
 
 namespace Application.UseCases.CategoryUseCases;
 

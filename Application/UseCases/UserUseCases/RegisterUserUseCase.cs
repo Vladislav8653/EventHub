@@ -2,6 +2,7 @@ using Application.Contracts.AuthContracts;
 using Application.Contracts.UseCaseContracts.UserUseCaseContracts;
 using Application.DtoModels.UserDto;
 using AutoMapper;
+using Domain;
 using Domain.Models;
 using Domain.RepositoryContracts;
 

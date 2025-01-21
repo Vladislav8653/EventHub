@@ -3,6 +3,7 @@ using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.Contracts.ImageServiceContracts;
 using AutoMapper;
+using Domain;
 using Domain.Models;
 
 namespace Application.UseCases.EventUseCases;

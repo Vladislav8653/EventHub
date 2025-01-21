@@ -22,6 +22,7 @@ using Application.Validation.CommonValidation;
 using Application.Validation.Event;
 using Application.Validation.Participants;
 using Application.Validation.User.Validators;
+using Domain;
 using Domain.RepositoryContracts;
 using FluentValidation;
 using Infrastructure;

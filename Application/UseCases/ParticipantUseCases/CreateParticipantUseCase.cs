@@ -2,6 +2,7 @@ using Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 using Application.DtoModels.ParticipantDto;
 using Application.Exceptions;
 using AutoMapper;
+using Domain;
 using Domain.Models;
 using Domain.RepositoryContracts;
 
