@@ -4,13 +4,24 @@ using Application.Exceptions;
 using AutoMapper;
 using FluentValidation;
 
-namespace Infrastructure.Extensions;
+namespace Presentation;
+
 
 public class GlobalErrorHandler
 {
     private readonly ILogger<GlobalErrorHandler> _logger;
     private readonly RequestDelegate _next;
 
+    private class ExceptionDetails
+    {
+        public ExceptionDetails()
+        {
+            Type = Message = string.Empty;
+        }
+        public string Type { get; set; }
+        public string Message { get; set; }
+    }
+    
     public GlobalErrorHandler(RequestDelegate next, ILogger<GlobalErrorHandler> logger)
     {
         _next = next;

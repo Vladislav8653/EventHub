@@ -1,8 +1,8 @@
 ﻿using Application.Contracts;
 using Application.Contracts.AuthContracts;
+using Application.Contracts.ImageServiceContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
-using Application.ImageService;
 using Application.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,9 +38,8 @@ public class EventController : ControllerBase
         IJwtProvider jwtProvider,
         ICookieService cookieService, IGetAllUserEventsUseCase getAllUserEventsUseCase)
     {
-        //_imageUrlConfiguration = InitializeImageUrlConfiguration(); 
-        _imageStoragePath = InitializeImageStoragePath(configuration, hostingEnvironment); 
         _imageService = imageService;
+        _imageStoragePath = _imageService.InitializeImageStoragePath(configuration, hostingEnvironment); 
         _createEventUseCase = createEventUseCase;
         _deleteEventUseCase = deleteEventUseCase;
         _updateEventUseCase = updateEventUseCase;
@@ -56,7 +55,7 @@ public class EventController : ControllerBase
     [ValidateDtoServiceFilter<EventQueryParamsDto>]
     public async Task<IActionResult> GetAllEvents([FromQuery]EventQueryParamsDto eventParamsDto, CancellationToken cancellationToken)
     {
-        var imageUrlConfig = InitializeImageUrlConfiguration(HttpContext);
+        var imageUrlConfig = _imageService.InitializeImageUrlConfiguration(HttpContext, ControllerRoute, ImageEndpointRoute);
         var events = await _getAllEventsUseCase.Handle(eventParamsDto, imageUrlConfig, cancellationToken);
         return Ok(events);
     }
@@ -64,7 +63,7 @@ public class EventController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetEventById(Guid id, CancellationToken cancellationToken)
     {
-        var imageUrlConfig = InitializeImageUrlConfiguration(HttpContext);
+        var imageUrlConfig = _imageService.InitializeImageUrlConfiguration(HttpContext, ControllerRoute, ImageEndpointRoute);
         var events = await _getEventByIdUseCase.Handle(id, imageUrlConfig, cancellationToken);
         return Ok(events);
     }
@@ -72,7 +71,7 @@ public class EventController : ControllerBase
     [HttpGet("{name}")]
     public async Task<IActionResult> GetEventByName(string name, CancellationToken cancellationToken)
     {
-        var imageUrlConfig = InitializeImageUrlConfiguration(HttpContext);
+        var imageUrlConfig = _imageService.InitializeImageUrlConfiguration(HttpContext, ControllerRoute, ImageEndpointRoute);
         var events = await _getEventByNameUseCase.Handle(name, imageUrlConfig, cancellationToken);
         return Ok(events);
     }
@@ -110,7 +109,7 @@ public class EventController : ControllerBase
     [HttpGet("my")]
     public async Task<IActionResult> GetAllUserEvents(CancellationToken cancellationToken)
     {
-        var imageUrlConfig = InitializeImageUrlConfiguration(HttpContext);
+        var imageUrlConfig = _imageService.InitializeImageUrlConfiguration(HttpContext, ControllerRoute, ImageEndpointRoute);
         var userId = _jwtProvider.GetUserIdAccessToken(_cookieService.GetCookie(Request, UserController.AccessTokenCookieName));
         var events = await _getAllUserEventsUseCase.Handle(userId, imageUrlConfig, cancellationToken);
         return Ok(events);
@@ -122,22 +121,5 @@ public class EventController : ControllerBase
     {
         var (fileBytes, contentType) = await _imageService.GetImageAsync(fileName, _imageStoragePath);
         return File(fileBytes, contentType, fileName);
-    }
-
-    private ImageUrlConfiguration InitializeImageUrlConfiguration(HttpContext httpContext)
-    {
-        if (httpContext == null)
-            throw new InvalidOperationException("HttpContext is not available");
-        var request = httpContext.Request;
-        return new ImageUrlConfiguration(request, ControllerRoute, ImageEndpointRoute);
-    }
-
-    private string InitializeImageStoragePath(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
-    {
-        var config = configuration["ImageStorage:wwwrootRelativePath"];
-        if (config == null)
-            throw new InvalidOperationException("Image storage path is not available.");
-        var imagePath = Path.Combine(hostingEnvironment.WebRootPath, config);
-        return imagePath;
     }
 }
