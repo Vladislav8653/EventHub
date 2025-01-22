@@ -6,7 +6,6 @@ using Application.Contracts.ImageServiceContracts;
 using AutoMapper;
 using Domain;
 using Domain.DTOs;
-using Domain.Models;
 
 namespace Application.UseCases.EventUseCases;
 

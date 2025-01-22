@@ -34,9 +34,7 @@ public class CreateEventUseCase : ICreateEventUseCase
         string? filename = null;
         if (item.Image != null) 
         {
-            filename = item.Image.FileName;
-            var imageFilePath = Path.Combine(_imageService.GetImageStoragePath(), filename);
-            await _imageService.WriteFileAsync(item.Image, imageFilePath);
+            await _imageService.WriteFileAsync(item.Image);
         }
         eventForDb.Image = filename;
         eventForDb.CategoryId = category.Id;

@@ -1,6 +1,4 @@
-using Application.Contracts;
 using Application.Contracts.ImageServiceContracts;
-using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.Exceptions;
@@ -29,8 +27,7 @@ public class DeleteEventUseCase : IDeleteEventUseCase
         var filename = eventToDelete.Image;
         if (filename != null)
         {
-            var imageFilePath = Path.Combine(_imageService.GetImageStoragePath(), filename);
-            _imageService.DeleteFile(imageFilePath);
+            _imageService.DeleteFile(filename);
         }
         _repositoriesManager.Events.Delete(eventToDelete);
         await _repositoriesManager.SaveAsync();

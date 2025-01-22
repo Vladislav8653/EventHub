@@ -30,23 +30,17 @@ public class UpdateEventUseCase : IUpdateEventUseCase
         if (category == null)
             throw new EntityNotFoundException($"Category {item.Category} doesn't exits.");
         _mapper.Map(item, eventToUpdate);
-        
-        string? newFileName = null;
         if (item.Image != null) 
         {
-            newFileName = item.Image.FileName;
-            var imageFilePath = Path.Combine(_imageService.GetImageStoragePath(), newFileName);
-            await _imageService.WriteFileAsync(item.Image, imageFilePath);
+            await _imageService.WriteFileAsync(item.Image);
         }
         var oldFilename = eventToUpdate.Image;
         if (oldFilename != null)
         {
-            var imageFilePath = Path.Combine(_imageService.GetImageStoragePath(), oldFilename);
-            _imageService.DeleteFile(imageFilePath);
+            _imageService.DeleteFile(oldFilename);
         }
-        eventToUpdate.Image = newFileName;
+        eventToUpdate.Image = item.Image?.FileName;
         eventToUpdate.CategoryId = category.Id;
-        
         _repositoriesManager.Events.Update(eventToUpdate);
         await _repositoriesManager.SaveAsync();
         var eventDto = _mapper.Map<GetEventDto>(eventToUpdate);

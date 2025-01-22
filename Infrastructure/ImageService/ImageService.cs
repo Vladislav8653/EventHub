@@ -13,9 +13,9 @@ public class ImageService : IImageService
         _imageStoragePath = imageStorageSettings.Value.Path;
     }
     
-    public async Task<(byte[] fileBytes, string contentType)> GetImageAsync (string fileName)
+    public async Task<(byte[] fileBytes, string contentType)> GetImageAsync(string fileName)
     {
-        var filePath = Path.Combine(GetImageStoragePath(), fileName);
+        var filePath = Path.Combine(_imageStoragePath, fileName);
         if (!File.Exists(filePath))
         {
             throw new EntityNotFoundException("Image is not found.");
@@ -25,15 +25,16 @@ public class ImageService : IImageService
         return (fileBytes, contentType);
     }
     
-    public async Task WriteFileAsync(IFormFile image, string filePath)
+    public async Task WriteFileAsync(IFormFile image)
     {
-        await using var stream = new FileStream(filePath, FileMode.Create);
+        var path = Path.Combine(_imageStoragePath, image.FileName);
+        await using var stream = new FileStream(path, FileMode.Create);
         await image.CopyToAsync(stream);
     }
 
-    public void DeleteFile(string filePath)
+    public void DeleteFile(string fileName)
     {
-        File.Delete(filePath);
+        File.Delete(Path.Combine(_imageStoragePath, fileName));
     }
 
     public ImageUrlConfiguration InitializeImageUrlConfiguration(HttpContext httpContext, string controllerRoute, string imageEndpointRoute)
@@ -42,11 +43,6 @@ public class ImageService : IImageService
             throw new InvalidOperationException("HttpContext is not available");
         var request = httpContext.Request;
         return new ImageUrlConfiguration(request, controllerRoute, imageEndpointRoute);
-    }
-    
-    public string GetImageStoragePath()
-    {
-        return _imageStoragePath;
     }
     
     public List<Event> AttachLinkToImage(IEnumerable<Event> items, ImageUrlConfiguration request)
