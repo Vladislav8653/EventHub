@@ -1,4 +1,3 @@
-using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.Contracts.ImageServiceContracts;
@@ -12,27 +11,19 @@ public class GetAllUserEventsUseCase : IGetAllUserEventsUseCase
 {
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
-    public GetAllUserEventsUseCase(IRepositoriesManager repositoriesManager, IMapper mapper)
+    private readonly IImageService _imageService;
+    public GetAllUserEventsUseCase(IRepositoriesManager repositoriesManager, IMapper mapper, IImageService imageService)
     {
         _repositoriesManager = repositoriesManager;
         _mapper = mapper;
+        _imageService = imageService;
     }
     
     public async Task<IEnumerable<GetEventDto>> Handle(Guid userId, ImageUrlConfiguration request, CancellationToken cancellationToken)
     {
         var rawEvents = await _repositoriesManager.Events.GetAllUserEventsAsync(userId, cancellationToken);
-        var events = AttachLinkToImage(rawEvents, request);
+        var events = _imageService.AttachLinkToImage(rawEvents, request);
         var eventsWithImages = _mapper.Map<IEnumerable<GetEventDto>>(events);
         return eventsWithImages;
-    }
-    
-    private static List<Event> AttachLinkToImage(IEnumerable<Event> items, ImageUrlConfiguration request)
-    {
-        var itemsList = items.ToList();
-        foreach (var item in itemsList.Where(item => !string.IsNullOrEmpty(item.Image)))
-        {
-            item.Image = new Uri($"{request.BaseUrl}/{request.ControllerRoute}/{request.EndpointRoute}/{item.Image}").ToString();
-        }
-        return itemsList;
     }
 }

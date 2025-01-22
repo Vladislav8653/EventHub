@@ -1,4 +1,3 @@
-using Domain.RepositoryContracts;
 using Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 using Application.DtoModels.EventsDto;
 using Application.Exceptions;
@@ -13,11 +12,13 @@ public class GetEventByIdUseCase : IGetEventByIdUseCase
 {
     private readonly IRepositoriesManager _repositoriesManager;
     private readonly IMapper _mapper;
+    private readonly IImageService _imageService;
 
-    public GetEventByIdUseCase(IRepositoriesManager repositoriesManager, IMapper mapper)
+    public GetEventByIdUseCase(IRepositoriesManager repositoriesManager, IMapper mapper, IImageService imageService)
     {
         _repositoriesManager = repositoriesManager;
         _mapper = mapper;
+        _imageService = imageService;
     }
     
     public async Task<GetEventDto> Handle(Guid id, ImageUrlConfiguration request, CancellationToken cancellationToken)
@@ -25,15 +26,8 @@ public class GetEventByIdUseCase : IGetEventByIdUseCase
         var eventById = await _repositoriesManager.Events.GetByIdAsync(id, cancellationToken);
         if (eventById == null)
             throw new EntityNotFoundException($"Event with id {id} doesn't exist");
-        eventById = AttachLinkToImage(eventById, request);
+        eventById = _imageService.AttachLinkToImage(eventById, request);
         var eventDto = _mapper.Map<GetEventDto>(eventById);
         return eventDto;
-    }
-    
-    private static Event AttachLinkToImage(Event item, ImageUrlConfiguration request)
-    {
-        if (!string.IsNullOrEmpty(item.Image)) 
-            item.Image = new Uri($"{request.BaseUrl}/{request.ControllerRoute}/{request.EndpointRoute}/{item.Image}").ToString();
-        return item;
     }
 }

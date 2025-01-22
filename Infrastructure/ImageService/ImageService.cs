@@ -1,5 +1,6 @@
 using Application.Contracts.ImageServiceContracts;
 using Application.Exceptions;
+using Domain.Models;
 using Microsoft.Extensions.Options;
 
 namespace Infrastructure.ImageService;
@@ -46,5 +47,22 @@ public class ImageService : IImageService
     public string GetImageStoragePath()
     {
         return _imageStoragePath;
+    }
+    
+    public List<Event> AttachLinkToImage(IEnumerable<Event> items, ImageUrlConfiguration request)
+    {
+        var itemsList = items.ToList();
+        foreach (var item in itemsList.Where(item => !string.IsNullOrEmpty(item.Image)))
+        {
+            item.Image = new Uri($"{request.BaseUrl}/{request.ControllerRoute}/{request.EndpointRoute}/{item.Image}").ToString();
+        }
+        return itemsList;
+    }
+    
+    public Event AttachLinkToImage(Event item, ImageUrlConfiguration request)
+    {
+        if (!string.IsNullOrEmpty(item.Image)) 
+            item.Image = new Uri($"{request.BaseUrl}/{request.ControllerRoute}/{request.EndpointRoute}/{item.Image}").ToString();
+        return item;
     }
 }
