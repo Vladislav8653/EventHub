@@ -1,6 +1,7 @@
 using Application.Contracts.ImageServiceContracts;
 using Application.DtoModels.CommonDto;
 using Application.DtoModels.EventsDto;
+using Domain.DTOs;
 
 namespace Application.Contracts.UseCaseContracts.EventUseCaseContracts;
 

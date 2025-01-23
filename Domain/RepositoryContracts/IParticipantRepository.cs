@@ -1,4 +1,4 @@
-﻿using Application.DtoModels.CommonDto;
+﻿using Domain.DTOs;
 using Domain.Models;
 
 namespace Domain.RepositoryContracts;

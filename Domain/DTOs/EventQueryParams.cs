@@ -1,7 +1,4 @@
-﻿using Application.DtoModels.CommonDto;
-using Application.DtoModels.EventsDto;
-
-namespace Domain.DTOs;
+﻿namespace Domain.DTOs;
 
 public class EventQueryParams (EventFilters? filters, PageParams pageParams)
 {

@@ -1,5 +1,6 @@
 ﻿using Domain.RepositoryContracts;
 using Application.DtoModels.CommonDto;
+using Domain.DTOs;
 using Domain.Models;
 using Microsoft.EntityFrameworkCore;
 

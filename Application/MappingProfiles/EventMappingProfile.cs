@@ -1,6 +1,7 @@
 ﻿using Application.DtoModels.EventsDto;
 using Application.DtoModels.EventsDto.QueryParams;
 using AutoMapper;
+using Domain.DTOs;
 using Domain.Models;
 
 namespace Application.MappingProfiles;

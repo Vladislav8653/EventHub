@@ -1,5 +1,6 @@
 using Application.DtoModels.CommonDto;
 using Application.DtoModels.ParticipantDto;
+using Domain.DTOs;
 
 namespace Application.Contracts.UseCaseContracts.ParticipantUseCaseContracts;
 

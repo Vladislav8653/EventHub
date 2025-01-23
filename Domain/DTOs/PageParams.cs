@@ -1,4 +1,4 @@
-﻿namespace Application.DtoModels.CommonDto;
+﻿namespace Domain.DTOs;
 
 public class PageParams(int page, int pageSize)
 {

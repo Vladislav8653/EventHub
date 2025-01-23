@@ -4,6 +4,7 @@ using Application.DtoModels.ParticipantDto;
 using Application.Exceptions;
 using AutoMapper;
 using Domain;
+using Domain.DTOs;
 using Domain.RepositoryContracts;
 
 namespace Application.UseCases.ParticipantUseCases;

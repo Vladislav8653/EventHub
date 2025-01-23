@@ -1,4 +1,4 @@
-namespace Application.DtoModels.CommonDto;
+namespace Domain.DTOs;
 
 public class PagedResult<T> (IEnumerable<T> items, int total)
 {
