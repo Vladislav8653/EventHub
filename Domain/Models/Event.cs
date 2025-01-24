@@ -2,14 +2,14 @@
 
 public class Event
 {
-    public Guid Id { get; set; } 
-    public string Name { get; set; } = String.Empty;
-    public string Description { get; set; } = String.Empty;
-    public DateTime DateTime { get; set; }
-    public string Place { get; set; } = String.Empty;
+    public Guid Id { get; init; } 
+    public string Name { get; init; } = string.Empty;
+    public string Description { get; init; } = string.Empty;
+    public DateTime DateTime { get; init; }
+    public string Place { get; init; } = string.Empty;
     public Guid CategoryId { get; set; }
-    public Category Category { get; set; } 
-    public uint MaxQuantityParticipant { get; set; }
-    public ICollection<Participant> Participants { get; set; } = new List<Participant>();
-    public string? Image { get; set; } = String.Empty;
+    public Category Category { get; init; } = null!;
+    public uint MaxQuantityParticipant { get; init; }
+    public ICollection<Participant> Participants { get; init; } = new List<Participant>();
+    public string? Image { get; set; } = string.Empty;
 }

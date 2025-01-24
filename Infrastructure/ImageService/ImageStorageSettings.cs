@@ -2,5 +2,5 @@ namespace Infrastructure.ImageService;
 
 public class ImageStorageSettings
 {
-    public string Path { get; set; }
+    public string Path { get; set; } = string.Empty;
 }
